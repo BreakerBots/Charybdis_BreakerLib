@@ -27,6 +27,6 @@ public class BreakerLog {
     }
 
     public static void log(String message) {
-    //    DataLogManager.log(message);
+      DataLogManager.log(message);
     }
 }

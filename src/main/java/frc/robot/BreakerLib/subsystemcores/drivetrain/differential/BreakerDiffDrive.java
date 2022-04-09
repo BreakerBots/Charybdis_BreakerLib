@@ -4,6 +4,8 @@
 
 package frc.robot.BreakerLib.subsystemcores.drivetrain.differential;
 
+import java.io.ObjectInputFilter.Config;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -38,6 +40,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   private DifferentialDriveOdometry driveOdometer;
 
   private String deviceName = "Differential_Drivetrain";
+
+  private boolean isInSlowMode;
   
   /** Creates a new West Coast Drive. */
   public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR, BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
@@ -59,7 +63,13 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
     this.pigeon2 = pigeon2;
   }
 
+  /** Standard drive command, is affected by slow mode */
   public void arcadeDrive(double netSpeed, double turnSpeed) {
+    if (isInSlowMode) {
+      netSpeed *= driveConfig.getSlowModeForwardMultiplier();
+      turnSpeed *= driveConfig.getSlowModeTurnMultiplier();
+    }
+
     diffDrive.arcadeDrive(netSpeed, turnSpeed);
   }
 
@@ -140,6 +150,14 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds( BreakerUnits.inchesToMeters((leftLead.getSelectedSensorVelocity() / driveConfig.getTicksPerInch()) * 10),
      BreakerUnits.inchesToMeters((rightLead.getSelectedSensorVelocity() / driveConfig.getTicksPerInch()) * 10));
+  }
+
+  public void setSlowMode(boolean isEnabled) {
+    isInSlowMode = isEnabled;
+  }
+
+  public boolean isInSlowMode() {
+    return isInSlowMode;
   }
 
   @Override

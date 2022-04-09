@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.auto.trajectory.swerveauto;
+package frc.robot.BreakerLib.auto.trajectory.swerve;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,9 +12,9 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
-public class BreakerSwerveTrajectoryAuto extends CommandBase {
+public class BreakerFollowSwerveTrajectory extends CommandBase {
     private SwerveControllerCommand controller;
-    private BreakerSwerveTrajectoryAutoConfig config;
+    private BreakerFollowSwerveTrajectoryConfig config;
     private BreakerSwerveDrive drivetrain;
     private Subsystem requiredSubsystem;
     private Trajectory[] trajectorysToFollow;
@@ -24,7 +24,7 @@ public class BreakerSwerveTrajectoryAuto extends CommandBase {
     private boolean commandIsFinished = false;
     private boolean stopAtEnd = false;
     private double currentTimeCycles = 0;
-    BreakerSwerveTrajectoryAuto(BreakerSwerveTrajectoryAutoConfig config, Boolean stopAtEnd, Subsystem requiredSubsystem, Trajectory... trajectorysToFollow) {
+    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, Boolean stopAtEnd, Subsystem requiredSubsystem, Trajectory... trajectorysToFollow) {
         drivetrain = config.getDrivetrain();
         this.trajectorysToFollow = trajectorysToFollow;
         this.config = config;

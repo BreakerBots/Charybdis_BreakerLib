@@ -13,7 +13,7 @@ import frc.robot.BreakerLib.util.BreakerUnits;
 public class BreakerDiffDriveConfig {
     private DifferentialDriveKinematics kinematics;
     private double robotTrackWidthInches;
-    private double ticksPerRotation;
+    private double ticksPerEncoderRotation;
     private double ticksPerInch;
     private double gearRatioTo1;
     private double wheelDiameter;
@@ -22,20 +22,21 @@ public class BreakerDiffDriveConfig {
     private double feedForwardKs;
     private double feedForwardKv;
     private double feedForwardKa;
-    // WHY TWO SEPARATE PIDControllers?!
+    private double slowModeForwardMultiplier = 1;
+    private double slowModeTurnMultiplier = 1;
     private PIDController leftPID; 
     private PIDController rightPID;
 
-    public BreakerDiffDriveConfig(double ticksPerRotation, double gearRatioTo1, double wheelDiameter, 
+    public BreakerDiffDriveConfig(double ticksPerEncoderRotation, double gearRatioTo1, double wheelDiameter, 
         double feedForwardKs, double feedForwardKv, double feedForwardKa, double robotTrackWidthInches, PIDController leftPID, PIDController rightPID) {
         
         kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
     
-        ticksPerInch = BreakerMath.getTicksPerInch(ticksPerRotation, gearRatioTo1, wheelDiameter);
+        ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
         wheelDiameter = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
-        getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerRotation, gearRatioTo1);
+        getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
 
-        ticksPerRotation = this.ticksPerRotation;
+        ticksPerEncoderRotation = this.ticksPerEncoderRotation;
         gearRatioTo1 = this.gearRatioTo1;
         feedForwardKs = this.feedForwardKs;
         feedForwardKv = this.feedForwardKv;
@@ -43,6 +44,11 @@ public class BreakerDiffDriveConfig {
         robotTrackWidthInches = this.robotTrackWidthInches;
         leftPID = this.leftPID;
         rightPID = this.rightPID;
+    }
+
+    public void setSlowModeMultipliers(double forwardMult, double turnMult) {
+        slowModeForwardMultiplier = forwardMult;
+        slowModeTurnMultiplier = turnMult;
     }
 
     public void setPidTolerences(double[] tolerences) {
@@ -55,7 +61,7 @@ public class BreakerDiffDriveConfig {
     }
 
     public double getEncoderTicks() {
-        return ticksPerRotation;
+        return ticksPerEncoderRotation;
     }
 
     public double getGearRatioTo1() {
@@ -100,5 +106,13 @@ public class BreakerDiffDriveConfig {
 
     public PIDController getRightPID() {
         return rightPID;
+    }
+
+    public double getSlowModeForwardMultiplier() {
+        return slowModeForwardMultiplier;
+    }
+
+    public double getSlowModeTurnMultiplier() {
+        return slowModeTurnMultiplier;
     }
 }

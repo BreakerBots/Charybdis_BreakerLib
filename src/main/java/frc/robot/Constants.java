@@ -12,4 +12,26 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    
+    /** Talon FX integrated encoder ticks */
+    public static final double TALON_FX_TICKS = 2048;
+    
+    // Drive Motor IDs
+    public static final int L1_ID = 11;
+    public static final int L2_ID = 12;
+    public static final int L3_ID = 13;
+    public static final int R1_ID = 14;
+    public static final int R2_ID = 15;
+    public static final int R3_ID = 16;
+
+    // Misic drive constants
+    /** Gear ratio for drivetrain (rotation of motors to rotation of wheel) (assume (value) to 1) */
+    public static final double DRIVE_GEAR_RATIO = 8.49; 
+    /** Diameter of drivetrain's Colson wheels, in inches */
+    public static final double DRIVE_COLSON_DIAMETER = 3.83;
+    public static final double DRIVE_SLOW_MODE_FWD_MULTIPLIER = 0.5;
+    public static final double DRIVE_SLOW_MODE_TURN_MULTIPLIER = 0.5;
+
+
+}
