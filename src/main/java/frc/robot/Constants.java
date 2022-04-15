@@ -35,20 +35,24 @@ public final class Constants {
 
     // Intake constants
         /** CAN ID of the left indexer motor */
-        public static int LEFT_INDEXER_ID = 22;
+        public static final int LEFT_INDEXER_ID = 22;
         /** CAN ID of the right indexer motor */
-        public static int RIGHT_INDEXER_ID = 23;
+        public static final int RIGHT_INDEXER_ID = 23;
         /** CAN ID of the intake arm's motor */
-        public static int PRIM_INTAKE_ID = 21;
-        public static double LEFT_INDEXER_SPEED = 0.8;
-        public static double RIGHT_INDEXER_SPEED = 0.8;
-        public static double PRIM_INTAKE_SPEED = 1.0;
+        public static final int PRIM_INTAKE_ID = 21;
+        public static final double LEFT_INDEXER_SPEED = 0.8;
+        public static final double RIGHT_INDEXER_SPEED = 0.8;
+        public static final double PRIM_INTAKE_SPEED = 1.0;
 
     // Pnumatics Constants
         /** CAN ID of the pnumatics controle module */
-        public static int PCM_ID = 5;
-        public static int INTAKESOL_FWD = 2;
-        public static int INTAKESOL_REV = 0;
+        public static final int PCM_ID = 5;
+        public static final int INTAKESOL_FWD = 2;
+        public static final int INTAKESOL_REV = 0;
+    
+    // IMU Constants
+        public static final int IMU_ID = 10;
+        public static final boolean IMU_INVERT = true;
 
 
 
