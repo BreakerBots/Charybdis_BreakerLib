@@ -23,6 +23,18 @@ public class BreakerDoubleSolenoid {
         toDefaultState();
     }
 
+    public BreakerDoubleSolenoid(PneumaticsModuleType moduleType, int fwdChannel, int revChannel, Value defaultState) {
+        solenoid = new DoubleSolenoid(moduleType, fwdChannel, revChannel);
+        setDefaultState(defaultState);
+        toDefaultState();
+    }
+
+    public BreakerDoubleSolenoid(PneumaticsModuleType moduleType, int fwdChannel, int revChannel, int pcmID, Value defaultState) {
+        solenoid = new DoubleSolenoid(pcmID, moduleType, fwdChannel, revChannel);
+        setDefaultState(defaultState);
+        toDefaultState();
+    }
+
     public void setDefaultState(Value value) {
         defaultState = value;
     }
