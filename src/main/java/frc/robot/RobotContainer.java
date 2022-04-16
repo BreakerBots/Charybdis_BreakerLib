@@ -4,25 +4,28 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+import frc.robot.BreakerLib.driverstation.BreakerXboxController;
+import frc.robot.commands.drive.ToggleSlowMode;
+import frc.robot.commands.intake.ToggleIntake;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 
 
 public class RobotContainer {
+  private final BreakerXboxController controllerSys = new BreakerXboxController(0);
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID, Constants.IMU_INVERT);
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
   public RobotContainer() {
-    
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
-    
+    controllerSys.getButtonA().whenPressed(new ToggleIntake(intakeSys));
+
+    controllerSys.getdPadRight().whenPressed(new ToggleSlowMode(drivetrainSys.getBaseDrivetrain()));
   }
 
   /**
