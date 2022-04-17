@@ -44,6 +44,13 @@ public final class Constants {
         public static final double RIGHT_INDEXER_SPEED = 0.8;
         public static final double PRIM_INTAKE_SPEED = 1.0;
 
+    // Hopper Constants
+        public static final int HOPPER_ID = 31;
+        public static final int HOPPER_TOP_SLOT_CHAN = 0;
+        public static final int HOPPER_BOTTOM_SLOT_CHAN = 1;
+        public static final double HOPPER_SPEED = 0.8;
+        public static final double HOPPER_SHOOTER_FEED_SPEED = 0.3;
+
     // Pnumatics Constants
         /** CAN ID of the pnumatics controle module */
         public static final int PCM_ID = 5;

@@ -23,6 +23,7 @@ public class BreakerRamsete extends CommandBase{
     private TrajectoryConfig config;
     private DifferentialDriveVoltageConstraint voltageConstraints;
     private double currentTimeCycles = 0;
+    public double totalTimeSeconds = 0;
     public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, 
     Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage){
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds());
@@ -35,6 +36,7 @@ public class BreakerRamsete extends CommandBase{
         ramsete = new RamseteCommand(trajectoryToFollow, drivetrain :: getOdometryPoseMeters, ramseteController, drivetrain.getFeedforward(), 
         drivetrain.getKinematics(), drivetrain :: getWheelSpeeds, drivetrain.getLeftPIDController(), drivetrain.getRightPIDController(), drivetrain :: tankMoveVoltage, subsystemRequirements);
         ramsete.schedule();
+        totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
     }
 
     @Override
@@ -44,6 +46,10 @@ public class BreakerRamsete extends CommandBase{
 
     public double getCurrentTimeSeconds() {
         return (currentTimeCycles / 50);
+    }
+
+    public double getTotalTimeSeconds() {
+        return totalTimeSeconds;
     }
 
     @Override

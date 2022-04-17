@@ -10,6 +10,7 @@ import frc.robot.BreakerLib.driverstation.BreakerXboxController;
 import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 
 
@@ -18,6 +19,7 @@ public class RobotContainer {
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID, Constants.IMU_INVERT);
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
+  private final Hopper hopperSys = new Hopper(intakeSys);
   public RobotContainer() {
     configureButtonBindings();
   }
