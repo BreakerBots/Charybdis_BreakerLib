@@ -7,13 +7,17 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
+import frc.robot.subsystems.Drive;
 
 public class DriveInTeleop extends CommandBase {
   private XboxController controller;
   private BreakerDiffDrive baseDrivetrain;
-  public DriveInTeleop(XboxController controller, BreakerDiffDrive baseDrivetrain) {
+  private Drive drivetrain;
+  public DriveInTeleop(XboxController controller, Drive drivetrain) {
+    addRequirements(drivetrain);
     this.controller = controller;
-    this.baseDrivetrain = baseDrivetrain;
+    this.drivetrain = drivetrain;
+    baseDrivetrain = drivetrain.getBaseDrivetrain();
   }
 
   @Override

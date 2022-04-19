@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
     intakeSol = new BreakerDoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKESOL_FWD, Constants.INTAKESOL_REV, Constants.PCM_ID, Value.kReverse);
     leftIndexerMotor = new WPI_TalonSRX(Constants.LEFT_INDEXER_ID);
     rightIndexerMotor = new WPI_TalonSRX(Constants.RIGHT_INDEXER_ID);
-    rightIndexerMotor.setInverted(true);
+    leftIndexerMotor.setInverted(true);
     primaryIntakeMotor = new WPI_TalonSRX(Constants.PRIM_INTAKE_ID);
   }
 

@@ -58,7 +58,7 @@ public class Hopper extends SubsystemBase {
   }
 
   public boolean bolthSlotsAreFull() {
-    return (topSlotIsFull() && !bottomSlotIsFull());
+    return (topSlotIsFull() && bottomSlotIsFull());
   }
 
   public boolean bolthSlotsAreEmpty() {
@@ -77,15 +77,20 @@ public class Hopper extends SubsystemBase {
       } else if (topSlotIsFull() && !bottomSlotIsFull()) {
         stopHopper();
         ballInTrasit = false;
-      } else if (bolthSlotsAreFull() || (bolthSlotsAreEmpty() && !ballInTrasit)) {
+      } else if (bolthSlotsAreFull() && !ballInTrasit) {
         stopHopper();
         intake.stopIntake();
+      } else if (bolthSlotsAreEmpty() && !ballInTrasit) {
+        stopHopper();
       }
+    } else if (!intake.getIntakeIsRunning() && !isFeedingShooter) {
+      stopHopper();
     }
   }
 
   @Override
   public void periodic() {
     hoperLogicLoop();
+    System.out.println(topSlotIsFull() + " " + bottomSlotIsFull() + " b: " + ballInTrasit);
   }
 }

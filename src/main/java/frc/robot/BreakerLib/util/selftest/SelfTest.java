@@ -16,7 +16,7 @@ public class SelfTest extends SubsystemBase {
   private int cycleCount;
   private static String lastSystemCheck;
   private static List<BreakerGenaricDevice> devices = new ArrayList<BreakerGenaricDevice>();
-  private int cyclesbetweenPerSelfCecks;
+  private static int cyclesbetweenPerSelfCecks = 250;
   private static boolean lastCheckPassed;
   public SelfTest(double secondsBetweenPeriodicSelfChecks) {
     cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);

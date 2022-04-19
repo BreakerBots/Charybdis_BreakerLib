@@ -45,21 +45,21 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   
   /** Creates a new West Coast Drive. */
   public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR, BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
-    leftDrive = new MotorControllerGroup(leftLead, leftMotors);
-    leftDrive.setInverted(invertL);
+    this.leftMotors = leftMotors;
     leftLead = leftMotors[0];
+    leftDrive = new MotorControllerGroup(leftMotors);
+    leftDrive.setInverted(invertL);
 
-    rightDrive = new MotorControllerGroup(rightLead, rightMotors);
-    rightDrive.setInverted(invertR);
+    this.rightMotors = rightMotors;
     rightLead = rightMotors[0];
+    rightDrive = new MotorControllerGroup(rightMotors);
+    rightDrive.setInverted(invertR);
 
     diffDrive = new DifferentialDrive(leftDrive, rightDrive);
 
     driveOdometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
 
-    driveConfig = this.driveConfig;
-    leftMotors = this.leftMotors;
-    rightMotors = this.rightMotors;
+    this.driveConfig = driveConfig;
     this.pigeon2 = pigeon2;
   }
 
@@ -93,7 +93,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   }
 
   public double getLeftDriveInches() {
-    return getLeftDriveTicks() / driveConfig.getTicksPerInch();
+    return (getLeftDriveTicks() / driveConfig.getTicksPerInch());
   }
 
   public double getLeftDriveMeters() {
@@ -198,7 +198,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   @Override
   public DeviceHealth getHealth() {
     // TODO Auto-generated method stub
-    return null;
+    return DeviceHealth.NOMINAL;
   }
 
   @Override

@@ -49,7 +49,7 @@ public class Drive extends SubsystemBase {
     rightSideRamsetePID = new PIDController(0, 0, 0);
     
     driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO, Constants.DRIVE_COLSON_DIAMETER,
-      0, 0, 0, 0, leftSideRamsetePID, rightSideRamsetePID);
+      0, 0, 0, 24.0, leftSideRamsetePID, rightSideRamsetePID);
       driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER, Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
 
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);

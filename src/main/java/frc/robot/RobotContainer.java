@@ -7,6 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
+import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.commands.drive.DriveInTeleop;
 import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
 import frc.robot.subsystems.Drive;
@@ -20,7 +23,12 @@ public class RobotContainer {
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
   private final Hopper hopperSys = new Hopper(intakeSys);
+  private final SelfTest testSys = new SelfTest(5);
   public RobotContainer() {
+    SelfTest.addDevice(imuSys);
+    SelfTest.addDevice(drivetrainSys.getBaseDrivetrain());
+    BreakerLog.startLog(false);
+    drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
     configureButtonBindings();
   }
 

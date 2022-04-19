@@ -1,0 +1,22 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Drive": "Subsystem",
+      "/LiveWindow/Hopper": "Subsystem",
+      "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/SelfTest": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon 2 [10]": "Gyro",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon SRX [21]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [22]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [23]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [31]": "Motor Controller"
+    }
+  }
+}

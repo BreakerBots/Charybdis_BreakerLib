@@ -31,19 +31,19 @@ public class BreakerDiffDriveConfig {
         double feedForwardKs, double feedForwardKv, double feedForwardKa, double robotTrackWidthInches, PIDController leftPID, PIDController rightPID) {
         
         kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
-    
-        ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
+     
         wheelDiameter = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
+        ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
         getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
 
-        ticksPerEncoderRotation = this.ticksPerEncoderRotation;
-        gearRatioTo1 = this.gearRatioTo1;
-        feedForwardKs = this.feedForwardKs;
-        feedForwardKv = this.feedForwardKv;
-        feedForwardKa = this.feedForwardKa;
-        robotTrackWidthInches = this.robotTrackWidthInches;
-        leftPID = this.leftPID;
-        rightPID = this.rightPID;
+        this.ticksPerEncoderRotation = ticksPerEncoderRotation;
+        this.gearRatioTo1 = gearRatioTo1;
+        this.feedForwardKs = feedForwardKs;
+        this.feedForwardKv = feedForwardKv;
+        this.feedForwardKa = feedForwardKa;
+        this.robotTrackWidthInches = robotTrackWidthInches;
+        this.leftPID = leftPID;
+        this.rightPID = rightPID;
     }
 
     public void setSlowModeMultipliers(double forwardMult, double turnMult) {
