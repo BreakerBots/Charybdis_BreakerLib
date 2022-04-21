@@ -138,6 +138,10 @@ public class BreakerMath {
         return (2.0 * Math.PI / encoderTicks);
     }
 
+    public static boolean getIsRoughlyEqualTo(double imputNumber, double numberImputIsCompairedTo, double maxDeveation) {
+        return ((imputNumber <= (numberImputIsCompairedTo + maxDeveation)) && (imputNumber >= (numberImputIsCompairedTo - maxDeveation)));
+    }
+
 }
 
 
