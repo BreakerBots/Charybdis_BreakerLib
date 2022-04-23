@@ -20,7 +20,6 @@ public class BreakerSwerveDriveConfig {
     private double moduleVelkP;
     private double moduleVelkI;
     private double moduleVelKd;
-    private double turnMotorGearRatioToOne;
     private double driveMotorGearRatioToOne;
     public double wheelDiameter;
     private double velFeedForwardKs;
@@ -35,7 +34,7 @@ public class BreakerSwerveDriveConfig {
     /** The overall configuration for a Breaker Swerve Drive, must be passed in. */
     public BreakerSwerveDriveConfig(double maxForwardVel, double maxSidewaysVel, double maxAngVel, 
         double moduleAnglekP, double moduleAnglekI, double moduleAngleKd, double moduleVelkP,
-        double moduleVelkI, double moduleVelKd, double turnMotorGearRatioToOne, double driveMotorGearRatioToOne,
+        double moduleVelkI, double moduleVelKd, double driveMotorGearRatioToOne,
         double wheelDiameter, double velFeedForwardKs, double velFeedForwardKv, Translation2d... wheelPositionsRelativeToCenter) {
 
         this.maxForwardVel = maxForwardVel;
@@ -48,7 +47,6 @@ public class BreakerSwerveDriveConfig {
         this.moduleVelkI = moduleVelkI;
         this.moduleVelkP = moduleVelkP;
         this.wheelDiameter = wheelDiameter;
-        this.turnMotorGearRatioToOne = turnMotorGearRatioToOne;
         this.driveMotorGearRatioToOne = driveMotorGearRatioToOne;
         this.velFeedForwardKs = velFeedForwardKs;
         this.velFeedForwardKv = velFeedForwardKv;
@@ -120,10 +118,6 @@ public class BreakerSwerveDriveConfig {
 
     public double getModuleAngleKd() {
         return moduleAngleKd;
-    }
-
-    public double getTurnMotorGearRatioToOne() {
-        return turnMotorGearRatioToOne;
     }
 
     public double getDriveMotorGearRatioToOne() {

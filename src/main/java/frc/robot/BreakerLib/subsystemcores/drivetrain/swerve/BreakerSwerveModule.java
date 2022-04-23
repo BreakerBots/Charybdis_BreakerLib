@@ -6,6 +6,9 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
 
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,17 +29,23 @@ public class BreakerSwerveModule {
     private DeviceHealth driveMotorHealth = DeviceHealth.NOMINAL;
     private DeviceHealth overallHealth = DeviceHealth.NOMINAL;
     private String faults = null;
-    public BreakerSwerveModule(WPI_TalonFX driveMotor, WPI_TalonFX turnMotor, BreakerSwerveDriveConfig config) {
+    private WPI_CANCoder turnEncoder;
+    public BreakerSwerveModule(WPI_TalonFX driveMotor, WPI_TalonFX turnMotor, WPI_CANCoder turnEncoder, BreakerSwerveDriveConfig config) {
         this.config = config;
         this.turnMotor = turnMotor;
         this.driveMotor = driveMotor;
+        this.turnEncoder = turnEncoder;
+
+        turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+
         anglePID = new PIDController(config.getModuleAnglekP(), config.getModuleAnglekI(), config.getModuleAngleKd());
         drivePID = new PIDController(config.getModuleVelkP(), config.getModuleVelkI(), config.getModuleVelKd());
+        driveFF = new SimpleMotorFeedforward(config.getVelFeedForwardKs(), config.getVelFeedForwardKv());
+
         if (config.getTolerencesHaveBeenSet()) {
             drivePID.setTolerance(config.getPidTolerences()[0], config.getPidTolerences()[1]);
             anglePID.setTolerance(config.getPidTolerences()[2], config.getPidTolerences()[3]);
         }
-        driveFF = new SimpleMotorFeedforward(config.getVelFeedForwardKs(), config.getVelFeedForwardKv());
     }
     
     public void setModuleTarget(Rotation2d tgtAngle, double speedMetersPreSec) {
@@ -50,11 +59,7 @@ public class BreakerSwerveModule {
     }
 
     public double getModuleAngle() {
-        return (getTurnMotorTicks() / BreakerMath.getTicksPerRotation(2048, config.getTurnMotorGearRatioToOne()) * 360);
-    }
-
-    public double getTurnMotorTicks() {
-        return turnMotor.getSelectedSensorPosition();
+        return turnEncoder.getAbsolutePosition();
     }
     
     public double getModuleVelMetersPerSec() {

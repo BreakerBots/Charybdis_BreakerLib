@@ -46,6 +46,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
     this.pigeon2 = pigeon2;
   }
 
+  /** sets each module to match a target module state in order from front to back and left to right */
   public void setRawModuleStates(SwerveModuleState[] targetModuleStates) {
     frontLeftModule.setModuleTarget(targetModuleStates[0]);
     frontRightModule.setModuleTarget(targetModuleStates[1]);
@@ -53,7 +54,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
     backRightModule.setModuleTarget(targetModuleStates[3]);
   }
 
-  /** Standard drivetrain movement command, specifyes robot speed in each axis including robot rotation (radian per second). 
+  /** Standard drivetrain movement command, specifyes robot velocity in each axis including robot rotation (radian per second). 
    * All values are relative to the robot's orientation. */
   public void move(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
     ChassisSpeeds speeds = new ChassisSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec);
@@ -61,14 +62,17 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
     setRawModuleStates(targetModuleStates);
   }
 
+  /** sets the target velocity of the robot to 0 in all axies */
   public void stop() {
     move(0, 0, 0);
   }
 
+  /** Equivlent to the "move()" method but with speeds being passed in as a percentage of maximum represented as a decimal (1.0 to -1.0) */
   public void moveWithPrecentImput(double forwardPercent, double horizontalPercent, double turnPercent) {
     move((forwardPercent * config.getMaxForwardVel()), (horizontalPercent * config.getMaxSidewaysVel()), (turnPercent * config.getMaxAngleVel()));
   }
 
+  /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the feild */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
     double gyroRad = Math.toRadians(pigeon2.getYaw());
     double newFwd = forwardVelMetersPerSec * Math.cos(gyroRad) + horizontalVelMetersPerSec * Math.sin(gyroRad);
@@ -76,6 +80,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
     move(newFwd, newHorz, radPerSec);
   }
 
+  /** effectivly equivlent to the "moveRelativeToField()" method but with speeds being passed in as a percentage of maximum represented as a decimal (1.0 to -1.0) */
   public void moveWithPrecentImputRelativeToField(double forwardPercent, double horizontalPercent, double turnPercent) {
     double fwdV = forwardPercent * config.getMaxForwardVel();
     double horzV = horizontalPercent * config.getMaxSidewaysVel();
@@ -127,7 +132,6 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
 
   @Override
   public void runSelfTest() {
-    // TODO Auto-generated method stub
     faults = null;
     frontLeftModule.runModuleSelfCheck();
     frontRightModule.runModuleSelfCheck();
