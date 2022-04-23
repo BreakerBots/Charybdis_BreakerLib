@@ -49,13 +49,13 @@ public class BreakerFlywheel extends SubsystemBase {
         runFlywheel = false;
         flySS.killLoop();
         flywheel.set(0);
-        BreakerLog.logEvent("flywheel stoped");
+        BreakerLog.logSuperstructureEvent("flywheel stoped");
     }
 
     public void startFlywheel() {
         runFlywheel = true;
         flySS.restartLoop();
-        BreakerLog.logEvent("flywheel started charging");
+        BreakerLog.logSuperstructureEvent("flywheel started charging");
     }
 
     private void runFlywheel() {

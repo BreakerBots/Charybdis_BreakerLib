@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
 import frc.robot.BreakerLib.util.BreakerLog;
@@ -24,6 +25,7 @@ public class RobotContainer {
   private final Intake intakeSys = new Intake();
   private final Hopper hopperSys = new Hopper(intakeSys);
   private final SelfTest testSys = new SelfTest(5);
+  private final BreakerRoboRio roboRioSys = new BreakerRoboRio();
   public RobotContainer() {
     SelfTest.addDevice(imuSys);
     SelfTest.addDevice(drivetrainSys.getBaseDrivetrain());

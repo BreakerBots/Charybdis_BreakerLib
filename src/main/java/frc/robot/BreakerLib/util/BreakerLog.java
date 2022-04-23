@@ -4,7 +4,11 @@
 
 package frc.robot.BreakerLib.util;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import edu.wpi.first.wpilibj.DataLogManager;
+import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 
 /** Add your docs here. */
 public class BreakerLog {
@@ -13,6 +17,17 @@ public class BreakerLog {
         DataLogManager.logNetworkTables(autologNetworkTables);
         DataLogManager.start();
     }
+
+    public static void logRobotStarted() {
+      DataLogManager.log("| ---- ROBOT STARTED ---- |");
+      BreakerRoboRio.setCurrentRobotMode(RobotMode.DISABLED);
+    }
+
+    public static void logRobotChangedMode(RobotMode newMode) {
+      DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
+      BreakerRoboRio.setCurrentRobotMode(newMode);
+    }
+
     
     public static void logEvent(String event) {
        DataLogManager.log(" EVENT: " + event);
@@ -24,6 +39,10 @@ public class BreakerLog {
 
     public static void logError(String error) {
       DataLogManager.log(" ERROR: " + error);
+    }
+
+    public static void logSuperstructureEvent(String event) {
+      DataLogManager.log(" ROBOT SUPERSTRUCTURE EVENT: " + event);
     }
 
     public static void log(String message) {

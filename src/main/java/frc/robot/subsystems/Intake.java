@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.BreakerLib.devices.misic.BreakerDoubleSolenoid;
+import frc.robot.BreakerLib.util.BreakerLog;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
@@ -31,10 +32,12 @@ public class Intake extends SubsystemBase {
 
   public void extendIntakeArm() {
     intakeSol.set(Value.kForward);
+    BreakerLog.logSuperstructureEvent("Intake arm extended");
   }
 
   public void retractIntakeArm() {
     intakeSol.set(Value.kReverse);
+    BreakerLog.logSuperstructureEvent("Intake arm retracted");
     if (getIntakeIsRunning()) {
       stopIntake();
     }
@@ -96,9 +99,11 @@ public class Intake extends SubsystemBase {
     stopPrimaryIntakeMotor();
     stopRightIndexer();
     stopLeftIndexer();
+    BreakerLog.logSuperstructureEvent(" Intake arm motor stoped | Left Indexer stoped | Right Indexer stoped ");
   }
 
   public void startIntake() {
+    BreakerLog.logEvent(" StartIntake called ");
     startIntakeMotors();
     if (!getIsExtended()) {
       extendIntakeArm();
@@ -106,11 +111,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void stopIntake() {
+    BreakerLog.logEvent(" StopIntake() called ");
     if (!hopperFeedEnabled) {
       stopIntakeMotors();
     } else {
       stopPrimaryIntakeMotor();
       stopRightIndexer();
+      BreakerLog.logSuperstructureEvent(" Intake arm motor stoped | Right Indexer stoped ");
     }
   }
 
