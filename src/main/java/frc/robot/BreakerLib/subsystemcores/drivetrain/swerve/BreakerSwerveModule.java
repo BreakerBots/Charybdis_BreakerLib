@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 import frc.robot.BreakerLib.util.BreakerMath;
 import frc.robot.BreakerLib.util.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -30,6 +31,12 @@ public class BreakerSwerveModule {
     private DeviceHealth overallHealth = DeviceHealth.NOMINAL;
     private String faults = null;
     private WPI_CANCoder turnEncoder;
+    /** constructs a new swerve drive module, this class is meant to sirve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class
+     * @param driveMotor - The TalonFX motor that moves the module's wheel linearly
+     * @param turnMotor - The TalonFX motor that actuates module's wheel angle and changes the direction it is faceing
+     * @param turnEncoder - The CTRE CANcoder magnetic encoder that the module uses to detirman wheel angle
+     * @param config - The BreakerSwerveDriveConfig object that holds all constants for yor drivetrain
+     */
     public BreakerSwerveModule(WPI_TalonFX driveMotor, WPI_TalonFX turnMotor, WPI_CANCoder turnEncoder, BreakerSwerveDriveConfig config) {
         this.config = config;
         this.turnMotor = turnMotor;

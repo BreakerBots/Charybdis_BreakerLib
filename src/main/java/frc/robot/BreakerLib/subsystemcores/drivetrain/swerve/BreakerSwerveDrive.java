@@ -72,7 +72,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
     move((forwardPercent * config.getMaxForwardVel()), (horizontalPercent * config.getMaxSidewaysVel()), (turnPercent * config.getMaxAngleVel()));
   }
 
-  /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the feild */
+  /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the field */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
     double gyroRad = Math.toRadians(pigeon2.getYaw());
     double newFwd = forwardVelMetersPerSec * Math.cos(gyroRad) + horizontalVelMetersPerSec * Math.sin(gyroRad);

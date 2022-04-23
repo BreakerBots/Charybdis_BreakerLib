@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.devices.vision;
+package frc.robot.BreakerLib.devices.vision.standardlimelight;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.BreakerLib.util.BreakerMath;
 
 /** Add your docs here. */
-public class LimelightTarget {
+public class BreakerLimelightTarget {
     private int pipelineNum;
     private double targetHeight;
     private BreakerLimelight limelight;
@@ -22,7 +22,7 @@ public class LimelightTarget {
      * @param limelight the limelight used to track the intended target (refers to the vision target being tracked)
      * @param pipelineNum the pipeline number (0 - 9) that the limelight needs to use to track the intended target
      */
-    public LimelightTarget(double targetHeight, BreakerLimelight limelight, double pipelineNum) {
+    public BreakerLimelightTarget(double targetHeight, BreakerLimelight limelight, double pipelineNum) {
       targetHeight = this.targetHeight;
       pipelineNum = this.pipelineNum;
       limelight = this.limelight;

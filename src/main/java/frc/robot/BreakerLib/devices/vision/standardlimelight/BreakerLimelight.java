@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.devices.vision;
+package frc.robot.BreakerLib.devices.vision.standardlimelight;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
@@ -12,7 +12,7 @@ public class BreakerLimelight implements BreakerGenaricDevice {
   private double mountingAngle;
   private double mountingHeight;
   private String limelightName;
-  private LimelightTarget currentTarget;
+  private BreakerLimelightTarget currentTarget;
   private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
   private String faults = null;
   /** Creates an new vision prossesing limelight
@@ -46,7 +46,7 @@ public class BreakerLimelight implements BreakerGenaricDevice {
     return limelightName;
   }
 
-  public void setTarget(LimelightTarget target) {
+  public void setTarget(BreakerLimelightTarget target) {
     if (currentTarget != target) {
       currentTarget = target;
       if (getPipeline() != target.getTargetPipeline()) {
@@ -94,7 +94,7 @@ public class BreakerLimelight implements BreakerGenaricDevice {
     return (getAllVisionData()[0] > 0);
   }
 
-  public LimelightTarget getCurrentTarget() {
+  public BreakerLimelightTarget getCurrentTarget() {
     return currentTarget;
   }
 
