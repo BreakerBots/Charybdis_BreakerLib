@@ -32,7 +32,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
     private PhotonTrackedTarget assignedTarget;
     private Supplier<PhotonTrackedTarget> assignedTargetSupplier;
     private boolean targetPreAssigned;
-    private boolean targetHasBeenAssigned;
+    private boolean assignedTargetFound;
     public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericDrivetrain drivetrain, Pose2d targetLocation, double targetHightInches, double maxTargetCordinateDeveationInches) {
         this.camera = camera;
         this.drivetrain = drivetrain;
@@ -40,17 +40,20 @@ public class BreakerPhotonTarget extends SubsystemBase {
         this.targetHightInches = targetHightInches;
         this.maxTargetCordinateDeveationInches = maxTargetCordinateDeveationInches;
         targetPreAssigned = false;
-        targetHasBeenAssigned = false;
+        assignedTargetFound = false;
     }
 
     public BreakerPhotonTarget(BreakerPhotonCamera camera, Supplier<PhotonTrackedTarget> assignedTargetSupplier, double targetHightInches) {
         this.camera = camera;
         this.assignedTargetSupplier = assignedTargetSupplier;
         assignedTarget = assignedTargetSupplier.get();
+        assignedTargetFound = (assignedTarget == null) ? false : true;
         this.targetHightInches = targetHightInches;
     }
 
     private void findAssignedTarget() {
+        int runs = 0;
+        boolean foundTgt = false;
         if (!targetPreAssigned && camera.getCameraHasTargets()) {
             for (PhotonTrackedTarget prospTgt: camera.getAllRawTrackedTargets()) {
                 double distanceMeters = PhotonUtils.calculateDistanceToTargetMeters(BreakerUnits.metersToInches(camera.getCameraHeightIns()), BreakerUnits.inchesToMeters(targetHightInches), Math.toRadians(camera.getCameraAngle()), Math.toRadians(prospTgt.getPitch()));
@@ -61,11 +64,18 @@ public class BreakerPhotonTarget extends SubsystemBase {
                 if (BreakerMath.getIsRoughlyEqualTo(prospTgtPose.getX(), targetLocation.getX(), BreakerUnits.inchesToMeters(maxTargetCordinateDeveationInches)) &&
                     BreakerMath.getIsRoughlyEqualTo(prospTgtPose.getY(), targetLocation.getY(), BreakerUnits.inchesToMeters(maxTargetCordinateDeveationInches))) {
                         assignedTarget = prospTgt;
-                        targetHasBeenAssigned = true;
+                        foundTgt = true;
                 }
+                runs ++;
+            }
+            if (runs >= camera.getNumberOfCameraTargets() && foundTgt == true) {
+                assignedTargetFound = true;
+            } else {
+                assignedTargetFound = false;
             }
         } else if (camera.getCameraHasTargets()) {
             assignedTarget = assignedTargetSupplier.get();
+            assignedTargetFound = (assignedTarget == null) ? false : true;
         }
     }
 
@@ -87,6 +97,10 @@ public class BreakerPhotonTarget extends SubsystemBase {
 
     public List<TargetCorner> getTargetCorners() {
         return assignedTarget.getCorners();
+    }
+
+    public boolean getAssignedTargetFound() {
+        return assignedTargetFound;
     }
 
     @Override

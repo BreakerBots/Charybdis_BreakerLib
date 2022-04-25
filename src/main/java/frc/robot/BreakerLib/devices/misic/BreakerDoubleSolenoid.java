@@ -54,4 +54,8 @@ public class BreakerDoubleSolenoid {
     public Value getState() {
         return solenoid.get();
     }
+
+    public void toggleState() {
+        solenoid.toggle();
+    }
 }

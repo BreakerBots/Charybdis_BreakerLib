@@ -7,6 +7,7 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoderFaults;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -29,13 +30,14 @@ public class BreakerSwerveModule {
     private DeviceHealth turnMotorHealth = DeviceHealth.NOMINAL;
     private DeviceHealth driveMotorHealth = DeviceHealth.NOMINAL;
     private DeviceHealth overallHealth = DeviceHealth.NOMINAL;
+    private DeviceHealth encoderHealth = DeviceHealth.NOMINAL;
     private String faults = null;
     private WPI_CANCoder turnEncoder;
     /** constructs a new swerve drive module, this class is meant to sirve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class
      * @param driveMotor - The TalonFX motor that moves the module's wheel linearly
      * @param turnMotor - The TalonFX motor that actuates module's wheel angle and changes the direction it is faceing
      * @param turnEncoder - The CTRE CANcoder magnetic encoder that the module uses to detirman wheel angle
-     * @param config - The BreakerSwerveDriveConfig object that holds all constants for yor drivetrain
+     * @param config - The BreakerSwerveDriveConfig object that holds all constants for your drivetrain
      */
     public BreakerSwerveModule(WPI_TalonFX driveMotor, WPI_TalonFX turnMotor, WPI_CANCoder turnEncoder, BreakerSwerveDriveConfig config) {
         this.config = config;
@@ -94,8 +96,10 @@ public class BreakerSwerveModule {
         faults = null;
         Faults curTurnFaults = new Faults();
         Faults curDriveFaults = new Faults();
+        CANCoderFaults curEncoderFaults = new CANCoderFaults();
         turnMotor.getFaults(curTurnFaults);
         driveMotor.getFaults(curDriveFaults);
+        turnEncoder.getFaults(curEncoderFaults);
         if (curDriveFaults.HardwareFailure) {
             driveMotorHealth = DeviceHealth.INOPERABLE;
             faults += " DRIVE_MOTOR_FAIL ";
@@ -105,7 +109,7 @@ public class BreakerSwerveModule {
             faults += " TURN_MOTOR_FAIL ";
         }
         if (curTurnFaults.HardwareFailure ^ curDriveFaults.HardwareFailure) {
-            overallHealth = DeviceHealth.FAULT;
+            overallHealth = (overallHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : overallHealth;
         } else if (curTurnFaults.HardwareFailure && curDriveFaults.HardwareFailure) {
             overallHealth = DeviceHealth.INOPERABLE;
         }
@@ -133,7 +137,17 @@ public class BreakerSwerveModule {
             faults += " DRIVE_SENSOR_OUT_OF_PHASE ";
             driveMotorHealth = (driveMotorHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : driveMotorHealth;
         }
-        if (!curDriveFaults.HardwareFailure && !curTurnFaults.HardwareFailure && !curTurnFaults.SupplyUnstable && !curDriveFaults.SupplyUnstable) {
+        if (curEncoderFaults.HardwareFault) {
+            faults += " ABSOLUTE_ENCODER_FAIL ";
+            overallHealth = (overallHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : overallHealth;
+            encoderHealth = DeviceHealth.INOPERABLE;
+        }
+        if (curEncoderFaults.MagnetTooWeak) {
+            faults += " ABSOLUET_ENCODER_WEAK_MAG ";
+            encoderHealth = (encoderHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : encoderHealth;
+            overallHealth = (overallHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : overallHealth;
+        }
+        if (!curDriveFaults.HardwareFailure && !curTurnFaults.HardwareFailure && !curTurnFaults.SupplyUnstable && !curDriveFaults.SupplyUnstable && !curEncoderFaults.MagnetTooWeak && !curEncoderFaults.HardwareFault) {
             faults = null;
             driveMotorHealth = DeviceHealth.NOMINAL;
             turnMotorHealth = DeviceHealth.NOMINAL;
@@ -141,13 +155,14 @@ public class BreakerSwerveModule {
         }
     }
 
-    /** returns the modules health as an array [0] = overall, [1] = drive motor, [2] = turn motor.
+    /** returns the modules health as an array [0] = overall, [1] = drive motor, [2] = turn motor, [3] = CANcoder
      */
     public DeviceHealth[] getModuleHealth() {
-        DeviceHealth[] healths = new DeviceHealth[3];
+        DeviceHealth[] healths = new DeviceHealth[4];
         healths[0] = overallHealth;
         healths[1] = driveMotorHealth;
         healths[2] = turnMotorHealth;
+        healths[3] = encoderHealth;
         return healths;
     }
 

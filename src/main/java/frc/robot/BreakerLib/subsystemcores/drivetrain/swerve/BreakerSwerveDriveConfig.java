@@ -31,7 +31,7 @@ public class BreakerSwerveDriveConfig {
     private double angVelTol;
 
     private SwerveDriveKinematics kinematics;
-    /** The overall configuration for a Breaker Swerve Drive, must be passed in. */
+    /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. */
     public BreakerSwerveDriveConfig(double maxForwardVel, double maxSidewaysVel, double maxAngVel, 
         double moduleAnglekP, double moduleAnglekI, double moduleAngleKd, double moduleVelkP,
         double moduleVelkI, double moduleVelKd, double driveMotorGearRatioToOne,

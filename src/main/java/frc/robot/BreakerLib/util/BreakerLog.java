@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.util.WPILibVersion;
 import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 
 /** Add your docs here. */
@@ -19,7 +20,14 @@ public class BreakerLog {
     }
 
     public static void logRobotStarted() {
-      DataLogManager.log("| ---- ROBOT STARTED ---- |");
+      StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n ");
+      work.append("TEAM: " + BreakerConfigHandler.getRobotInfo().path("teamNumber").asText() + " - " + BreakerConfigHandler.getRobotInfo().path("teamName").asText() + "\n");
+      work.append("ROBOT: " + BreakerConfigHandler.getRobotInfo().path("robotName").asText() + " - " + BreakerConfigHandler.getRobotInfo().path("year").asInt() + "\n");
+      work.append("BREAKERLIB: " + "V" + BreakerConfigHandler.getRobotInfo().path("breakerLibVersion").asText() + " | " + "ROBOT SOFTWARE: " + "V" + BreakerConfigHandler.getRobotInfo().path("softwareVersion").asText() + "\n");
+      work.append("AUTHORS: " + BreakerConfigHandler.getRobotInfo().path("authors").asText() + "\n");
+      work.append(" | ---------------------------------------------- | \n\n\n");
+      DataLogManager.log(work.toString());
+      System.out.println(work.toString());
       BreakerRoboRio.setCurrentRobotMode(RobotMode.DISABLED);
     }
 

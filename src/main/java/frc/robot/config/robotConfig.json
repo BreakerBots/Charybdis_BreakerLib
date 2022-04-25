@@ -1,0 +1,43 @@
+{
+    "robotInfo": [{
+        "robotName": "Charybdis",
+        "teamName": "BreakerBots",
+        "teamNumber": "5104",
+        "softwareVersion": "3.0",
+        "breakerLibVersion": "1.1",
+        "year": "2022",
+        "authors": "Roman Abrahamson, Yousif Alkhalaf, and Michael Schimpf"
+    }],
+
+    "drivetrain": [{
+        "drivetrainType": "differential",
+            
+        "diffConstants": [{
+            "encoderTicksPerMotorRotation": 2048,
+            "gearRatioToOne": 8.49,
+            "wheelDiameter": 3.83,
+            "feedForwardKs": 0.0,
+            "feedForwardKv": 0.0,
+            "feedForwardKa": 0.0,
+            "trackWidthInches": 24.0,
+            "ramseteKp": 0.0,
+            "ramseteKi": 0.0,
+            "ramseteKd": 0.0,
+            "linearSlowModeMultiplyer": 0.5,
+            "turnSlowModeMultiplyer": 0.5
+            }],
+
+        "swerveConstants": [{
+            "maxforwardVelocity": 0.0,
+            "maxHorizontalVelocity": 0.0
+            }]
+    }],
+
+    "flywheel": [{
+        "Kp": 0.0,
+        "Ki": 0.0,
+        "Kd": 0.0
+    }]
+
+
+}

@@ -4,15 +4,20 @@
 
 package frc.robot.BreakerLib.auto.trajectory.swerve;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
-public class BreakerFollowSwerveTrajectory extends CommandBase {
+public class BreakerFollowSwerveTrajectory extends CommandBase implements BreakerGenericTrajecotryFollower {
     private SwerveControllerCommand controller;
     private BreakerFollowSwerveTrajectoryConfig config;
     private BreakerSwerveDrive drivetrain;
@@ -78,5 +83,54 @@ public class BreakerFollowSwerveTrajectory extends CommandBase {
     @Override
     public boolean isFinished() {
         return commandIsFinished || (currentTrajectory > trajectorysToFollow.length);
+    }
+
+    @Override
+    public Trajectory getCurrentTrajectory() {
+        return trajectorysToFollow[currentTrajectory];
+    }
+
+    @Override
+    public Trajectory[] getAllTrajectorys() {
+        return trajectorysToFollow;
+    }
+
+    @Override
+    public double getTotalPathTimeSeconds() {
+        return totalTimeSeconds;
+    }
+
+    @Override
+    public double getCurrentPathTimeSeconds() {
+        return (currentTimeCycles / 50);
+    }
+
+    @Override
+    public boolean getPathStopsAtEnd() {
+        return stopAtEnd;
+    }
+
+    @Override
+    public List<State> getAllStates() {
+        List<State> allStates = new ArrayList<State>();
+        for (Trajectory sampTreject: trajectorysToFollow) {
+            for (State sampState: sampTreject.getStates()) {
+                allStates.add(sampState);
+            }
+        }
+        return allStates;
+    }
+
+    private double getOnlyCurrentPathTime() {
+        double time = 0;
+        for (int i = 0; i < currentTrajectory; i++) {
+            time += trajectorysToFollow[i].getTotalTimeSeconds();
+        }
+        return (getCurrentPathTimeSeconds() - time);
+    }
+
+    @Override
+    public State getCurrentState() {
+        return trajectorysToFollow[currentTrajectory].sample(getCurrentPathTimeSeconds() - getOnlyCurrentPathTime());
     }
 }

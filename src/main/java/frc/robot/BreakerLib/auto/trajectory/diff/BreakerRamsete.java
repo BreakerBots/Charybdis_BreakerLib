@@ -4,30 +4,38 @@
 
 package frc.robot.BreakerLib.auto.trajectory.diff;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-
+import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
-public class BreakerRamsete extends CommandBase{
+public class BreakerRamsete extends CommandBase implements BreakerGenericTrajecotryFollower{
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
     private TrajectoryConfig config;
     private DifferentialDriveVoltageConstraint voltageConstraints;
     private double currentTimeCycles = 0;
-    public double totalTimeSeconds = 0;
+    private double totalTimeSeconds = 0;
+    private boolean stopAtEnd;
+    private Trajectory trajectoryToFollow;
     public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, 
-    Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage){
+    Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage, boolean stopAtEnd){
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds());
-        drivetrain = this.drivetrain;
+        this.drivetrain = drivetrain;
+        this.trajectoryToFollow = trajectoryToFollow;
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), maxVoltage);
         config = new TrajectoryConfig(maxVel, maxAccel);
             config.setKinematics(drivetrain.getKinematics());
@@ -37,6 +45,7 @@ public class BreakerRamsete extends CommandBase{
         drivetrain.getKinematics(), drivetrain :: getWheelSpeeds, drivetrain.getLeftPIDController(), drivetrain.getRightPIDController(), drivetrain :: tankMoveVoltage, subsystemRequirements);
         ramsete.schedule();
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
+        this.stopAtEnd = stopAtEnd;
     }
 
     @Override
@@ -44,21 +53,53 @@ public class BreakerRamsete extends CommandBase{
         currentTimeCycles ++;
     }
 
-    public double getCurrentTimeSeconds() {
-        return (currentTimeCycles / 50);
-    }
-
-    public double getTotalTimeSeconds() {
-        return totalTimeSeconds;
-    }
-
     @Override
     public void end(boolean interrupted) {
+        if (stopAtEnd) {
+            drivetrain.arcadeDrive(0, 0);
+        }
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has ended");
     }
 
     @Override
     public boolean isFinished() {
         return ramsete.isFinished();
+    }
+
+    @Override
+    public Trajectory getCurrentTrajectory() {
+        return trajectoryToFollow;
+    }
+
+    @Override
+    public Trajectory[] getAllTrajectorys() {
+        Trajectory[] traject = new Trajectory[1];
+        traject[0] = trajectoryToFollow;
+        return traject;
+    }
+
+    @Override
+    public double getTotalPathTimeSeconds() {
+        return totalTimeSeconds;
+    }
+
+    @Override
+    public double getCurrentPathTimeSeconds() {
+        return (currentTimeCycles / 50);
+    }
+
+    @Override
+    public boolean getPathStopsAtEnd() {
+        return stopAtEnd;
+    }
+
+    @Override
+    public List<State> getAllStates() {
+        return trajectoryToFollow.getStates();
+    }
+
+    @Override
+    public State getCurrentState() {
+        return trajectoryToFollow.sample(getCurrentPathTimeSeconds());
     }
 }
