@@ -91,6 +91,5 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     hoperLogicLoop();
-    System.out.println(topSlotIsFull() + " " + bottomSlotIsFull() + " b: " + ballInTrasit);
   }
 }

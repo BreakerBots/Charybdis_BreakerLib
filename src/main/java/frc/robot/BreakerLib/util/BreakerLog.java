@@ -4,8 +4,16 @@
 
 package frc.robot.BreakerLib.util;
 
+import java.io.BufferedReader;
+import java.math.BigInteger;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.util.WPILibVersion;
@@ -13,6 +21,10 @@ import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 
 /** Add your docs here. */
 public class BreakerLog {
+
+      private static BufferedReader reader;
+      private static ObjectMapper mapper;
+      private static JsonNode parser;
     
     public static void startLog(boolean autologNetworkTables) {
         DataLogManager.logNetworkTables(autologNetworkTables);
@@ -20,15 +32,22 @@ public class BreakerLog {
     }
 
     public static void logRobotStarted() {
-      StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n ");
-      work.append("TEAM: " + BreakerConfigHandler.getRobotInfo().path("teamNumber").asText() + " - " + BreakerConfigHandler.getRobotInfo().path("teamName").asText() + "\n");
-      work.append("ROBOT: " + BreakerConfigHandler.getRobotInfo().path("robotName").asText() + " - " + BreakerConfigHandler.getRobotInfo().path("year").asInt() + "\n");
-      work.append("BREAKERLIB: " + "V" + BreakerConfigHandler.getRobotInfo().path("breakerLibVersion").asText() + " | " + "ROBOT SOFTWARE: " + "V" + BreakerConfigHandler.getRobotInfo().path("softwareVersion").asText() + "\n");
-      work.append("AUTHORS: " + BreakerConfigHandler.getRobotInfo().path("authors").asText() + "\n");
-      work.append(" | ---------------------------------------------- | \n\n\n");
-      DataLogManager.log(work.toString());
-      System.out.println(work.toString());
-      BreakerRoboRio.setCurrentRobotMode(RobotMode.DISABLED);
+      try {
+        reader = Files.newBufferedReader(Paths.get("src/main/java/frc/robot/config/robotConfig.json"));
+        mapper = new ObjectMapper();
+        parser = mapper.readTree(reader);
+        StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n ");
+        work.append(" TEAM: " + parser.path("robotInfo").path("teamNumber").textValue() + " - " + parser.path("robotInfo").path("teamName").asText() + "\n");
+        work.append(" ROBOT: " + parser.path("robotInfo").path("robotName").asText() + " - " + parser.path("robotInfo").path("year").asInt() + "\n");
+        work.append(" BREAKERLIB: " + "V" + parser.path("robotInfo").path("breakerLibVersion").asText() + " | " + "ROBOT SOFTWARE: " + "V" + parser.path("robotInfo").path("softwareVersion").asText() + "\n");
+        work.append(" AUTHORS: " + parser.path("robotInfo").path("authors").asText() + "\n\n");
+        work.append(" | ---------------------------------------------- | \n\n\n");
+        BreakerLog.log(work.toString());
+        BreakerRoboRio.setCurrentRobotMode(RobotMode.DISABLED);
+      } catch (Exception e) {
+        BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e);
+      }
+      
     }
 
     public static void logRobotChangedMode(RobotMode newMode) {

@@ -1,0 +1,17 @@
+{
+"configType": "differentialDrivetrain",
+"constants": {
+    "encoderTicksPerMotorRotation": 2048,
+    "gearRatioToOne": 8.49,
+    "wheelDiameter": 3.83,
+    "feedForwardKs": 0.0,
+    "feedForwardKv": 0.0,
+    "feedForwardKa": 0.0,
+    "trackWidthInches": 24.0,
+    "ramseteKp": 0.0,
+    "ramseteKi": 0.0,
+    "ramseteKd": 0.0,
+    "linearSlowModeMultiplyer": 0.5,
+    "turnSlowModeMultiplyer": 0.5
+    }
+}
