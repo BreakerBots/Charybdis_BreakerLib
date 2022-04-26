@@ -4,10 +4,14 @@
 
 package frc.robot.BreakerLib.subsystemcores.drivetrain.differential;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.BreakerMath;
 import frc.robot.BreakerLib.util.BreakerUnits;
+import frc.robot.BreakerLib.util.robotconfiguration.BreakerConfigManager;
 
 /** Add your docs here. */
 public class BreakerDiffDriveConfig {
@@ -26,16 +30,11 @@ public class BreakerDiffDriveConfig {
     private double slowModeTurnMultiplier = 1;
     private PIDController leftPID; 
     private PIDController rightPID;
-
+    /** Maunaly creates a new config and bypasses the automatic json config assigner */
     public BreakerDiffDriveConfig(double ticksPerEncoderRotation, double gearRatioTo1, double wheelDiameter, 
         double feedForwardKs, double feedForwardKv, double feedForwardKa, double robotTrackWidthInches, PIDController leftPID, PIDController rightPID) {
-        
-        kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
-     
-        wheelDiameter = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
-        ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
-        getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
-
+       
+        this.wheelDiameter = wheelDiameter;
         this.ticksPerEncoderRotation = ticksPerEncoderRotation;
         this.gearRatioTo1 = gearRatioTo1;
         this.feedForwardKs = feedForwardKs;
@@ -44,6 +43,37 @@ public class BreakerDiffDriveConfig {
         this.robotTrackWidthInches = robotTrackWidthInches;
         this.leftPID = leftPID;
         this.rightPID = rightPID;
+            
+        kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
+     
+        wheelCircumference = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
+        ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
+        getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
+    }
+
+    public BreakerDiffDriveConfig() {
+        try {
+            JsonNode thisconfig = BreakerConfigManager.getConfig("differentialDrivetrain");
+            this.wheelDiameter = thisconfig.path("wheelDiameter").asDouble();
+            this.ticksPerEncoderRotation = thisconfig.path("encoderTicksPerMotorRotation").asDouble();
+            this.gearRatioTo1 = thisconfig.path("gearRatioToOne").asDouble();
+            this.feedForwardKs = thisconfig.path("feedForwardKs").asDouble();
+            this.feedForwardKv = thisconfig.path("feedForwardKv").asDouble();
+            this.feedForwardKa = thisconfig.path("feedForwardKa").asDouble();
+            this.robotTrackWidthInches = thisconfig.path("trackWidthInches").asDouble();
+            this.leftPID = new PIDController(thisconfig.path("ramseteKp").asDouble(), thisconfig.path("ramseteKi").asDouble(), thisconfig.path("ramseteKd").asDouble());
+            this.rightPID = new PIDController(thisconfig.path("ramseteKp").asDouble(), thisconfig.path("ramseteKi").asDouble(), thisconfig.path("ramseteKd").asDouble());
+
+
+            kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
+     
+            wheelCircumference = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
+            ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
+            getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
+
+        } catch (Exception e) {
+           BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e);
+        }
     }
 
     public void setSlowModeMultipliers(double forwardMult, double turnMult) {

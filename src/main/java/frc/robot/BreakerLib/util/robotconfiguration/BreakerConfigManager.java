@@ -18,8 +18,8 @@ import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
 public class BreakerConfigManager {
-    private List<JsonNode> configs;
-    public void addConfig(String configFilePath) {
+    private static List<JsonNode> configs;
+    public static void addConfig(String configFilePath) {
         try {
             BufferedReader reader = Files.newBufferedReader(Paths.get(configFilePath));
             ObjectMapper mapper = new ObjectMapper();
@@ -29,7 +29,7 @@ public class BreakerConfigManager {
         }
     }
 
-    public JsonNode getConfig(String configType) throws Exception{
+    public static JsonNode getConfig(String configType) throws Exception{
         for (JsonNode conf: configs) {
             if (conf.path("configType").asText() == configType) {
                 return conf;

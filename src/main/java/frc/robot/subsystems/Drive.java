@@ -14,6 +14,7 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDriveConfig;
 import frc.robot.BreakerLib.util.BreakerMotorControl;
+import frc.robot.BreakerLib.util.robotconfiguration.BreakerConfigManager;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive. */
@@ -44,13 +45,9 @@ public class Drive extends SubsystemBase {
 
     leftMotors = BreakerMotorControl.createMotorArray(left1, left2, left3);
     rightMotors = BreakerMotorControl.createMotorArray(right1, right2, right3);
-
-    leftSideRamsetePID = new PIDController(0, 0, 0);
-    rightSideRamsetePID = new PIDController(0, 0, 0);
     
-    driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO, Constants.DRIVE_COLSON_DIAMETER,
-      0, 0, 0, 24.0, leftSideRamsetePID, rightSideRamsetePID);
-      driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER, Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
+    BreakerConfigManager.addConfig("src/main/java/frc/robot/config/drivetrainConfig.json");
+    driveConfig = new BreakerDiffDriveConfig();
 
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
   }
