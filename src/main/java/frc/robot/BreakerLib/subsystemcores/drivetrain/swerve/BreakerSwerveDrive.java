@@ -17,7 +17,7 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGenaricDevice {
   private BreakerSwerveDriveConfig config;
-  // [0] = frontLeft, [1] = frontRight, [2] = backLeft, [3] = backRight
+  /** [0] = frontLeft, [1] = frontRight, [2] = backLeft, [3] = backRight */
   private SwerveModuleState[] targetModuleStates;
   SwerveModuleState[] currentModuleStates;
 

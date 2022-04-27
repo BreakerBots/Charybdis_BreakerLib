@@ -36,7 +36,7 @@ public class BreakerLog {
         reader = Files.newBufferedReader(Paths.get("src/main/java/frc/robot/config/robotConfig.json"));
         mapper = new ObjectMapper();
         parser = mapper.readTree(reader);
-        StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n ");
+        StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n");
         work.append(" TEAM: " + parser.path("robotInfo").path("teamNumber").textValue() + " - " + parser.path("robotInfo").path("teamName").asText() + "\n");
         work.append(" ROBOT: " + parser.path("robotInfo").path("robotName").asText() + " - " + parser.path("robotInfo").path("year").asInt() + "\n");
         work.append(" BREAKERLIB: " + "V" + parser.path("robotInfo").path("breakerLibVersion").asText() + " | " + "ROBOT SOFTWARE: " + "V" + parser.path("robotInfo").path("softwareVersion").asText() + "\n");

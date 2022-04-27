@@ -7,8 +7,10 @@ package frc.robot.BreakerLib.auto.trajectory.diff;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -42,6 +44,23 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
             config.addConstraint(voltageConstraints);
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
         ramsete = new RamseteCommand(trajectoryToFollow, drivetrain :: getOdometryPoseMeters, ramseteController, drivetrain.getFeedforward(), 
+        drivetrain.getKinematics(), drivetrain :: getWheelSpeeds, drivetrain.getLeftPIDController(), drivetrain.getRightPIDController(), drivetrain :: tankMoveVoltage, subsystemRequirements);
+        ramsete.schedule();
+        totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
+        this.stopAtEnd = stopAtEnd;
+    }
+
+    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, Supplier<Pose2d> currentPoseSupplyer,
+    Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage, boolean stopAtEnd){
+        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds());
+        this.drivetrain = drivetrain;
+        this.trajectoryToFollow = trajectoryToFollow;
+        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), maxVoltage);
+        config = new TrajectoryConfig(maxVel, maxAccel);
+            config.setKinematics(drivetrain.getKinematics());
+            config.addConstraint(voltageConstraints);
+        ramseteController = new RamseteController(ramseteB, ramseteZeta);
+        ramsete = new RamseteCommand(trajectoryToFollow, currentPoseSupplyer, ramseteController, drivetrain.getFeedforward(), 
         drivetrain.getKinematics(), drivetrain :: getWheelSpeeds, drivetrain.getLeftPIDController(), drivetrain.getRightPIDController(), drivetrain :: tankMoveVoltage, subsystemRequirements);
         ramsete.schedule();
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();

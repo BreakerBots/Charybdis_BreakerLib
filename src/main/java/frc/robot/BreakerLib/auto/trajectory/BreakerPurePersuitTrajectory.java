@@ -45,7 +45,7 @@ public class BreakerPurePersuitTrajectory extends Trajectory{
         config = newConfig;
     }
 
-    public Trajectory calculate(Pose2d currentPosition, Pose2d newTarget) {
+    public Trajectory generate(Pose2d currentPosition, Pose2d newTarget) {
         List<Translation2d> regardedWaypoints = new ArrayList<Translation2d>();
         for (Translation2d wayPt: waypoints) {
             if (wayPt.getDistance(getPoseAsTranslation(currentPosition)) <= waypointIgnoreThreshold) {
@@ -62,7 +62,7 @@ public class BreakerPurePersuitTrajectory extends Trajectory{
         return currentTrajectory;
     }
 
-    public Trajectory calculate(Pose2d currentPosition, Pose2d newTarget, Translation2d... newWaypoints) {
+    public Trajectory generate(Pose2d currentPosition, Pose2d newTarget, Translation2d... newWaypoints) {
         List<Translation2d> waypts = new ArrayList<Translation2d>();
         for (Translation2d waypt: newWaypoints) {
         waypts.add(waypt);
@@ -73,7 +73,7 @@ public class BreakerPurePersuitTrajectory extends Trajectory{
         }
         waypoints = newWaypoints;
         lastUpdateTimeSeconds = getCurrentPathTimeSeconds();
-        currentTrajectory =  TrajectoryGenerator.generateTrajectory(currentPosition, waypts, newTarget, config);
+        currentTrajectory = TrajectoryGenerator.generateTrajectory(currentPosition, waypts, newTarget, config);
         return currentTrajectory;
     }
 
