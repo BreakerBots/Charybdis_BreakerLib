@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.util.WPILibVersion;
 import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 
@@ -33,7 +34,7 @@ public class BreakerLog {
 
     public static void logRobotStarted() {
       try {
-        reader = Files.newBufferedReader(Paths.get("src/main/java/frc/robot/config/robotConfig.json"));
+        reader = Files.newBufferedReader(Paths.get(Filesystem.getDeployDirectory() + "/robotConfig.json"));
         mapper = new ObjectMapper();
         parser = mapper.readTree(reader);
         StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n");

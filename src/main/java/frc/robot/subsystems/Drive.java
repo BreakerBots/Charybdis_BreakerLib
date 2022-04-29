@@ -38,7 +38,7 @@ public class Drive extends SubsystemBase {
 
     left1 = new WPI_TalonFX(Constants.L1_ID);
     left2 = new WPI_TalonFX(Constants.L2_ID);
-    left3 = new WPI_TalonFX(Constants.L2_ID);
+    left3 = new WPI_TalonFX(Constants.L3_ID);
     right1 = new WPI_TalonFX(Constants.R1_ID);
     right2 = new WPI_TalonFX(Constants.R2_ID);
     right3 = new WPI_TalonFX(Constants.R3_ID);
@@ -46,7 +46,7 @@ public class Drive extends SubsystemBase {
     leftMotors = BreakerMotorControl.createMotorArray(left1, left2, left3);
     rightMotors = BreakerMotorControl.createMotorArray(right1, right2, right3);
     
-    BreakerConfigManager.addConfig("src/main/java/frc/robot/config/drivetrainConfig.json");
+    BreakerConfigManager.addConfig("drivetrainConfig.json");
     driveConfig = new BreakerDiffDriveConfig();
 
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);

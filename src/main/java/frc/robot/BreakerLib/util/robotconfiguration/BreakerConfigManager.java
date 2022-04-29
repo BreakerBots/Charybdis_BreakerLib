@@ -13,19 +13,21 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 
 /** Add your docs here. */
 public class BreakerConfigManager {
     private static List<JsonNode> configs;
-    public static void addConfig(String configFilePath) {
+    public static void addConfig(String configFileName) {
         try {
+            String configFilePath = Filesystem.getDeployDirectory() + "/" + configFileName;
             BufferedReader reader = Files.newBufferedReader(Paths.get(configFilePath));
             ObjectMapper mapper = new ObjectMapper();
             configs.add(mapper.readTree(reader)); 
         } catch (Exception e) {
-            BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e);
+            BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e + "\n" + "FILENAME: " + configFileName);
         }
     }
 
