@@ -51,38 +51,38 @@ public class BreakerDiffDriveConfig {
         getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
     }
 
-    public BreakerDiffDriveConfig() {
-        try {
-            JsonNode thisconfig = (BreakerConfigManager.getConfig("differentialDrivetrain").path("constants"));
-            this.wheelDiameter = thisconfig.path("wheelDiameter").asDouble();
-            this.ticksPerEncoderRotation = thisconfig.path("encoderTicksPerMotorRotation").asDouble();
-            System.out.println("a");
-            this.gearRatioTo1 = thisconfig.path("gearRatioToOne").asDouble();
-            System.out.println("a");
-            this.feedForwardKs = thisconfig.path("feedForwardKs").asDouble();
-            System.out.println("a");
-            this.feedForwardKv = thisconfig.path("feedForwardKv").asDouble();
-            System.out.println("a");
-            this.feedForwardKa = thisconfig.path("feedForwardKa").asDouble();
-            System.out.println("a");
-            this.robotTrackWidthInches = thisconfig.path("trackWidthInches").asDouble();
-            System.out.println("a");
-            this.leftPID = new PIDController(thisconfig.path("ramseteKp").asDouble(), thisconfig.path("ramseteKi").asDouble(), thisconfig.path("ramseteKd").asDouble());
-            System.out.println("a");
-            this.rightPID = new PIDController(thisconfig.path("ramseteKp").asDouble(), thisconfig.path("ramseteKi").asDouble(), thisconfig.path("ramseteKd").asDouble());
-            System.out.println("a");
+    // public BreakerDiffDriveConfig() {
+    //     try {
+    //         JsonNode thisconfig = (BreakerConfigManager.getConfig("differentialDrivetrain").path("constants"));
+    //         this.wheelDiameter = thisconfig.path("wheelDiameter").asDouble();
+    //         this.ticksPerEncoderRotation = thisconfig.path("encoderTicksPerMotorRotation").asDouble();
+    //         System.out.println("a");
+    //         this.gearRatioTo1 = thisconfig.path("gearRatioToOne").asDouble();
+    //         System.out.println("a");
+    //         this.feedForwardKs = thisconfig.path("feedForwardKs").asDouble();
+    //         System.out.println("a");
+    //         this.feedForwardKv = thisconfig.path("feedForwardKv").asDouble();
+    //         System.out.println("a");
+    //         this.feedForwardKa = thisconfig.path("feedForwardKa").asDouble();
+    //         System.out.println("a");
+    //         this.robotTrackWidthInches = thisconfig.path("trackWidthInches").asDouble();
+    //         System.out.println("a");
+    //         this.leftPID = new PIDController(thisconfig.path("ramseteKp").asDouble(), thisconfig.path("ramseteKi").asDouble(), thisconfig.path("ramseteKd").asDouble());
+    //         System.out.println("a");
+    //         this.rightPID = new PIDController(thisconfig.path("ramseteKp").asDouble(), thisconfig.path("ramseteKi").asDouble(), thisconfig.path("ramseteKd").asDouble());
+    //         System.out.println("a");
 
-            kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
-            System.out.println("a");
+    //         kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
+    //         System.out.println("a");
      
-            wheelCircumference = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
-            ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
-            getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
+    //         wheelCircumference = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
+    //         ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
+    //         getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);
 
-        } catch (Exception e) {
-           BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e);
-        }
-    }
+    //     } catch (Exception e) {
+    //        BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e);
+    //     }
+    // }
 
     public void setSlowModeMultipliers(double forwardMult, double turnMult) {
         slowModeForwardMultiplier = forwardMult;

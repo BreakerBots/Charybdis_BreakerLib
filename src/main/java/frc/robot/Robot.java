@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    BreakerLog.logRobotStarted();
+    BreakerLog.logRobotStarted(5104, "BreakerBots", "Charybdis", 2022, "V3.2", "Roman Abrahamson, and Yousif Alkhalaf");
   }
 
   /**
@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     BreakerLog.logRobotChangedMode(RobotMode.DISABLED);
+    m_robotContainer.setDriveBreakMode(false);
   }
 
   @Override
@@ -69,6 +70,7 @@ public class Robot extends TimedRobot {
     }
 
     BreakerLog.logRobotChangedMode(RobotMode.AUTONOMOUS);
+    m_robotContainer.setDriveBreakMode(true);
   }
 
   /** This function is called periodically during autonomous. */
@@ -86,6 +88,7 @@ public class Robot extends TimedRobot {
     }
 
     BreakerLog.logRobotChangedMode(RobotMode.TELEOP);
+    m_robotContainer.setDriveBreakMode(true);
   }
 
   /** This function is called periodically during operator control. */
@@ -97,6 +100,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     BreakerLog.logRobotChangedMode(RobotMode.TEST);
+    m_robotContainer.setDriveBreakMode(true);
   }
 
   /** This function is called periodically during test mode. */

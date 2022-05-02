@@ -47,7 +47,7 @@ public class SelfTest extends SubsystemBase {
       work.append(" SELF CHECK FAILED - FAULTS FOUND: \n");
       lastCheckPassed = false;
       for (BreakerGenaricDevice faultDiv: faultDevices) {
-        work.append(" " + faultDiv.getDeviceName() + "-" + faultDiv.getFaults() + " ");
+        work.append(" | " + faultDiv.getDeviceName() + "-" + faultDiv.getFaults() + " | ");
       }
     } else {
       work.append(" SELF CHECK PASSED ");

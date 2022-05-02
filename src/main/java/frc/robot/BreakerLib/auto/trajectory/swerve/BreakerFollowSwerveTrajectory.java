@@ -24,7 +24,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     private Subsystem requiredSubsystem;
     private Trajectory[] trajectorysToFollow;
     private int currentTrajectory = 0;
-    private int prevTrajectory = 0;
+    private int prevTrajectory = -1;
     private double totalTimeSeconds = 0;
     private boolean commandIsFinished = false;
     private boolean stopAtEnd = false;
@@ -53,7 +53,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
                 controller = new SwerveControllerCommand(trajectorysToFollow[currentTrajectory], drivetrain::getOdometryPoseMeters, 
                     drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(), config.gettAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
                 controller.schedule();
-                BreakerLog.logBreakerLibEvent("BreakerSwerveTrajectoryAuto command instance has swiched to a new trajecotry");
+                BreakerLog.logBreakerLibEvent("BreakerSwerveTrajectoryAuto command instance has swiched to a new trajecotry (T-STATS: " + trajectorysToFollow[currentTrajectory].toString() + " )(T-NUM: " + currentTrajectory + " of " + trajectorysToFollow.length + " )");
             } catch (Exception e) {
                 commandIsFinished = true;
             }

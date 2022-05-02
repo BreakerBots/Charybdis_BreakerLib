@@ -24,6 +24,13 @@ public final class Constants {
         public static final int R1_ID = 14;
         public static final int R2_ID = 15;
         public static final int R3_ID = 16;
+    // Drive FeedForward / Feedback constants
+        public static final double DRIVE_FF_KS = 0.5888;
+        public static final double DRIVE_FF_KV = 8.9464;
+        public static final double DRIVE_FF_KA = 0.76533;
+        public static final double DRIVE_RS_PID_KP = 10.681;
+        public static final double DRIVE_RS_PID_KI = 0.0;
+        public static final double DRIVE_RS_PID_KD = 0.0;
 
     // Misic drive constants
         /** Gear ratio for drivetrain (rotation of motors to rotation of wheel) (assume (value) to 1) */
@@ -32,6 +39,7 @@ public final class Constants {
         public static final double DRIVE_COLSON_DIAMETER = 3.83;
         public static final double DRIVE_SLOW_MODE_FWD_MULTIPLIER = 0.5;
         public static final double DRIVE_SLOW_MODE_TURN_MULTIPLIER = 0.5;
+        public static final double DRIVE_TRACK_WIDTH = 24.0;
 
     // Intake constants
         /** CAN ID of the left indexer motor */

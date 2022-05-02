@@ -6,6 +6,8 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain.differential;
 
 import java.io.ObjectInputFilter.Config;
 
+import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -40,6 +42,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   private DifferentialDriveOdometry driveOdometer;
 
   private String deviceName = "Differential_Drivetrain";
+  private String faults = null;
+  private boolean hasFault = false;
 
   private boolean isInSlowMode;
   
@@ -162,6 +166,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
 
   @Override
   public void setOdometry(Pose2d poseMeters, double gyroAngle) {
+    resetDriveEncoders();
     driveOdometer.resetPosition(poseMeters, Rotation2d.fromDegrees(gyroAngle));
   }
 
@@ -172,7 +177,6 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
 
   @Override
   public void updateOdometry() {
-    resetDriveEncoders();
     driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(), getRightDriveMeters());
   }
 
@@ -192,31 +196,48 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
 
   @Override
   public void runSelfTest() {
-    
+    faults = null;
+    hasFault = false;
+    StringBuilder work = new StringBuilder();
+    for (WPI_TalonFX motorL: leftMotors) {
+      Faults motorFaults = new Faults();
+      motorL.getFaults(motorFaults);
+      if (motorFaults.hasAnyFault()) {
+        hasFault = true;
+        work.append(" MOTOR ID (" + motorL.getDeviceID() + ") FAULTS: ");
+        work.append(BreakerMotorControl.getMotorFaultsAsString(motorFaults));
+      }
+    }
+    for (WPI_TalonFX motorR: rightMotors) {
+      Faults motorFaults = new Faults();
+      motorR.getFaults(motorFaults);
+      if (motorFaults.hasAnyFault()) {
+        hasFault = true;
+        work.append(" MOTOR ID (" + motorR.getDeviceID() + ") FAULTS: ");
+        work.append(BreakerMotorControl.getMotorFaultsAsString(motorFaults));
+      }
+    }
+    faults = work.toString();
   }
 
   @Override
   public DeviceHealth getHealth() {
-    // TODO Auto-generated method stub
-    return DeviceHealth.NOMINAL;
+    return hasFault ? DeviceHealth.FAULT : DeviceHealth.NOMINAL;
   }
 
   @Override
   public String getFaults() {
-    // TODO Auto-generated method stub
-    return null;
+    return faults;
   }
 
   @Override
   public String getDeviceName() {
-    // TODO Auto-generated method stub
     return deviceName;
   }
 
   @Override
   public boolean hasFault() {
-    // TODO Auto-generated method stub
-    return false;
+    return hasFault;
   }
 
   @Override

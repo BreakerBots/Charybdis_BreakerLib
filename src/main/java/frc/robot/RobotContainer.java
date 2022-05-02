@@ -41,6 +41,10 @@ public class RobotContainer {
     controllerSys.getdPadRight().whenPressed(new ToggleSlowMode(drivetrainSys.getBaseDrivetrain()));
   }
 
+  public void setDriveBreakMode(Boolean isEnebled) {
+    drivetrainSys.getBaseDrivetrain().setDrivetrainBrakeMode(isEnebled);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

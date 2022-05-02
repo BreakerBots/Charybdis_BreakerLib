@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.util;
 
+import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -18,5 +19,57 @@ public class BreakerMotorControl {
 
     public static WPI_TalonFX[] createMotorArray(WPI_TalonFX... controllers){
         return controllers;
-      }
+    }
+
+    public static String getMotorFaultsAsString(Faults motorFaults) {
+        StringBuilder work = new StringBuilder();
+        if (motorFaults.hasAnyFault()) {
+          int field = motorFaults.toBitfield();
+          int fieldMask = 1;
+          for (int fieldPlace = 0; fieldPlace <= 13; fieldPlace++) {
+            if ((field & fieldMask) != 0){
+              switch (fieldPlace) {
+                case 0:
+                  work.append(" device_under_6.5v ");
+                  break;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                  work.append(" device_limit_switch_hit ");
+                  break;
+                case 5:
+                  work.append(" hardware_failure ");
+                  break;
+                case 6:
+                case 9:
+                  work.append(" device_activated_or_reset_while_robot_on ");
+                  break;
+                case 7:
+                  work.append(" sensor_overflow ");
+                  break;
+                case 8: 
+                  work.append(" sensor_out_of_phase ");
+                  break;
+                case 10:
+                  work.append(" remote_sensor_not_detected ");
+                  break;
+                case 11:
+                  work.append(" API_or_firmware_error ");
+                  break;
+                case 12:
+                  work.append(" supply_voltage_above_rated_max ");
+                  break;
+                case 13:
+                  work.append(" unstable_supply_voltage ");
+                  break;
+                }
+            }
+            fieldMask <<= 1;
+          }
+        } else {
+            work.append(" none ");
+        }
+        return work.toString();
+    }
 }

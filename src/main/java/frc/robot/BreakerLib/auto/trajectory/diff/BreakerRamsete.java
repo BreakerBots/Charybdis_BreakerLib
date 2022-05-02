@@ -35,7 +35,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private Trajectory trajectoryToFollow;
     public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, 
     Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage, boolean stopAtEnd){
-        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds());
+        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " +  trajectoryToFollow.toString() + " )");
         this.drivetrain = drivetrain;
         this.trajectoryToFollow = trajectoryToFollow;
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), maxVoltage);
@@ -52,7 +52,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
     public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, Supplier<Pose2d> currentPoseSupplyer,
     Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage, boolean stopAtEnd){
-        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds());
+        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " +  trajectoryToFollow.toString() + " )");
         this.drivetrain = drivetrain;
         this.trajectoryToFollow = trajectoryToFollow;
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), maxVoltage);

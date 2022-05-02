@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
@@ -46,10 +49,15 @@ public class Drive extends SubsystemBase {
     leftMotors = BreakerMotorControl.createMotorArray(left1, left2, left3);
     rightMotors = BreakerMotorControl.createMotorArray(right1, right2, right3);
     
-    BreakerConfigManager.addConfig("drivetrainConfig.json");
-    driveConfig = new BreakerDiffDriveConfig();
+    leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+    rightSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+
+    driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO, Constants.DRIVE_COLSON_DIAMETER, 
+      Constants.DRIVE_FF_KS, Constants.DRIVE_FF_KV, Constants.DRIVE_FF_KA, Constants.DRIVE_TRACK_WIDTH, leftSideRamsetePID, rightSideRamsetePID);
+    driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER, Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
 
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
+
   }
 
   public BreakerDiffDrive getBaseDrivetrain() {

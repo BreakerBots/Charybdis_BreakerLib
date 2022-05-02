@@ -23,32 +23,22 @@ import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
 /** Add your docs here. */
 public class BreakerLog {
 
-      private static BufferedReader reader;
-      private static ObjectMapper mapper;
-      private static JsonNode parser;
+    public static final String breakerLibVersion = "V1.2";
     
     public static void startLog(boolean autologNetworkTables) {
         DataLogManager.logNetworkTables(autologNetworkTables);
         DataLogManager.start();
     }
 
-    public static void logRobotStarted() {
-      try {
-        reader = Files.newBufferedReader(Paths.get(Filesystem.getDeployDirectory() + "/robotConfig.json"));
-        mapper = new ObjectMapper();
-        parser = mapper.readTree(reader);
+    public static void logRobotStarted(int teamNum, String teamName, String robotName, int year, String robotSoftwareVersion, String authorNames) {
         StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n");
-        work.append(" TEAM: " + parser.path("robotInfo").path("teamNumber").textValue() + " - " + parser.path("robotInfo").path("teamName").asText() + "\n");
-        work.append(" ROBOT: " + parser.path("robotInfo").path("robotName").asText() + " - " + parser.path("robotInfo").path("year").asInt() + "\n");
-        work.append(" BREAKERLIB: " + "V" + parser.path("robotInfo").path("breakerLibVersion").asText() + " | " + "ROBOT SOFTWARE: " + "V" + parser.path("robotInfo").path("softwareVersion").asText() + "\n");
-        work.append(" AUTHORS: " + parser.path("robotInfo").path("authors").asText() + "\n\n");
+        work.append(" TEAM: " + teamNum + " - " + teamName + "\n");
+        work.append(" ROBOT: " + robotName + " - " + year + "\n");
+        work.append(" BREAKERLIB: " + breakerLibVersion + " | " + "ROBOT SOFTWARE: " + robotSoftwareVersion + "\n");
+        work.append(" AUTHORS: " + authorNames + "\n\n");
         work.append(" | ---------------------------------------------- | \n\n\n");
         BreakerLog.log(work.toString());
         BreakerRoboRio.setCurrentRobotMode(RobotMode.DISABLED);
-      } catch (Exception e) {
-        BreakerLog.logError("FAILED_TO_PARSE_CONFIG " + e);
-      }
-      
     }
 
     public static void logRobotChangedMode(RobotMode newMode) {
