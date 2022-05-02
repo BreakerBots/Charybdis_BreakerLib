@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
+import frc.robot.BreakerLib.util.BreakerLog;
 
 public class BreakerStartTrajectoryPath extends InstantCommand {
   private BreakerGenericDrivetrain drivetrain;
@@ -22,6 +23,7 @@ public class BreakerStartTrajectoryPath extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    BreakerLog.logBreakerLibEvent("A Trajectory Path has been started - A BreakerStartTrajectoryPath instance has been created and ran");
     drivetrain.setOdometry(startingPose, pigeon2.getRawAngles()[0]);
   }
 }
