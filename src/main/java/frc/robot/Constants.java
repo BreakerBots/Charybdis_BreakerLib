@@ -28,7 +28,7 @@ public final class Constants {
         public static final double DRIVE_FF_KS = 0.5888;
         public static final double DRIVE_FF_KV = 8.9464;
         public static final double DRIVE_FF_KA = 0.76533;
-        public static final double DRIVE_RS_PID_KP = 10.681;
+        public static final double DRIVE_RS_PID_KP = 1.681;
         public static final double DRIVE_RS_PID_KI = 0.0;
         public static final double DRIVE_RS_PID_KD = 0.0;
 
