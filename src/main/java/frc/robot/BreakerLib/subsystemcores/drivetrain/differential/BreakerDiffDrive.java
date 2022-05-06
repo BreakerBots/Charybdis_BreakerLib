@@ -46,15 +46,19 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   private boolean hasFault = false;
 
   private boolean isInSlowMode;
+  private boolean invertL;
+  private boolean invertR;
   
   /** Creates a new West Coast Drive. */
   public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR, BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
     this.leftMotors = leftMotors;
+    this.invertL = invertL;
     leftLead = leftMotors[0];
     leftDrive = new MotorControllerGroup(leftMotors);
     leftDrive.setInverted(invertL);
 
     this.rightMotors = rightMotors;
+    this.invertR = invertR;
     rightLead = rightMotors[0];
     rightDrive = new MotorControllerGroup(rightMotors);
     rightDrive.setInverted(invertR);
@@ -85,6 +89,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
     leftDrive.setVoltage(leftVoltage);
     rightDrive.setVoltage(rightVoltage);
     diffDrive.feed();
+    System.out.println("LV: " + leftVoltage + " RV: " + rightVoltage);
   }
 
   public void resetDriveEncoders() {
@@ -93,7 +98,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   }
 
   public double getLeftDriveTicks() {
-    return leftLead.getSelectedSensorPosition();
+    return invertL ? -leftLead.getSelectedSensorPosition() : leftLead.getSelectedSensorPosition();
   }
 
   public double getLeftDriveInches() {
@@ -104,8 +109,12 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
     return Units.inchesToMeters(getLeftDriveInches());
   }
 
+  public double getLeftDriveVelocityRSU() {
+    return invertL ? -leftLead.getSelectedSensorVelocity() : leftLead.getSelectedSensorVelocity();
+  }
+
   public double getRightDriveTicks() {
-    return rightLead.getSelectedSensorPosition();
+    return invertR ? -rightLead.getSelectedSensorPosition() : rightLead.getSelectedSensorPosition();
   }
 
   public double getRightDriveInches() {
@@ -114,6 +123,10 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
 
   public double getRightDriveMeters() {
     return Units.inchesToMeters(getRightDriveInches());
+  }
+
+  public double getRightDriveVelocityRSU() {
+    return invertR ? -rightLead.getSelectedSensorVelocity() : rightLead.getSelectedSensorVelocity();
   }
 
   public void setDrivetrainBrakeMode(boolean isEnabled) {
@@ -152,8 +165,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds( BreakerUnits.inchesToMeters((leftLead.getSelectedSensorVelocity() / driveConfig.getTicksPerInch()) * 10),
-     BreakerUnits.inchesToMeters((rightLead.getSelectedSensorVelocity() / driveConfig.getTicksPerInch()) * 10));
+    return new DifferentialDriveWheelSpeeds( BreakerUnits.inchesToMeters((getLeftDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10),
+     BreakerUnits.inchesToMeters((getRightDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10));
   }
 
   public void setSlowMode(boolean isEnabled) {

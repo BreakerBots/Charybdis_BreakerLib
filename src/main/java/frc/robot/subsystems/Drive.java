@@ -9,6 +9,8 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
@@ -49,13 +51,17 @@ public class Drive extends SubsystemBase {
     rightMotors = BreakerMotorControl.createMotorArray(right1, right2, right3);
     
     leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+    leftSideRamsetePID.setTolerance(0.02, 0.05);
     rightSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+    rightSideRamsetePID.setTolerance(0.02, 0.05);
 
     driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO, Constants.DRIVE_COLSON_DIAMETER, 
       Constants.DRIVE_FF_KS, Constants.DRIVE_FF_KV, Constants.DRIVE_FF_KA, Constants.DRIVE_TRACK_WIDTH, leftSideRamsetePID, rightSideRamsetePID);
     driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER, Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
 
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
+
+    drivetrain.setOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)), pigeon2.getRawAngles()[0]);
 
   }
 
@@ -66,5 +72,6 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     drivetrain.updateOdometry();
+    System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks() + " Ticks L: " + drivetrain.getLeftDriveTicks());
   }
 }

@@ -34,22 +34,27 @@ public class testTrajectory extends SequentialCommandGroup {
   List<Translation2d> waypoints;
   public testTrajectory(Drive drivetrain, BreakerPigeon2 pigeon2) {
 
-    startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0));
-    endPose = new Pose2d(0,1, Rotation2d.fromDegrees(0.0));
-    config = new TrajectoryConfig(0.1, 0.5);
-    WP1 = new Translation2d(0, 0.25);
-    WP2 = new Translation2d(0, 0.75);
+    startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    endPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    config = new TrajectoryConfig(0.5, 0.5);
+    WP1 = new Translation2d(1, 0.25);
+    // WP2 = new Translation2d(0.75, -0.75);
     waypoints = new ArrayList<>();
-    waypoints.add(WP1);
-    waypoints.add(WP2);
-    
+    waypoints.add(new Translation2d(0.848, 0.352));
+    waypoints.add(new Translation2d(1.2, 1.2));
+    waypoints.add(new Translation2d(0.848, 2.048));
+    waypoints.add(new Translation2d(0, 2.4));
+    waypoints.add(new Translation2d(-0.848, 2.038));
+    waypoints.add(new Translation2d(-1.2, 1.2));
+    waypoints.add(new Translation2d(-0.848, 0.352));
+    // waypoints.add(WP2);
 
     // creates first trajecotry to follow
     partOne = TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config); 
 
     addCommands(
       new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose, pigeon2),
-      new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 0.0, 1.0, 0.1, 0.5, 3.0, true)
+      new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, 0.3, 0.5, 0.75, true)
     );
   }
 }

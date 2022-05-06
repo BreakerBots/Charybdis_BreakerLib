@@ -25,8 +25,8 @@ public final class Constants {
         public static final int R2_ID = 15;
         public static final int R3_ID = 16;
     // Drive FeedForward / Feedback constants
-        public static final double DRIVE_FF_KS = 0.5888;
-        public static final double DRIVE_FF_KV = 8.9464;
+        public static final double DRIVE_FF_KS = 0.1; // 0.5888
+        public static final double DRIVE_FF_KV = 4.9464; // 8.9464
         public static final double DRIVE_FF_KA = 0.76533;
         public static final double DRIVE_RS_PID_KP = 1.681;
         public static final double DRIVE_RS_PID_KI = 0.0;
