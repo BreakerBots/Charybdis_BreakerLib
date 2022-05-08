@@ -37,8 +37,6 @@ public class testTrajectory extends SequentialCommandGroup {
     startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     endPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     config = new TrajectoryConfig(0.5, 0.5);
-    WP1 = new Translation2d(1, 0.25);
-    // WP2 = new Translation2d(0.75, -0.75);
     waypoints = new ArrayList<>();
     waypoints.add(new Translation2d(0.848, 0.352));
     waypoints.add(new Translation2d(1.2, 1.2));
@@ -47,7 +45,6 @@ public class testTrajectory extends SequentialCommandGroup {
     waypoints.add(new Translation2d(-0.848, 2.038));
     waypoints.add(new Translation2d(-1.2, 1.2));
     waypoints.add(new Translation2d(-0.848, 0.352));
-    // waypoints.add(WP2);
 
     // creates first trajecotry to follow
     partOne = TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config); 

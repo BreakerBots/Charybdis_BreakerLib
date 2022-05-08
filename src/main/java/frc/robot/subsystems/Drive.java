@@ -62,7 +62,6 @@ public class Drive extends SubsystemBase {
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
 
     drivetrain.setOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)), pigeon2.getRawAngles()[0]);
-
   }
 
   public BreakerDiffDrive getBaseDrivetrain() {

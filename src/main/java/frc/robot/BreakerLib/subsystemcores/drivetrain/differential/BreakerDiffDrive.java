@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+import frc.robot.BreakerLib.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerMotorControl;
 import frc.robot.BreakerLib.util.BreakerUnits;
@@ -175,6 +176,10 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
 
   public boolean isInSlowMode() {
     return isInSlowMode;
+  }
+
+  public BreakerDiffDriveState getDiffDriveState() {
+    return new BreakerDiffDriveState(getWheelSpeeds(), getLeftDriveMeters(), getRightDriveMeters());
   }
 
   @Override

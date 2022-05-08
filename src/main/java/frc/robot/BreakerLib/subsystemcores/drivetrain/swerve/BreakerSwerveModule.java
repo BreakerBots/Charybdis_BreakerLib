@@ -14,7 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.math.util.Units;
 import frc.robot.BreakerLib.util.BreakerMath;
 import frc.robot.BreakerLib.util.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -72,7 +72,7 @@ public class BreakerSwerveModule {
     }
     
     public double getModuleVelMetersPerSec() {
-       return BreakerUnits.inchesToMeters(BreakerMath.ticksToInches(driveMotor.getSelectedSensorVelocity() * 10,
+       return Units.inchesToMeters(BreakerMath.ticksToInches(driveMotor.getSelectedSensorVelocity() * 10,
         BreakerMath.getTicksPerInch(2048, config.getDriveMotorGearRatioToOne(), config.getWheelDiameter())));
     }
 

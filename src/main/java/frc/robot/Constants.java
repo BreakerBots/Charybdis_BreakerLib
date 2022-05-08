@@ -69,6 +69,11 @@ public final class Constants {
         public static final int IMU_ID = 10;
         public static final boolean IMU_INVERT = true;
 
+    // Shooter Constants
+        public static final int LEFT_FLYWHEEL_MOTOR_ID = 41;
+        public static final int RIGHT_FLYWHEEL_MOTOR_ID = 42;
+        
+
 
 
 }
