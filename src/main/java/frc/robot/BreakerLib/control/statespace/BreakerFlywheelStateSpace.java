@@ -16,7 +16,7 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.util.BreakerUnits;
+import frc.robot.BreakerLib.util.math.BreakerUnits;
 
 public class BreakerFlywheelStateSpace extends SubsystemBase {
   /** Creates a new BreakerStateSpace. */

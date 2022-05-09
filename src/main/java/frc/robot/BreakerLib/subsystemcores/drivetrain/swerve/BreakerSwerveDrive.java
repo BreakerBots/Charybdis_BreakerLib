@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.BreakerUnits;
+import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGenaricDevice {
@@ -74,10 +74,9 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGena
 
   /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the field */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
-    double gyroRad = Math.toRadians(pigeon2.getYaw());
-    double newFwd = forwardVelMetersPerSec * Math.cos(gyroRad) + horizontalVelMetersPerSec * Math.sin(gyroRad);
-    double newHorz = -forwardVelMetersPerSec * Math.sin(gyroRad) + horizontalVelMetersPerSec * Math.cos(gyroRad);
-    move(newFwd, newHorz, radPerSec);
+    ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, getOdometryPoseMeters().getRotation());
+    targetModuleStates = config.getKinematics().toSwerveModuleStates(robotRelSpeeds);
+    setRawModuleStates(targetModuleStates);
   }
 
   /** effectivly equivlent to the "moveRelativeToField()" method but with speeds being passed in as a percentage of maximum represented as a decimal (1.0 to -1.0) */

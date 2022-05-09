@@ -1,5 +1,4 @@
-package frc.robot.BreakerLib.util;
-
+package frc.robot.BreakerLib.util.math;
 
 public class BreakerUnits {
     public static final double MICROSECONDS_PER_SECOND = 1000000;

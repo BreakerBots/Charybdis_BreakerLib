@@ -1,4 +1,4 @@
-package frc.robot.BreakerLib.util;
+package frc.robot.BreakerLib.util.math;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotController;

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import frc.robot.BreakerLib.util.BreakerLog;
-import frc.robot.BreakerLib.util.BreakerMath;
-import frc.robot.BreakerLib.util.BreakerUnits;
+import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.robotconfiguration.BreakerConfigManager;
 
 /** Add your docs here. */

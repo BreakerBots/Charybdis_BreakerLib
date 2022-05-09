@@ -21,8 +21,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.BreakerMath;
-import frc.robot.BreakerLib.util.BreakerUnits;
+import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.math.BreakerUnits;
 
 /** Add your docs here. */
 public class BreakerPhotonTarget extends SubsystemBase {

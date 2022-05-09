@@ -5,7 +5,7 @@
 package frc.robot.BreakerLib.devices.vision.standardlimelight;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.BreakerLib.util.BreakerMath;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 
 /** Add your docs here. */
 public class BreakerLimelightTarget {

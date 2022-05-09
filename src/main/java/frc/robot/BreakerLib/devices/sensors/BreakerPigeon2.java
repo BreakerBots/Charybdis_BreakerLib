@@ -5,7 +5,7 @@ package frc.robot.BreakerLib.devices.sensors;
 import com.ctre.phoenix.sensors.Pigeon2_Faults;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
-import frc.robot.BreakerLib.util.BreakerMath;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 /* Good version of the CTRE Pigeon 2 class BAYBEEE! */
 public class BreakerPigeon2 implements BreakerGenaricDevice {

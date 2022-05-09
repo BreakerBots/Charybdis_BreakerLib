@@ -8,7 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
-import frc.robot.BreakerLib.util.BreakerMath;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 
 /** Robot moves forward/back to target distance */
 public class AutoMoveStraight extends CommandBase {

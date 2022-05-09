@@ -83,4 +83,8 @@ public class BreakerPhotonCamera {
         return cameraPositionRelativeToRobot;
     }
 
+    public void updateCameraPositionRelativeToRobot(Transform2d newTransform) {
+        cameraPositionRelativeToRobot = newTransform;
+    }
+
 }
