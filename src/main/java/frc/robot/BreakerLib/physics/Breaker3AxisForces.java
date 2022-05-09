@@ -5,8 +5,8 @@
 package frc.robot.BreakerLib.physics;
 
 /** Add your docs here. */
-public class BreakerAngularVector3 {
-    public BreakerAngularVector3(double yawForce, double pitchForce, double rollForce) {
-        
+public class Breaker3AxisForces {
+    public Breaker3AxisForces(BreakerVector2 linearForces, double angularForce) {
+
     }
 }

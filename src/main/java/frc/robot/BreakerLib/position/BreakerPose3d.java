@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.position;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 /** Add your docs here. */
@@ -20,5 +21,13 @@ public class BreakerPose3d {
     public BreakerPose3d(BreakerTranslation3d translation, BreakerRotation3d rotation) {
         this.rotation = rotation;
         this.translation = translation;
+    }
+
+    public BreakerTranslation3d getTranslationComponent() {
+        return translation;
+    }
+
+    public BreakerRotation3d getRotationComponent() {
+        return rotation;
     }
 }

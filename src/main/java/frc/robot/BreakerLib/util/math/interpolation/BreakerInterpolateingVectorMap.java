@@ -40,7 +40,7 @@ public class BreakerInterpolateingVectorMap {
         double interF = interpolate(interpolendValue, lowKey, highKey, lowF, highF);
         double interR = interpolate(interpolendValue, lowKey, highKey, lowR.getRadians(), highR.getRadians());
 
-        return new BreakerVector2(new Rotation2d(interR), interF);
+        return BreakerVector2.fromForceAndRotation(new Rotation2d(interR), interF);
     }
 
     private double interpolate(double knownX, double lowX, double highX, double lowY, double highY) {

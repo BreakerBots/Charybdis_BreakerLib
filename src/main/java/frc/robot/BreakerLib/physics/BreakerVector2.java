@@ -12,11 +12,20 @@ public class BreakerVector2 {
     private double force;
     private double forceX;
     private double forceY;
-    public BreakerVector2(Rotation2d forceRotation, double force) {
-        this.forceRotation = forceRotation;
+    public BreakerVector2(double forceX, double forceY) {
+        this.forceX = forceX;
+        this.forceY = forceY;
+    }
+
+    private BreakerVector2(double forceX, double forceY, double force, Rotation2d forceRotation) {
+        this.forceX = forceX;
+        this.forceY = forceY;
         this.force = force;
-        forceX = force * Math.cos(forceRotation.getRadians());
-        forceY = force * Math.sin(forceRotation.getRadians());
+        this.forceRotation = forceRotation;
+    }
+
+    public static BreakerVector2 fromForceAndRotation(Rotation2d forceRotation, double force) {
+        return new BreakerVector2(force * Math.cos(forceRotation.getRadians()), force * Math.sin(forceRotation.getRadians()), force, forceRotation);
     }
 
     public double getForce() {

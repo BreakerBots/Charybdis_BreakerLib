@@ -9,7 +9,7 @@ import frc.robot.BreakerLib.physics.Breaker6AxisForces;
 /** Add your docs here. */
 public class BreakerMovementState3d {
     public BreakerMovementState3d(BreakerPose3d position, Breaker6AxisForces velocity, Breaker6AxisForces acceleration, Breaker6AxisForces jerk) {
-
+        
     }
 
     public BreakerMovementState3d(BreakerPose3d position, Breaker6AxisForces velocity, Breaker6AxisForces acceleration) {
