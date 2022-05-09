@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.position;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
-/** Add your docs here. */
+/** Represents an objects position in the X, Y, and Z axies */
 public class BreakerTranslation3d {
     private double metersX;
     private double metersY;
@@ -31,5 +31,9 @@ public class BreakerTranslation3d {
 
     public double getMetersZ() {
         return metersZ;
+    }
+
+    public BreakerTranslation3d plus(BreakerTranslation3d outher) {
+        return new BreakerTranslation3d(this.metersX + outher.metersX, this.metersY + outher.metersY, this.metersZ + outher.metersZ);
     }
 }

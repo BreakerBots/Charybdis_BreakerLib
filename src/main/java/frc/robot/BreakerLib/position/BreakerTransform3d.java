@@ -4,9 +4,10 @@
 
 package frc.robot.BreakerLib.position;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 
-/** Add your docs here. */
+/** Represents a 3d transformation of a pose */
 public class BreakerTransform3d {
     private BreakerTranslation3d translation;
     private BreakerRotation3d rotation;
@@ -25,5 +26,9 @@ public class BreakerTransform3d {
 
     public Transform2d get2dTransformationComponent() {
         return new Transform2d(translation.get2dTranslationComponent(), rotation.getYaw());
+    }
+
+    public BreakerPose3d transformFromPose2d(Pose2d pose2d) {
+        return new BreakerPose3d(pose2d).transformBy(this);
     }
 }

@@ -23,6 +23,11 @@ public class BreakerPose3d {
         this.translation = translation;
     }
 
+    public BreakerPose3d(Pose2d pose2d) {
+        rotation = new BreakerRotation3d(Rotation2d.fromDegrees(0d), pose2d.getRotation(), Rotation2d.fromDegrees(0d));
+        translation = new BreakerTranslation3d(pose2d.getX(), pose2d.getY(), 0d);
+    }
+
     public BreakerTranslation3d getTranslationComponent() {
         return translation;
     }
@@ -33,5 +38,11 @@ public class BreakerPose3d {
 
     public Pose2d get2dPoseComponent() {
         return new Pose2d(translation.getMetersX(), translation.getMetersY(), rotation.getYaw());
+    }
+
+    public BreakerPose3d transformBy(BreakerTransform3d outher) {
+        BreakerTranslation3d newTrans = this.translation.plus(outher.getTranslationComponent());
+        BreakerRotation3d newRot = this.rotation.plus(outher.getRotationComponent());
+        return new BreakerPose3d(newTrans, newRot);
     }
 }
