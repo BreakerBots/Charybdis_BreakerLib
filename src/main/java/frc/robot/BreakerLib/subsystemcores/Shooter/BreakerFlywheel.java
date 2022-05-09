@@ -45,6 +45,7 @@ public class BreakerFlywheel extends SubsystemBase {
     public double getFlywheelTargetVelRSU() {
         return flywheelTargetRSU;
     }
+
     public void stopFlywheel() {
         runFlywheel = false;
         flySS.killLoop();

@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.odometry.differential;
+package frc.robot.BreakerLib.position.odometry.differential;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 
