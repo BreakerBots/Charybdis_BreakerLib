@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-/** Represents an objects 3 dimentional position and 3 axis angle in space (Linear: XYZ / Angular: YPR) */
+/** Represents an objects 3 dimentional position and 3 axis angular orientation in space (Linear: XYZ / Angular: YPR) */
 public class BreakerPose3d {
     private BreakerTranslation3d translation;
     private BreakerRotation3d rotation;
