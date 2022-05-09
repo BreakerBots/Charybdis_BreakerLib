@@ -13,7 +13,8 @@ import frc.robot.BreakerLib.util.selftest.SelfTest;
 import frc.robot.commands.drive.DriveInTeleop;
 import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
-import frc.robot.commands.trajectorypaths.testTrajectory;
+import frc.robot.commands.trajectorypaths.DemoTrajectoryS;
+import frc.robot.commands.trajectorypaths.circleDemoTrajectory;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -52,6 +53,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new testTrajectory(drivetrainSys, imuSys);
+    return new DemoTrajectoryS(drivetrainSys, imuSys);
   }
 }

@@ -6,7 +6,26 @@ package frc.robot.BreakerLib.physics;
 
 /** Add your docs here. */
 public class BreakerAngularVector3 {
-    public BreakerAngularVector3(double yawForce, double pitchForce, double rollForce) {
-        
+    
+    private double forceYaw;
+    private double forcePitch;
+    private double forceRoll;
+
+    public BreakerAngularVector3(double forceYaw, double forcePitch, double forceRoll) {
+        this.forceYaw = forceYaw;
+        this.forcePitch = forcePitch;
+        this.forceRoll = forceRoll;
+    }
+
+    public double getForceYaw() {
+        return forceYaw;
+    }
+
+    public double getForcePitch() {
+        return forcePitch;
+    }
+
+    public double getForceRoll() {
+        return forceRoll;
     }
 }

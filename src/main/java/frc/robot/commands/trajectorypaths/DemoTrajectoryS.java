@@ -23,7 +23,7 @@ import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.subsystems.Drive;
 
-public class testTrajectory extends SequentialCommandGroup {
+public class DemoTrajectoryS extends SequentialCommandGroup {
   /** Creates a new testTrajectory. */
   Trajectory partOne;
   TrajectoryConfig config;
@@ -32,19 +32,15 @@ public class testTrajectory extends SequentialCommandGroup {
   Translation2d WP1;
   Translation2d WP2;
   List<Translation2d> waypoints;
-  public testTrajectory(Drive drivetrain, BreakerPigeon2 pigeon2) {
+  public DemoTrajectoryS(Drive drivetrain, BreakerPigeon2 pigeon2) {
 
     startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
-    endPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    endPose = new Pose2d(4, 0, Rotation2d.fromDegrees(0));
     config = new TrajectoryConfig(0.5, 0.5);
     waypoints = new ArrayList<>();
-    waypoints.add(new Translation2d(0.848, 0.352));
-    waypoints.add(new Translation2d(1.2, 1.2));
-    waypoints.add(new Translation2d(0.848, 2.048));
-    waypoints.add(new Translation2d(0, 2.4));
-    waypoints.add(new Translation2d(-0.848, 2.038));
-    waypoints.add(new Translation2d(-1.2, 1.2));
-    waypoints.add(new Translation2d(-0.848, 0.352));
+    waypoints.add(new Translation2d(1, 1));
+    waypoints.add(new Translation2d(2, 0));
+    waypoints.add(new Translation2d(3, -1));
 
     // creates first trajecotry to follow
     partOne = TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config); 

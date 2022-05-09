@@ -8,8 +8,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 /** Add your docs here. */
-public class BreakerProjectileTrajectory {
-    public BreakerProjectileTrajectory(BreakerProjectile projectile, Translation2d launchHeight, double launchSpeedMetersPerSec, Rotation2d launchAngle) {
+public class BreakerBalisitcTrajectory {
+    public BreakerBalisitcTrajectory(BreakerProjectile projectile, Translation2d launchHeight, double launchSpeedMetersPerSec, Rotation2d launchAngle) {
         
     }
 }
