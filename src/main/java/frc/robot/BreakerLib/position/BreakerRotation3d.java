@@ -4,5 +4,11 @@
 
 package frc.robot.BreakerLib.position;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /** Add your docs here. */
-public class BreakerRotation3d {}
+public class BreakerRotation3d {
+    public BreakerRotation3d(Rotation2d pitch, Rotation2d yaw, Rotation2d roll) {
+
+    }
+}

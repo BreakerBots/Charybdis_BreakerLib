@@ -5,4 +5,8 @@
 package frc.robot.BreakerLib.position;
 
 /** Add your docs here. */
-public class BreakerTranslation3d {}
+public class BreakerTranslation3d {
+    public BreakerTranslation3d(double metersX, double metersY, double metersZ) {
+        
+    }
+}
