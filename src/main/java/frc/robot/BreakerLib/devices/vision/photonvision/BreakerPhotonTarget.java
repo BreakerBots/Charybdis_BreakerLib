@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.position.BreakerPose3d;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
@@ -35,11 +36,11 @@ public class BreakerPhotonTarget extends SubsystemBase {
     private Supplier<PhotonTrackedTarget> assignedTargetSupplier;
     private boolean targetPreAssigned;
     private boolean assignedTargetFound;
-    public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericDrivetrain drivetrain, Pose2d targetLocation, double targetHightInches, double maxTargetCordinateDeveationInches) {
+    public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericDrivetrain drivetrain, BreakerPose3d targetPosition, double maxTargetCordinateDeveationInches) {
         this.camera = camera;
         this.drivetrain = drivetrain;
-        this.targetLocation = targetLocation;
-        this.targetHightInches = targetHightInches;
+        targetLocation = targetPosition.get2dPoseComponent();
+        this.targetHightInches = Units.metersToInches(targetPosition.getTranslationComponent().getMetersZ());
         this.maxTargetCordinateDeveationInches = maxTargetCordinateDeveationInches;
         targetPreAssigned = false;
         assignedTargetFound = false;

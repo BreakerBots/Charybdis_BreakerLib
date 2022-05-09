@@ -8,6 +8,9 @@ import java.lang.annotation.Retention;
 
 import frc.robot.BreakerLib.devices.vision.photonvision.BreakerPhotonCamera;
 import frc.robot.BreakerLib.devices.vision.photonvision.BreakerPhotonTarget;
+import frc.robot.BreakerLib.position.BreakerRotation3d;
+import frc.robot.BreakerLib.position.BreakerTransform3d;
+import frc.robot.BreakerLib.position.BreakerTranslation3d;
 
 /** Add your docs here. */
 public class Vision {
@@ -15,8 +18,8 @@ public class Vision {
     private BreakerPhotonCamera tgtCam;
     private BreakerPhotonTarget bestTargetBC;
     public Vision() {
-        ballCam = new BreakerPhotonCamera("ballCamera", cameraAngle, cameraHeightIns, verticalFOV, horizontalFOV);
-        tgtCam = new BreakerPhotonCamera("targetCamera", cameraAngle, cameraHeightIns, verticalFOV, horizontalFOV);
+        ballCam = new BreakerPhotonCamera("ballCamera", verticalFOV, horizontalFOV, new BreakerTransform3d(new BreakerTranslation3d(metersX, metersY, metersZ), new BreakerRotation3d(pitch, yaw, roll)));
+        tgtCam = new BreakerPhotonCamera("targetCamera", verticalFOV, horizontalFOV, new BreakerTransform3d(new BreakerTranslation3d(metersX, metersY, metersZ), new BreakerRotation3d(pitch, yaw, roll)));
         bestTargetBC = new BreakerPhotonTarget(ballCam, ballCam.getBestTarget(), targetHightInches);
     }
 

@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.position;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
 
-/** Add your docs here. */
+/** Represents an objects 2 dimentional (linear: XY / Angular: Y) position, velocity, acceleration, and jerk at a given time */
 public class BreakerMovementState2d {
     public BreakerMovementState2d(Pose2d position, Breaker3AxisForces velocity, Breaker3AxisForces acceleration, Breaker3AxisForces jerk) {
 

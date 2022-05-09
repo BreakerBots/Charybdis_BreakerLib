@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.position;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-/** Add your docs here. */
+/** represnets an objects angular orentation in 3 dimentional space using yaw, pitch, and roll */
 public class BreakerRotation3d {
     private Rotation2d pitch;
     private Rotation2d yaw;

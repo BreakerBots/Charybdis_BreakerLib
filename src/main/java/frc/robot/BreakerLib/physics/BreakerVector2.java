@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.physics;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 
-/** Add your docs here. */
+/** represents a point with 2 vectors of ajustable magnatudes (one on each X, and Y axis) */
 public class BreakerVector2 {
     private Rotation2d forceRotation;
     private double force;

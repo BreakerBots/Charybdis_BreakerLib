@@ -12,6 +12,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.util.Units;
+import frc.robot.BreakerLib.position.BreakerTransform3d;
 
 /** Add your docs here. */
 public class BreakerPhotonCamera {
@@ -20,14 +22,15 @@ public class BreakerPhotonCamera {
     private double cameraHeightIns;
     private double verticalFOV;
     private double horizontalFOV;
-    private Transform2d cameraPositionRelativeToRobot;
-    public BreakerPhotonCamera(String cameraName, double cameraAngle, double cameraHeightIns, double verticalFOV, double horizontalFOV, Transform2d cameraPositionRelativeToRobot) {
+    private BreakerTransform3d cameraPositionRelativeToRobot;
+    public BreakerPhotonCamera(String cameraName, double verticalFOV, double horizontalFOV, BreakerTransform3d cameraPositionRelativeToRobot) {
         camera = new PhotonCamera(cameraName);
-        this.cameraAngle = cameraAngle;
-        this.cameraHeightIns = cameraHeightIns;
+        this.cameraPositionRelativeToRobot = cameraPositionRelativeToRobot;
+        this.cameraAngle = cameraPositionRelativeToRobot.getRotationComponent().getPitch().getDegrees();
+        this.cameraHeightIns = Units.metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
         this.verticalFOV = verticalFOV;
         this.horizontalFOV = horizontalFOV;
-        this.cameraPositionRelativeToRobot = cameraPositionRelativeToRobot;
+        
     }
 
     public PhotonPipelineResult getLatestRawResult() {
@@ -80,10 +83,10 @@ public class BreakerPhotonCamera {
     }
 
     public Transform2d getCameraPositionRelativeToRobot() {
-        return cameraPositionRelativeToRobot;
+        return cameraPositionRelativeToRobot.get2dTransformationComponent();
     }
 
-    public void updateCameraPositionRelativeToRobot(Transform2d newTransform) {
+    public void updateCameraPositionRelativeToRobot(BreakerTransform3d newTransform) {
         cameraPositionRelativeToRobot = newTransform;
     }
 
