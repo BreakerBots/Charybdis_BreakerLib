@@ -18,20 +18,23 @@ import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
 public class BreakerFollowSwerveTrajectory extends CommandBase implements BreakerGenericTrajecotryFollower {
+
     private SwerveControllerCommand controller;
     private BreakerFollowSwerveTrajectoryConfig config;
     private BreakerSwerveDrive drivetrain;
-    private Subsystem requiredSubsystem;
-    private Trajectory[] trajectorysToFollow;
+    private Subsystem requiredSubsystem; // Swerve drive subsystem
+    private Trajectory[] trajectoriesToFollow;
     private int currentTrajectory = 0;
     private int prevTrajectory = -1;
     private double totalTimeSeconds = 0;
     private boolean commandIsFinished = false;
     private boolean stopAtEnd = false;
     private double currentTimeCycles = 0;
-    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, Boolean stopAtEnd, Subsystem requiredSubsystem, Trajectory... trajectorysToFollow) {
+
+    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, boolean stopAtEnd,
+            Subsystem requiredSubsystem, Trajectory... trajectoriesToFollow) {
         drivetrain = config.getDrivetrain();
-        this.trajectorysToFollow = trajectorysToFollow;
+        this.trajectoriesToFollow = trajectoriesToFollow;
         this.config = config;
         this.stopAtEnd = stopAtEnd;
         this.requiredSubsystem = requiredSubsystem;
@@ -39,28 +42,35 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     @Override
     public void initialize() {
-        for (Trajectory trajectory: trajectorysToFollow) {
+        for (Trajectory trajectory : trajectoriesToFollow) {
             totalTimeSeconds += trajectory.getTotalTimeSeconds();
         }
-        BreakerLog.logBreakerLibEvent("BreakerSwerveTrajectoryAuto command instance started, total cumulative path time: " + totalTimeSeconds);
+        BreakerLog
+                .logBreakerLibEvent("BreakerSwerveTrajectoryAuto command instance started, total cumulative path time: "
+                        + totalTimeSeconds);
     }
 
     @Override
     public void execute() {
-        currentTimeCycles ++;
+        currentTimeCycles++;
         if (currentTrajectory != prevTrajectory) {
             try {
-                controller = new SwerveControllerCommand(trajectorysToFollow[currentTrajectory], drivetrain::getOdometryPoseMeters, 
-                    drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(), config.gettAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
+                controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
+                        drivetrain::getOdometryPoseMeters,
+                        drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
+                        config.getThetaAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
                 controller.schedule();
-                BreakerLog.logBreakerLibEvent("BreakerSwerveTrajectoryAuto command instance has swiched to a new trajecotry (T-STATS: " + trajectorysToFollow[currentTrajectory].toString() + " )(T-NUM: " + currentTrajectory + " of " + trajectorysToFollow.length + " )");
+                BreakerLog.logBreakerLibEvent(
+                        "BreakerSwerveTrajectoryAuto command instance has swiched to a new trajecotry (T-STATS: "
+                                + trajectoriesToFollow[currentTrajectory].toString() + " )(T-NUM: " + currentTrajectory
+                                + " of " + trajectoriesToFollow.length + " )");
             } catch (Exception e) {
                 commandIsFinished = true;
             }
         }
         prevTrajectory = currentTrajectory;
         if (controller.isFinished()) {
-            currentTrajectory ++;
+            currentTrajectory++;
         }
     }
 
@@ -82,17 +92,17 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     @Override
     public boolean isFinished() {
-        return commandIsFinished || (currentTrajectory > trajectorysToFollow.length);
+        return commandIsFinished || (currentTrajectory > trajectoriesToFollow.length);
     }
 
     @Override
     public Trajectory getCurrentTrajectory() {
-        return trajectorysToFollow[currentTrajectory];
+        return trajectoriesToFollow[currentTrajectory];
     }
 
     @Override
     public Trajectory[] getAllTrajectorys() {
-        return trajectorysToFollow;
+        return trajectoriesToFollow;
     }
 
     @Override
@@ -113,8 +123,8 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     @Override
     public List<State> getAllStates() {
         List<State> allStates = new ArrayList<State>();
-        for (Trajectory sampTreject: trajectorysToFollow) {
-            for (State sampState: sampTreject.getStates()) {
+        for (Trajectory sampTreject : trajectoriesToFollow) {
+            for (State sampState : sampTreject.getStates()) {
                 allStates.add(sampState);
             }
         }
@@ -124,13 +134,13 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     private double getOnlyCurrentPathTime() {
         double time = 0;
         for (int i = 0; i < currentTrajectory; i++) {
-            time += trajectorysToFollow[i].getTotalTimeSeconds();
+            time += trajectoriesToFollow[i].getTotalTimeSeconds();
         }
         return (getCurrentPathTimeSeconds() - time);
     }
 
     @Override
     public State getCurrentState() {
-        return trajectorysToFollow[currentTrajectory].sample(getCurrentPathTimeSeconds() - getOnlyCurrentPathTime());
+        return trajectoriesToFollow[currentTrajectory].sample(getCurrentPathTimeSeconds() - getOnlyCurrentPathTime());
     }
 }

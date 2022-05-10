@@ -22,8 +22,8 @@ import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
-/** Add your docs here. */
-public class BreakerRamsete extends CommandBase implements BreakerGenericTrajecotryFollower{
+/** OUR version of a differential drive ramsete command.  */
+public class BreakerRamsete extends CommandBase implements BreakerGenericTrajecotryFollower {
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
@@ -33,43 +33,77 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private double totalTimeSeconds = 0;
     private boolean stopAtEnd;
     private Trajectory trajectoryToFollow;
-    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, 
-    Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage, boolean stopAtEnd){
-        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " +  trajectoryToFollow.toString() + " )");
+
+    /**
+     * Constructor for BreakerRamsete controller.
+     * 
+     * @param trajectoryToFollow Self-explanatory.
+     * @param drivetrain Differential drivetrain to use.
+     * @param subsystemRequirements Self-explanatory.
+     * @param ramseteB Proportional constant for ramsete.
+     * @param ramseteZeta Damping constant for ramsete.
+     * @param maxVel In m/s
+     * @param maxAccel In m/s^2
+     * @param maxVoltage Max amount of volts that can be applied
+     * @param stopAtEnd Whether the robot stops on completion.
+     */
+    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain,
+            Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
+            double maxVoltage, boolean stopAtEnd) {
+
+        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
+                + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " + trajectoryToFollow.toString() + " )");
+
         this.drivetrain = drivetrain;
         this.trajectoryToFollow = trajectoryToFollow;
-        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), maxVoltage);
+
+        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
+                drivetrain.getKinematics(), maxVoltage);
+
         config = new TrajectoryConfig(maxVel, maxAccel);
-            config.setKinematics(drivetrain.getKinematics());
-            config.addConstraint(voltageConstraints);
+        config.setKinematics(drivetrain.getKinematics());
+        config.addConstraint(voltageConstraints);
+
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
-        ramsete = new RamseteCommand(trajectoryToFollow, drivetrain :: getOdometryPoseMeters, ramseteController, drivetrain.getFeedforward(), 
-        drivetrain.getKinematics(), drivetrain :: getWheelSpeeds, drivetrain.getLeftPIDController(), drivetrain.getRightPIDController(), drivetrain :: tankMoveVoltage, subsystemRequirements);
+        ramsete = new RamseteCommand(trajectoryToFollow, drivetrain::getOdometryPoseMeters, ramseteController,
+                drivetrain.getFeedforward(),
+                drivetrain.getKinematics(), drivetrain::getWheelSpeeds, drivetrain.getLeftPIDController(),
+                drivetrain.getRightPIDController(), drivetrain::tankMoveVoltage, subsystemRequirements);
         ramsete.schedule();
+
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
     }
 
-    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain, Supplier<Pose2d> currentPoseSupplyer,
-    Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel, double maxVoltage, boolean stopAtEnd){
-        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: " + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " +  trajectoryToFollow.toString() + " )");
+    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain,
+            Supplier<Pose2d> currentPoseSupplyer,
+            Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
+            double maxVoltage, boolean stopAtEnd) {
+        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
+                + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " + trajectoryToFollow.toString() + " )");
         this.drivetrain = drivetrain;
         this.trajectoryToFollow = trajectoryToFollow;
-        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), maxVoltage);
+        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
+                drivetrain.getKinematics(), maxVoltage);
+
         config = new TrajectoryConfig(maxVel, maxAccel);
-            config.setKinematics(drivetrain.getKinematics());
-            config.addConstraint(voltageConstraints);
+        config.setKinematics(drivetrain.getKinematics());
+        config.addConstraint(voltageConstraints);
+
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
-        ramsete = new RamseteCommand(trajectoryToFollow, currentPoseSupplyer, ramseteController, drivetrain.getFeedforward(), 
-        drivetrain.getKinematics(), drivetrain :: getWheelSpeeds, drivetrain.getLeftPIDController(), drivetrain.getRightPIDController(), drivetrain :: tankMoveVoltage, subsystemRequirements);
+        ramsete = new RamseteCommand(trajectoryToFollow, currentPoseSupplyer, ramseteController,
+                drivetrain.getFeedforward(),
+                drivetrain.getKinematics(), drivetrain::getWheelSpeeds, drivetrain.getLeftPIDController(),
+                drivetrain.getRightPIDController(), drivetrain::tankMoveVoltage, subsystemRequirements);
         ramsete.schedule();
+
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
     }
 
     @Override
     public void execute() {
-        currentTimeCycles ++;
+        currentTimeCycles++;
     }
 
     @Override

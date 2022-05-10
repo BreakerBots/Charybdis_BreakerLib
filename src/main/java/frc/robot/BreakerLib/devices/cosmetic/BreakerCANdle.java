@@ -12,9 +12,19 @@ import com.ctre.phoenix.led.StrobeAnimation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/** Add your docs here. */
-
+/** LED controller */
 public class BreakerCANdle extends SubsystemBase {
+
+    public enum BreakerCANdleLedMode {
+        COLOR_SWITCH,
+        ANIMATION,
+        STATIC,
+        ERROR,
+        ENABLED,
+        DISSABLED,
+        OFF
+    }
+
     private CANdle candle;
     private RainbowAnimation enabledStatus;
     private StrobeAnimation errorStatus;
@@ -23,7 +33,8 @@ public class BreakerCANdle extends SubsystemBase {
     private double switchTimeSec;
     private Color[] switchColors;
     private BreakerCANdleLedMode mode = BreakerCANdleLedMode.OFF;
-    public BreakerCANdle (int canID, int numberOfLEDs, BreakerCANdleConfig config) {
+
+    public BreakerCANdle(int canID, int numberOfLEDs, BreakerCANdleConfig config) {
         candle = new CANdle(canID);
         candle.configAllSettings(config.getConfig());
         candle.setLEDs(255, 255, 255);
@@ -35,7 +46,6 @@ public class BreakerCANdle extends SubsystemBase {
         candle.animate(animation);
         mode = BreakerCANdleLedMode.ANIMATION;
     }
-
 
     public void setRobotEnabledStatusLED() {
         mode = BreakerCANdleLedMode.ENABLED;
@@ -64,7 +74,7 @@ public class BreakerCANdle extends SubsystemBase {
     }
 
     private int[] colorToRGB(Color color) {
-        return new int[] {(int) (color.red * 255), (int) (color.blue * 255), (int) (color.green * 255)};
+        return new int[] { (int) (color.red * 255), (int) (color.blue * 255), (int) (color.green * 255) };
     }
 
     private void setLED(Color ledColor) {
@@ -81,14 +91,14 @@ public class BreakerCANdle extends SubsystemBase {
     private void runColorSwitch(double switchTimeSec, Color... colors) {
         if (timer % (switchTimeSec * 50) == 0) {
             colorSwitch = (colorSwitch > colors.length) ? 0 : colorSwitch;
-            setLED(colors[colorSwitch ++]);
+            setLED(colors[colorSwitch++]);
         }
     }
 
     private void runLED() {
         switch (mode) {
             default:
-            case OFF: 
+            case OFF:
                 setLED(0, 0, 0);
                 break;
             case COLOR_SWITCH:
@@ -105,13 +115,13 @@ public class BreakerCANdle extends SubsystemBase {
                 break;
             case ANIMATION:
             case STATIC:
-            break;
+                break;
         }
     }
 
     @Override
     public void periodic() {
-        timer ++;
+        timer++;
         runLED();
     }
 }

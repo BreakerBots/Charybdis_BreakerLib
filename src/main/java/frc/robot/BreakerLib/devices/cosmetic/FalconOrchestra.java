@@ -9,7 +9,7 @@ import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/** Add your docs here. */
+/** If you're one of those damned souls that wants to make your robot speak. */
 public class FalconOrchestra extends SubsystemBase {
     private Orchestra orchestra;
     private String[] currentPlaylist;

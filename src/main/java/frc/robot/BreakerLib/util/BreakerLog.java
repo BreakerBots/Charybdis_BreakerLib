@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.util.WPILibVersion;
-import frc.robot.BreakerLib.devices.misic.BreakerRoboRio;
+import frc.robot.BreakerLib.devices.misc.BreakerRoboRio;
 
 /** Add your docs here. */
 public class BreakerLog {

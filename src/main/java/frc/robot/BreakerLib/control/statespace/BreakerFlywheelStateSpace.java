@@ -28,15 +28,22 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
   private double targetSpeedRadPerSec = 0;
   private double nextVoltage = 0;
   private boolean loopIsRunning = true;
-  public BreakerFlywheelStateSpace(double flywheelGearing, double flywheelMomentOfInertiaJulesKgMetersSquared, double modelKalmanTrust, 
-  double encoderKalmanTrust, double lqrVelocityErrorTolerance, double lqrControlEffort, WPI_TalonFX... flywheelMotors) {
-    flywheelPlant = LinearSystemId.createFlywheelSystem(DCMotor.getFalcon500(flywheelMotors.length), flywheelMomentOfInertiaJulesKgMetersSquared, flywheelGearing);
-    kalmanFilter = new KalmanFilter<>(Nat.N1(), Nat.N1(), flywheelPlant, VecBuilder.fill(modelKalmanTrust), VecBuilder.fill(encoderKalmanTrust), 0.020);
-    lqrController = new LinearQuadraticRegulator<>(flywheelPlant, VecBuilder.fill(lqrVelocityErrorTolerance), VecBuilder.fill(lqrControlEffort), 0.020); 
+
+  public BreakerFlywheelStateSpace(double flywheelGearing, double flywheelMomentOfInertiaJulesKgMetersSquared,
+      double modelKalmanTrust,
+      double encoderKalmanTrust, double lqrVelocityErrorTolerance, double lqrControlEffort,
+      WPI_TalonFX... flywheelMotors) {
+    flywheelPlant = LinearSystemId.createFlywheelSystem(DCMotor.getFalcon500(flywheelMotors.length),
+        flywheelMomentOfInertiaJulesKgMetersSquared, flywheelGearing);
+    kalmanFilter = new KalmanFilter<>(Nat.N1(), Nat.N1(), flywheelPlant, VecBuilder.fill(modelKalmanTrust),
+        VecBuilder.fill(encoderKalmanTrust), 0.020);
+    lqrController = new LinearQuadraticRegulator<>(flywheelPlant, VecBuilder.fill(lqrVelocityErrorTolerance),
+        VecBuilder.fill(lqrControlEffort), 0.020);
     loop = new LinearSystemLoop<>(flywheelPlant, lqrController, kalmanFilter, 12.0, 0.020);
     leadFlywheelMotor = flywheelMotors[0];
   }
-  /** Onaly call on robot start */
+
+  /** Only call on robot start */
   public void reset() {
     loop.reset(VecBuilder.fill(BreakerUnits.falconVelRsuToRadPerSec(leadFlywheelMotor.getSelectedSensorVelocity())));
     targetSpeedRadPerSec = 0;
@@ -50,12 +57,12 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
     targetSpeedRadPerSec = targetSpeed;
   }
 
-  /** sets the loops target speed to zero */
+  /** Sets the loop's target speed to zero */
   public void stop() {
     targetSpeedRadPerSec = 0;
   }
 
-  /** stops the state space loop from running */
+  /** Stops the state space loop from running */
   public void killLoop() {
     loopIsRunning = false;
   }
@@ -71,10 +78,11 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
 
   private void runLoop() {
     if (loopIsRunning) {
-    loop.setNextR(VecBuilder.fill(targetSpeedRadPerSec));
-    loop.correct(VecBuilder.fill(BreakerUnits.falconVelRsuToRadPerSec(leadFlywheelMotor.getSelectedSensorVelocity())));
-    loop.predict(0.020);
-    nextVoltage = loop.getU(0);
+      loop.setNextR(VecBuilder.fill(targetSpeedRadPerSec));
+      loop.correct(
+          VecBuilder.fill(BreakerUnits.falconVelRsuToRadPerSec(leadFlywheelMotor.getSelectedSensorVelocity())));
+      loop.predict(0.020);
+      nextVoltage = loop.getU(0);
     }
   }
 

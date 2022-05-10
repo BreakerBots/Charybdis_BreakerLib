@@ -17,20 +17,24 @@ import frc.robot.BreakerLib.position.BreakerTransform3d;
 
 /** Add your docs here. */
 public class BreakerPhotonCamera {
+
     private PhotonCamera camera;
     private double cameraAngle;
     private double cameraHeightIns;
     private double verticalFOV;
     private double horizontalFOV;
     private BreakerTransform3d cameraPositionRelativeToRobot;
-    public BreakerPhotonCamera(String cameraName, double verticalFOV, double horizontalFOV, BreakerTransform3d cameraPositionRelativeToRobot) {
+
+    public BreakerPhotonCamera(String cameraName, double verticalFOV, double horizontalFOV,
+            BreakerTransform3d cameraPositionRelativeToRobot) {
         camera = new PhotonCamera(cameraName);
         this.cameraPositionRelativeToRobot = cameraPositionRelativeToRobot;
         this.cameraAngle = cameraPositionRelativeToRobot.getRotationComponent().getPitch().getDegrees();
-        this.cameraHeightIns = Units.metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
+        this.cameraHeightIns = Units
+                .metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
         this.verticalFOV = verticalFOV;
         this.horizontalFOV = horizontalFOV;
-        
+
     }
 
     public PhotonPipelineResult getLatestRawResult() {
@@ -40,7 +44,6 @@ public class BreakerPhotonCamera {
     public Boolean getCameraHasTargets() {
         return getLatestRawResult().hasTargets();
     }
-
 
     public PhotonTrackedTarget[] getAllRawTrackedTargets() {
         return getLatestRawResult().targets.toArray(new PhotonTrackedTarget[getLatestRawResult().targets.size()]);

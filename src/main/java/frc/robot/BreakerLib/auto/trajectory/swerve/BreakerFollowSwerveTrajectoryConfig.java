@@ -11,14 +11,17 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 
 /** Add your docs here. */
 public class BreakerFollowSwerveTrajectoryConfig {
+
     private PIDController xPosPID;
     private PIDController yPosPID;
     private ProfiledPIDController tAngPID;
     private BreakerSwerveDrive drivetrain;
     private Constraints constraints;
-    public BreakerFollowSwerveTrajectoryConfig(BreakerSwerveDrive drivetrain, double xPositionKp, double xPositionKi, 
-        double xPositionKd, double yPositionKp, double yPositionKi, double yPositionKd,  
-        double thetaAngleKp, double thetaAngleKi, double thetaAngleKd, double maxAllowedThetaVel, double maxAllowedThetaAccel) {
+
+    public BreakerFollowSwerveTrajectoryConfig(BreakerSwerveDrive drivetrain, double xPositionKp, double xPositionKi,
+            double xPositionKd, double yPositionKp, double yPositionKi, double yPositionKd,
+            double thetaAngleKp, double thetaAngleKi, double thetaAngleKd, double maxAllowedThetaVel,
+            double maxAllowedThetaAccel) {
         xPosPID = new PIDController(xPositionKp, xPositionKi, xPositionKd);
         yPosPID = new PIDController(yPositionKp, yPositionKi, yPositionKd);
         constraints = new Constraints(maxAllowedThetaVel, maxAllowedThetaAccel);
@@ -32,7 +35,7 @@ public class BreakerFollowSwerveTrajectoryConfig {
         tAngPID.setTolerance(tolernces[4], tolernces[5]);
     }
 
-    public ProfiledPIDController gettAngPID() {
+    public ProfiledPIDController getThetaAngPID() {
         return tAngPID;
     }
 
