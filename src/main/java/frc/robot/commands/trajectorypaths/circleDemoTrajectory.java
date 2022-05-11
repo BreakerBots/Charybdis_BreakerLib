@@ -7,25 +7,21 @@ package frc.robot.commands.trajectorypaths;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.BreakerStartTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.subsystems.Drive;
 
 public class circleDemoTrajectory extends SequentialCommandGroup {
   /** Creates a new testTrajectory. */
-  Trajectory partOne;
+  BreakerTrajectoryPath partOne;
   TrajectoryConfig config;
   Pose2d startingPose;
   Pose2d endPose;
@@ -47,7 +43,7 @@ public class circleDemoTrajectory extends SequentialCommandGroup {
     waypoints.add(new Translation2d(-0.848, 0.352));
 
     // creates first trajecotry to follow
-    partOne = TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config); 
+    partOne = new BreakerTrajectoryPath(TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config)); 
 
     addCommands(
       new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose, pigeon2),

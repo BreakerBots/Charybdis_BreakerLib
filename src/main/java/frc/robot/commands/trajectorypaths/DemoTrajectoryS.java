@@ -18,6 +18,8 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.BreakerStartTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerPositionTriggeredCommand;
 import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
@@ -25,7 +27,7 @@ import frc.robot.subsystems.Drive;
 
 public class DemoTrajectoryS extends SequentialCommandGroup {
   /** Creates a new testTrajectory. */
-  Trajectory partOne;
+  BreakerTrajectoryPath partOne;
   TrajectoryConfig config;
   Pose2d startingPose;
   Pose2d endPose;
@@ -43,7 +45,7 @@ public class DemoTrajectoryS extends SequentialCommandGroup {
     waypoints.add(new Translation2d(3, -1));
 
     // creates first trajecotry to follow
-    partOne = TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config); 
+    partOne = new BreakerTrajectoryPath(TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config));
 
     addCommands(
       new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose, pigeon2),
