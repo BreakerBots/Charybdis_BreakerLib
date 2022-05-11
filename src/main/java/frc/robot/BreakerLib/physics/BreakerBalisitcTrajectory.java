@@ -10,6 +10,5 @@ import edu.wpi.first.math.geometry.Translation2d;
 /** Add your docs here. */
 public class BreakerBalisitcTrajectory {
     public BreakerBalisitcTrajectory(BreakerProjectile projectile, Translation2d launchHeight, double launchSpeedMetersPerSec, Rotation2d launchAngle) {
-        
     }
 }

@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
+import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
@@ -30,14 +32,26 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     private boolean commandIsFinished = false;
     private boolean stopAtEnd = false;
     private double currentTimeCycles = 0;
+    private List<BreakerConditionalCommand> attachedCondtionalCommands;
 
     BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, boolean stopAtEnd,
-            Subsystem requiredSubsystem, Trajectory... trajectoriesToFollow) {
+            Subsystem requiredSubsystem, BreakerTrajectoryPath... trajectoryPaths) {
         drivetrain = config.getDrivetrain();
-        this.trajectoriesToFollow = trajectoriesToFollow;
         this.config = config;
         this.stopAtEnd = stopAtEnd;
         this.requiredSubsystem = requiredSubsystem;
+        try {
+            for (BreakerTrajectoryPath path: trajectoryPaths) {
+                attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
+            }
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
+        Trajectory[] arr = new Trajectory[trajectoryPaths.length];
+        for (int i = 0; i <= trajectoryPaths.length; i++) {
+            arr[i] = trajectoryPaths[i].getBaseTrajectory();
+        }
+        trajectoriesToFollow = arr;
     }
 
     @Override
@@ -53,6 +67,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     @Override
     public void execute() {
         currentTimeCycles++;
+        checkAttachedCommands();
         if (currentTrajectory != prevTrajectory) {
             try {
                 controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
@@ -142,5 +157,23 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     @Override
     public State getCurrentState() {
         return trajectoriesToFollow[currentTrajectory].sample(getCurrentPathTimeSeconds() - getOnlyCurrentPathTime());
+    }
+
+    @Override
+    public void attachConditionalCommands(BreakerConditionalCommand... conditionalCommands) {
+        for (BreakerConditionalCommand com: conditionalCommands) {
+            attachedCondtionalCommands.add(com);
+        }
+    }
+
+    private void checkAttachedCommands() {
+        try {
+            for (BreakerConditionalCommand com: attachedCondtionalCommands) {
+                com.updateAutoRun();
+            }
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
+        
     }
 }

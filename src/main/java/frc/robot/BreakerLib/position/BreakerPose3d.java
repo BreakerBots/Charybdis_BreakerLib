@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.position;
 
+import edu.wpi.first.hal.I2CJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;

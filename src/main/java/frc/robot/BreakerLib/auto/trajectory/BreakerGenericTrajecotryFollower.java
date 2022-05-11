@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerConditionalCommand;
 
 /** Add your docs here. */
 public interface BreakerGenericTrajecotryFollower {
@@ -25,6 +26,8 @@ public interface BreakerGenericTrajecotryFollower {
     public abstract List<State> getAllStates();
 
     public abstract State getCurrentState();
+
+    public abstract void attachConditionalCommands(BreakerConditionalCommand... conditionalCommands);
 
 }
 

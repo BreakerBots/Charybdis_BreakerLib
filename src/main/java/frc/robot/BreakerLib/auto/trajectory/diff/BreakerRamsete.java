@@ -15,10 +15,13 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
+import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
@@ -33,6 +36,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private double totalTimeSeconds = 0;
     private boolean stopAtEnd;
     private Trajectory trajectoryToFollow;
+    private List<BreakerConditionalCommand> attachedCondtionalCommands;
 
     /**
      * Constructor for BreakerRamsete controller.
@@ -47,7 +51,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
      * @param maxVoltage Max amount of volts that can be applied
      * @param stopAtEnd Whether the robot stops on completion.
      */
-    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain,
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
             Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
             double maxVoltage, boolean stopAtEnd) {
 
@@ -55,8 +59,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
                 + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " + trajectoryToFollow.toString() + " )");
 
         this.drivetrain = drivetrain;
-        this.trajectoryToFollow = trajectoryToFollow;
-
+        trajectoryToFollow = trajectoryPath.getBaseTrajectory();
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), maxVoltage);
 
@@ -73,16 +76,22 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
+
+        try {
+            attachedCondtionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
     }
 
-    public BreakerRamsete(Trajectory trajectoryToFollow, BreakerDiffDrive drivetrain,
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
             Supplier<Pose2d> currentPoseSupplyer,
             Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
             double maxVoltage, boolean stopAtEnd) {
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
                 + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " + trajectoryToFollow.toString() + " )");
         this.drivetrain = drivetrain;
-        this.trajectoryToFollow = trajectoryToFollow;
+        this.trajectoryToFollow = trajectoryPath.getBaseTrajectory();
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), maxVoltage);
 
@@ -99,11 +108,18 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
+
+        try {
+            attachedCondtionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
     }
 
     @Override
     public void execute() {
         currentTimeCycles++;
+        checkAttachedCommands();
     }
 
     @Override
@@ -155,4 +171,23 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     public State getCurrentState() {
         return trajectoryToFollow.sample(getCurrentPathTimeSeconds());
     }
+
+    @Override
+    public void attachConditionalCommands(BreakerConditionalCommand... conditionalCommands) {
+        for (BreakerConditionalCommand com: conditionalCommands) {
+            attachedCondtionalCommands.add(com);
+        }
+    }
+
+    private void checkAttachedCommands() {
+        try {
+            for (BreakerConditionalCommand com: attachedCondtionalCommands) {
+                com.updateAutoRun();
+            }
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
+        
+    }
+
 }
