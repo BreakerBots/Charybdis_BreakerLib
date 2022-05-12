@@ -33,7 +33,7 @@ public class BreakerSwerveModule {
     private DeviceHealth encoderHealth = DeviceHealth.NOMINAL;
     private String faults = null;
     private WPI_CANCoder turnEncoder;
-    /** constructs a new swerve drive module, this class is meant to sirve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class
+    /** constructs a new swerve drive module, this class is meant to surve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class
      * @param driveMotor - The TalonFX motor that moves the module's wheel linearly
      * @param turnMotor - The TalonFX motor that actuates module's wheel angle and changes the direction it is faceing
      * @param turnEncoder - The CTRE CANcoder magnetic encoder that the module uses to detirman wheel angle

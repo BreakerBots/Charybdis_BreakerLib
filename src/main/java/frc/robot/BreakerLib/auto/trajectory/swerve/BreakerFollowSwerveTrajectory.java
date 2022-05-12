@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
-import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryPath;
-import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerConditionalCommand;
+import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 

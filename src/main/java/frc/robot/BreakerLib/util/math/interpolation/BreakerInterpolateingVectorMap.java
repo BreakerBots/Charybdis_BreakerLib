@@ -5,40 +5,35 @@
 package frc.robot.BreakerLib.util.math.interpolation;
 
 import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 
 /** Add your docs here. */
 public class BreakerInterpolateingVectorMap {
-    private HashMap<Double, BreakerVector2> indexesAndVectors;
-    public BreakerInterpolateingVectorMap(HashMap<Double, BreakerVector2> indexesAndVectors) {
+    private TreeMap<Double, BreakerVector2> indexesAndVectors;
+    public BreakerInterpolateingVectorMap(TreeMap<Double, BreakerVector2> indexesAndVectors) {
         this.indexesAndVectors = indexesAndVectors;
     }
 
     public BreakerVector2 getInterpolatedVector(Double interpolendValue) {
-        boolean highKeySet = false;
-        Double lowKey = interpolendValue;
-        Double highKey = interpolendValue;
-        for (Double key: indexesAndVectors.keySet()) {
-            if (key <= interpolendValue && !(key <= lowKey)) {
-                lowKey = key;
-            } else if (key >= interpolendValue && !(key >= highKey && !highKeySet)) {
-                highKey = key;
-            }
+        Entry<Double, BreakerVector2> low = indexesAndVectors.floorEntry(interpolendValue);
+        Entry<Double, BreakerVector2> high = indexesAndVectors.ceilingEntry(interpolendValue);
+
+        if (low == null) {
+            return high.getValue();
+        }
+        if (high == null) {
+            return low.getValue();
+        }
+        if (high.getValue().equals(low.getValue())) {
+            return high.getValue();
         }
 
-        BreakerVector2 lowVec = indexesAndVectors.get(lowKey);
-        BreakerVector2 highVec =  indexesAndVectors.get(highKey);
-
-        double lowF = lowVec.getForce();
-        Rotation2d lowR = lowVec.getForceRotation();
-
-        double highF = highVec.getForce();
-        Rotation2d highR = highVec.getForceRotation();
-
-        double interF = interpolate(interpolendValue, lowKey, highKey, lowF, highF);
-        double interR = interpolate(interpolendValue, lowKey, highKey, lowR.getRadians(), highR.getRadians());
+        double interF = interpolate(interpolendValue, low.getKey(), high.getKey(), low.getValue().getForce(), high.getValue().getForce());
+        double interR = interpolate(interpolendValue, low.getKey(), high.getKey(), low.getValue().getForceRotation().getRadians(), high.getValue().getForceRotation().getRadians());
 
         return BreakerVector2.fromForceAndRotation(new Rotation2d(interR), interF);
     }

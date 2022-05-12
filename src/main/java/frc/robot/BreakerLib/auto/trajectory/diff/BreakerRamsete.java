@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
-import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryPath;
-import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerConditionalCommand;
+import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 

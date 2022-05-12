@@ -9,7 +9,7 @@ import java.util.List;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import frc.robot.BreakerLib.auto.trajectory.conditionalcommand.BreakerConditionalCommand;
+import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 
 /** Add your docs here. */
 public interface BreakerGenericTrajecotryFollower {
