@@ -14,7 +14,6 @@ public class BreakerRoboRio extends SubsystemBase {
     private static double prevTime = RobotController.getFPGATime();
     private static double diffTime = 0;
     private static RobotMode curMode = RobotMode.DISABLED;
-    public BreakerRoboRio() {}
 
     private static double calculateInterCycleTime() {
         double curTime = RobotController.getFPGATime(); // In microseconds

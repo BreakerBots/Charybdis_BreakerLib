@@ -23,11 +23,9 @@ public class BreakerFlywheel extends SubsystemBase {
     private MotorControllerGroup flywheel;
     private WPI_TalonFX lFlyMotor;
     private BreakerFlywheelStateSpace flySS;
-    public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors
-        /*, double flywheelKs, double flywheelKv, double flywheelKa */) {
+    public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
         flyPID = new PIDController(config.getFlywheelKp(), config.getFlywheelKi(), config.getFlywheelKd());
         flyPID.setTolerance(config.getFlywheelPosTol(), config.getFlywheelVelTol());
-        //flyFF = new SimpleMotorFeedforward(flywheelKs, flywheelKv, flywheelKa);
         flySS = new BreakerFlywheelStateSpace(config.getFlywheelGearing(), config.getFlywheelMomentOfInertiaJulesKgMetersSquared(), config.getModelKalmanTrust(), 
         config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(), flywheelMotors);
         flywheel = new MotorControllerGroup(flywheelMotors);

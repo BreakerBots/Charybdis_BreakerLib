@@ -34,7 +34,7 @@ public class BreakerPhotonCamera {
                 .metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
         this.verticalFOV = verticalFOV;
         this.horizontalFOV = horizontalFOV;
-
+        
     }
 
     public PhotonPipelineResult getLatestRawResult() {
