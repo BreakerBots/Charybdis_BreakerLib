@@ -11,6 +11,7 @@
 // import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+// import frc.robot.BreakerLib.factories.BreakerCANCoderFactory;
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveModule;
@@ -52,22 +53,22 @@
 
 //         driveFL = new WPI_TalonFX(deviceNumber);
 //         turnFL = new WPI_TalonFX(deviceNumber);
-//         encoderFL = new WPI_CANCoder(deviceNumber);
+//         encoderFL = BreakerCANCoderFactory.createCANCoder(deviceID, absoluteSensorRange, absoluteOffsetDegress, invertEncoder);
 //         transFL = new Translation2d(x, y);
 
 //         driveFR = new WPI_TalonFX(deviceNumber);
 //         turnFR = new WPI_TalonFX(deviceNumber);
-//         encoderFR = new WPI_CANCoder(deviceNumber);
+//         encoderFR = BreakerCANCoderFactory.createCANCoder(deviceID, absoluteSensorRange, absoluteOffsetDegress, invertEncoder);
 //         transFR = new Translation2d(x, y);
         
 //         driveBL = new WPI_TalonFX(deviceNumber);
 //         turnBL = new WPI_TalonFX(deviceNumber);
-//         encoderBL = new WPI_CANCoder(deviceNumber);
+//         encoderBL = BreakerCANCoderFactory.createCANCoder(deviceID, absoluteSensorRange, absoluteOffsetDegress, invertEncoder);
 //         transBL = new Translation2d(x, y);
 
 //         driveBR = new WPI_TalonFX(deviceNumber);
 //         turnBR = new WPI_TalonFX(deviceNumber);
-//         encoderBR = new WPI_CANCoder(deviceNumber);
+//         encoderBR = BreakerCANCoderFactory.createCANCoder(deviceID, absoluteSensorRange, absoluteOffsetDegress, invertEncoder);
 //         transBR = new Translation2d(x, y);
 
 //         config = new BreakerSwerveDriveConfig(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, transFL, transFR, transBL, transBR);

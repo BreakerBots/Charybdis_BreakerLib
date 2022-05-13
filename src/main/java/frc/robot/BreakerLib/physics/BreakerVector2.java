@@ -4,7 +4,11 @@
 
 package frc.robot.BreakerLib.physics;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Tracer;
 
 /** represents a point with 2 axial vectors of ajustable magnatudes (one paralell with the points X, and Y axis) */
 public class BreakerVector2 {
@@ -42,5 +46,11 @@ public class BreakerVector2 {
 
     public double getForceY() {
         return forceY;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (Math.abs(((BreakerVector2) obj).forceX - forceX) < 1E-9) 
+            && (Math.abs(((BreakerVector2) obj).forceY - forceY) < 1E-9); 
     }
 }
