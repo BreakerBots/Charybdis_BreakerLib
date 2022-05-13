@@ -17,7 +17,7 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDr
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.devices.Vision;
 
-public class persueBall extends CommandBase {
+public class PursueBall extends CommandBase {
   /** Creates a new persueBall. */
   private Vision vision;
   private Drive drivetrain;
@@ -27,7 +27,7 @@ public class persueBall extends CommandBase {
   private boolean tgtPoseUpdated = false;
   private double drivePoseAngCor = 0;
   private int cycleCount = 0;
-  public persueBall(Vision vision, Drive drivetrain, Pose2d aproxTargetPose) {
+  public PursueBall(Vision vision, Drive drivetrain, Pose2d aproxTargetPose) {
     this.vision = vision;
     this.aproxTargetPose = aproxTargetPose;
     this.drivetrain = drivetrain;
