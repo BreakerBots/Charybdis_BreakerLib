@@ -24,11 +24,11 @@ public class Vision {
     }
 
     public boolean hasTargetsBC() {
-        return ballCam.getCameraHasTargets();
+        return ballCam.hasTargets();
     }
 
     public boolean hasTargetsTC() {
-        return tgtCam.getCameraHasTargets();
+        return tgtCam.hasTargets();
     }
 
     public BreakerPhotonTarget getBestTargetBC() {

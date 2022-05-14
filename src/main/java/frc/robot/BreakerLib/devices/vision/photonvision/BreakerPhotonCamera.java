@@ -47,7 +47,7 @@ public class BreakerPhotonCamera {
     }
 
     /** If camera is locked onto any targets. */
-    public boolean getCameraHasTargets() {
+    public boolean hasTargets() {
         return getLatestRawResult().hasTargets();
     }
 
@@ -98,11 +98,11 @@ public class BreakerPhotonCamera {
         return horizontalFOV;
     }
 
-    public Transform2d getCameraPositionRelativeToRobot() {
+    public Transform2d getCamPositionRelativeToRobot() {
         return cameraPositionRelativeToRobot.get2dTransformationComponent();
     }
 
-    public void updateCameraPositionRelativeToRobot(BreakerTransform3d newTransform) {
+    public void updateCamPositionRelativeToRobot(BreakerTransform3d newTransform) {
         cameraPositionRelativeToRobot = newTransform;
         cameraAngle = newTransform.getRotationComponent().getPitch().getDegrees();
         cameraHeightIns = Units.metersToInches(newTransform.getTranslationComponent().getMetersZ());

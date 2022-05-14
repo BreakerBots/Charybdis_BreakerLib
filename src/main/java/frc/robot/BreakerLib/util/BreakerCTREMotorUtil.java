@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-/** Add your docs here. */
+/** Util class for CTRE motors. */
 public class BreakerCTREMotorUtil {
 
   /**

@@ -17,17 +17,20 @@ import frc.robot.BreakerLib.util.math.BreakerUnits;
 /** Add your docs here. */
 public class BreakerFlywheel extends SubsystemBase {
     private PIDController flyPID;
-    //private SimpleMotorFeedforward flyFF;
+    // private SimpleMotorFeedforward flyFF;
     private boolean runFlywheel = false;
     private double flywheelTargetRSU = 0;
     private MotorControllerGroup flywheel;
     private WPI_TalonFX lFlyMotor;
     private BreakerFlywheelStateSpace flySS;
+
     public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
         flyPID = new PIDController(config.getFlywheelKp(), config.getFlywheelKi(), config.getFlywheelKd());
         flyPID.setTolerance(config.getFlywheelPosTol(), config.getFlywheelVelTol());
-        flySS = new BreakerFlywheelStateSpace(config.getFlywheelGearing(), config.getFlywheelMomentOfInertiaJulesKgMetersSquared(), config.getModelKalmanTrust(), 
-        config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(), flywheelMotors);
+        flySS = new BreakerFlywheelStateSpace(config.getFlywheelGearing(),
+                config.getFlywheelMomentOfInertiaJulesKgMetersSquared(), config.getModelKalmanTrust(),
+                config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(),
+                flywheelMotors);
         flywheel = new MotorControllerGroup(flywheelMotors);
         lFlyMotor = flywheelMotors[0];
     }
@@ -59,9 +62,10 @@ public class BreakerFlywheel extends SubsystemBase {
 
     private void runFlywheel() {
         if (runFlywheel) {
-        flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
-        double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed(); /* (flyFF.calculate(flywheelTargetRSU) / lFlyMotor.getBusVoltage()) */;
-        flywheel.set(flySetSpd);
+            flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
+            double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed();
+            /* (flyFF.calculate(flywheelTargetRSU) / lFlyMotor.getBusVoltage()) */;
+            flywheel.set(flySetSpd);
         }
     }
 

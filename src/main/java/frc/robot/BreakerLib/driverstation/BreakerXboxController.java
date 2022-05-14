@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
-/** Add your docs here. */
+/** Wrapper for Xinput controllers. */
 public class BreakerXboxController {
 
-
+    // Xbox digital button ports
     public static final int A_PORT = 1;
     public static final int B_PORT = 2;
     public static final int X_PORT = 3;
@@ -24,7 +24,7 @@ public class BreakerXboxController {
     public static final int START_PORT = 8;
     public static final int L_STICK_PRESS_PORT = 9;
     public static final int R_STICK_PRESS_PORT = 10;
-    // Xbox axis constants
+    // Xbox axis ports
     public static final int LEFT_X_PORT = 0;
     public static final int LEFT_Y_PORT = 1;
     public static final int L_TRIGGER_PORT = 2;
@@ -37,8 +37,8 @@ public class BreakerXboxController {
     public static final int DPAD_DOWN_ANG = 180;
     public static final int DPAD_LEFT_ANG = 270;
 
-
     private XboxController controller;
+
     private JoystickButton buttonA;
     private JoystickButton buttonB;
     private JoystickButton buttonX;
@@ -49,10 +49,12 @@ public class BreakerXboxController {
     private JoystickButton rightStickButton;
     private JoystickButton startButton;
     private JoystickButton backButton;
-    private POVButton dPadUP;
+
+    private POVButton dPadUp;
     private POVButton dPadDown;
     private POVButton dPadLeft;
     private POVButton dPadRight;
+
     public BreakerXboxController(int xboxPortNum) {
         controller = new XboxController(xboxPortNum);
         buttonA = new JoystickButton(controller, A_PORT);
@@ -65,7 +67,8 @@ public class BreakerXboxController {
         rightStickButton = new JoystickButton(controller, R_STICK_PRESS_PORT);
         startButton = new JoystickButton(controller, START_PORT);
         backButton = new JoystickButton(controller, BACK_PORT);
-        dPadUP = new POVButton(controller, DPAD_UP_ANG);
+        
+        dPadUp = new POVButton(controller, DPAD_UP_ANG);
         dPadDown = new POVButton(controller, DPAD_DOWN_ANG);
         dPadLeft = new POVButton(controller, DPAD_LEFT_ANG);
         dPadRight = new POVButton(controller, DPAD_RIGHT_ANG);
@@ -128,6 +131,6 @@ public class BreakerXboxController {
     }
 
     public POVButton getdPadUP() {
-        return dPadUP;
+        return dPadUp;
     }
 }
