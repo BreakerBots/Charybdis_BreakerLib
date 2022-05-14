@@ -12,9 +12,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 
 /** Add your docs here. */
-public class BreakerInterpolateingVectorMap {
+public class BreakerInterpolateingVectorTreeMap extends Interpolateable {
     private TreeMap<Double, BreakerVector2> indexesAndVectors;
-    public BreakerInterpolateingVectorMap(TreeMap<Double, BreakerVector2> indexesAndVectors) {
+    public BreakerInterpolateingVectorTreeMap(TreeMap<Double, BreakerVector2> indexesAndVectors) {
         this.indexesAndVectors = indexesAndVectors;
     }
 
@@ -32,14 +32,9 @@ public class BreakerInterpolateingVectorMap {
             return high.getValue();
         }
 
-        double interF = interpolate(interpolendValue, low.getKey(), high.getKey(), low.getValue().getForce(), high.getValue().getForce());
-        double interR = interpolate(interpolendValue, low.getKey(), high.getKey(), low.getValue().getForceRotation().getRadians(), high.getValue().getForceRotation().getRadians());
+        double interF = interpolateLinear(interpolendValue, low.getKey(), high.getKey(), low.getValue().getForce(), high.getValue().getForce());
+        double interR = interpolateLinear(interpolendValue, low.getKey(), high.getKey(), low.getValue().getForceRotation().getRadians(), high.getValue().getForceRotation().getRadians());
 
         return BreakerVector2.fromForceAndRotation(new Rotation2d(interR), interF);
-    }
-
-    private double interpolate(double knownX, double lowX, double highX, double lowY, double highY) {
-       return (((knownX - lowX) * (highY - lowY)) / (highX - lowX)) + lowY;
-
     }
 }

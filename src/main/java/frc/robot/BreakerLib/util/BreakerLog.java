@@ -5,8 +5,7 @@
 package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.DataLogManager;
-import frc.robot.BreakerLib.devices.misc.BreakerRoboRIO;
-import frc.robot.BreakerLib.devices.misc.BreakerRoboRIO.RobotMode;
+import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 
 /** Add your docs here. */
 public class BreakerLog {
