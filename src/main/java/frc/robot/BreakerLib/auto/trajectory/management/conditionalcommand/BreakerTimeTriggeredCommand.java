@@ -26,7 +26,7 @@ public class BreakerTimeTriggeredCommand implements BreakerConditionalCommand{
 
     @Override
     public boolean checkCondition() {
-        return BreakerMath.getIsRoughlyEqualTo(triggerTime, currentTimeSupplier.getAsDouble(), tolerences);
+        return BreakerMath.isRoughlyEqualTo(triggerTime, currentTimeSupplier.getAsDouble(), tolerences);
     }
 
     @Override

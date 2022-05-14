@@ -9,8 +9,10 @@ import edu.wpi.first.math.geometry.Transform2d;
 
 /** Represents a 3d transformation of a pose */
 public class BreakerTransform3d {
+
     private BreakerTranslation3d translation;
     private BreakerRotation3d rotation;
+    
     public BreakerTransform3d(BreakerTranslation3d translation, BreakerRotation3d rotation) {
         this.translation = translation;
         this.rotation = rotation;

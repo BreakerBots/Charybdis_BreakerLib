@@ -8,15 +8,16 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerColorSensor implements BreakerGenaricDevice {
-  /** Creates a new BreakerColorSensor. */
+public class BreakerColorSensor implements BreakerGenericDevice {
+
   private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
   private ColorSensorV3 colorSensor;
   private String faults = null;
   private String deviceName = "Color_Sensor_V3";
+
   public BreakerColorSensor(Port i2cPort) {
     colorSensor = new ColorSensorV3(i2cPort);
   }

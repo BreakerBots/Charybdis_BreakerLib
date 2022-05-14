@@ -5,8 +5,8 @@
 package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.DataLogManager;
-import frc.robot.BreakerLib.devices.misc.BreakerRoboRio;
-import frc.robot.BreakerLib.devices.misc.BreakerRoboRio.RobotMode;
+import frc.robot.BreakerLib.devices.misc.BreakerRoboRIO;
+import frc.robot.BreakerLib.devices.misc.BreakerRoboRIO.RobotMode;
 
 /** Add your docs here. */
 public class BreakerLog {
@@ -18,7 +18,7 @@ public class BreakerLog {
     DataLogManager.start();
   }
 
-  /** Startup message for robot */
+  /** Startup message for robot. */
   public static void logRobotStarted(int teamNum, String teamName, String robotName, int year,
       String robotSoftwareVersion, String authorNames) {
     StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n");
@@ -28,30 +28,36 @@ public class BreakerLog {
     work.append(" AUTHORS: " + authorNames + "\n\n");
     work.append(" | ---------------------------------------------- | \n\n\n");
     BreakerLog.log(work.toString());
-    BreakerRoboRio.setCurrentRobotMode(RobotMode.DISABLED);
+    BreakerRoboRIO.setCurrentRobotMode(RobotMode.DISABLED);
   }
 
+  /** Logs robot mode change. Also changes current robot mode?! */
   public static void logRobotChangedMode(RobotMode newMode) {
     DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
-    BreakerRoboRio.setCurrentRobotMode(newMode);
+    BreakerRoboRIO.setCurrentRobotMode(newMode);
   }
 
+  /** Logs given event. */
   public static void logEvent(String event) {
     DataLogManager.log(" EVENT: " + event);
   }
 
+  /** Needs justification */
   public static void logBreakerLibEvent(String event) {
     DataLogManager.log(" BREAKERLIB INTERNAL EVENT: " + event);
   }
 
+  /** Logs errors... somehow. */
   public static void logError(String error) {
     DataLogManager.log(" ERROR: " + error);
   }
 
+  /** Logs superstructure(?) events. */
   public static void logSuperstructureEvent(String event) {
     DataLogManager.log(" ROBOT SUPERSTRUCTURE EVENT: " + event);
   }
 
+  /** Write custom message to log. */
   public static void log(String message) {
     DataLogManager.log(message);
   }

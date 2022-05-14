@@ -19,18 +19,18 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.physics.BreakerVector3;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.BreakerMotorControl;
+import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenaricDevice {
+public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenericDevice {
   private WPI_TalonFX leftLead;
   private WPI_TalonFX[] leftMotors;
   private MotorControllerGroup leftDrive;
@@ -134,12 +134,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
   }
 
   public void setDrivetrainBrakeMode(boolean isEnabled) {
-    for (WPI_TalonFX motorL: leftMotors) {
-      BreakerMotorControl.setTalonBrakeMode(motorL, isEnabled);
-    }
-    for (WPI_TalonFX motorR: rightMotors) {
-      BreakerMotorControl.setTalonBrakeMode(motorR, isEnabled);
-    }
+    BreakerCTREMotorUtil.setBrakeMode(isEnabled, leftMotors);
+    BreakerCTREMotorUtil.setBrakeMode(isEnabled, rightMotors);
   }
   
   /** Returns an instance of the drivetrain's left side lead motor */
@@ -226,7 +222,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
       if (motorFaults.hasAnyFault()) {
         hasFault = true;
         work.append(" MOTOR ID (" + motorL.getDeviceID() + ") FAULTS: ");
-        work.append(BreakerMotorControl.getMotorFaultsAsString(motorFaults));
+        work.append(BreakerCTREMotorUtil.getMotorFaultsAsString(motorFaults));
       }
     }
     for (WPI_TalonFX motorR: rightMotors) {
@@ -235,7 +231,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenari
       if (motorFaults.hasAnyFault()) {
         hasFault = true;
         work.append(" MOTOR ID (" + motorR.getDeviceID() + ") FAULTS: ");
-        work.append(BreakerMotorControl.getMotorFaultsAsString(motorFaults));
+        work.append(BreakerCTREMotorUtil.getMotorFaultsAsString(motorFaults));
       }
     }
     faults = work.toString();

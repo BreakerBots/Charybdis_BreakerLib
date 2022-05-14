@@ -13,13 +13,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.BreakerLib.devices.misc.BreakerRoboRio;
+import frc.robot.BreakerLib.devices.misc.BreakerRoboRIO;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker6AxisForces;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDriveConfig;
-import frc.robot.BreakerLib.util.BreakerMotorControl;
+import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive. */
@@ -48,8 +48,8 @@ public class Drive extends SubsystemBase {
     right2 = new WPI_TalonFX(Constants.R2_ID);
     right3 = new WPI_TalonFX(Constants.R3_ID);
 
-    leftMotors = BreakerMotorControl.createMotorArray(left1, left2, left3);
-    rightMotors = BreakerMotorControl.createMotorArray(right1, right2, right3);
+    leftMotors = BreakerCTREMotorUtil.createMotorArray(left1, left2, left3);
+    rightMotors = BreakerCTREMotorUtil.createMotorArray(right1, right2, right3);
     
     leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
     leftSideRamsetePID.setTolerance(0.02, 0.05);

@@ -4,10 +4,7 @@
 
 package frc.robot.BreakerLib.devices.vision.photonvision;
 
-import java.lang.annotation.Target;
-
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonTargetSortMode;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -15,16 +12,23 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.BreakerLib.position.BreakerTransform3d;
 
-/** Add your docs here. */
+/** Photon camera */
 public class BreakerPhotonCamera {
 
     private PhotonCamera camera;
-    private double cameraAngle;
-    private double cameraHeightIns;
+    private double cameraAngle; // Mounting angle
+    private double cameraHeightIns; // Height relative to ground. MAKE THIS METERS?
     private double verticalFOV;
     private double horizontalFOV;
-    private BreakerTransform3d cameraPositionRelativeToRobot;
+    private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot position.
 
+    /**
+     * 
+     * @param cameraName Name of camera used to retreive data.
+     * @param verticalFOV Vertical field of view.
+     * @param horizontalFOV Horizontal field of view.
+     * @param cameraPositionRelativeToRobot Transformation between robot center and camera position (Z translation is relative to the ground).
+     */
     public BreakerPhotonCamera(String cameraName, double verticalFOV, double horizontalFOV,
             BreakerTransform3d cameraPositionRelativeToRobot) {
         camera = new PhotonCamera(cameraName);
@@ -37,42 +41,51 @@ public class BreakerPhotonCamera {
         
     }
 
+    /** Overall raw result from photon camera. */
     public PhotonPipelineResult getLatestRawResult() {
         return camera.getLatestResult();
     }
 
-    public Boolean getCameraHasTargets() {
+    /** If camera is locked onto any targets. */
+    public boolean getCameraHasTargets() {
         return getLatestRawResult().hasTargets();
     }
 
+    /** Returns a list of all raw PhotonTrackedTargets the camera has in its field of view */
     public PhotonTrackedTarget[] getAllRawTrackedTargets() {
         return getLatestRawResult().targets.toArray(new PhotonTrackedTarget[getLatestRawResult().targets.size()]);
     }
 
+    /** Number of camera targets currently locked on. */
     public int getNumberOfCameraTargets() {
         return getAllRawTrackedTargets().length;
     }
 
-    public double getPipelineLatancyMiliseconds() {
+    /** Camera latency in milliseconds*/
+    public double getPipelineLatancyMilliseconds() {
         return getLatestRawResult().getLatencyMillis();
     }
 
+    /** Sets camera pipeline based on given number. */
     public void setPipelineNumber(int pipeNum) {
         camera.setPipelineIndex(pipeNum);
     }
 
+    /** Returns the index of the active pipeline on the camera as an int */
     public int getCurrentPipelineNumber() {
         return camera.getPipelineIndex();
     }
 
+    /** Returns the raw PhotonTrackedTarget object representing the best tracked target according to the pipeline's native sort */
     public PhotonTrackedTarget getBestTarget() {
         return getLatestRawResult().getBestTarget();
     }
-
+    
     public double getCameraHeightIns() {
         return cameraHeightIns;
     }
 
+    /** Returns pitch of camera. */
     public double getCameraAngle() {
         return cameraAngle;
     }
@@ -91,6 +104,8 @@ public class BreakerPhotonCamera {
 
     public void updateCameraPositionRelativeToRobot(BreakerTransform3d newTransform) {
         cameraPositionRelativeToRobot = newTransform;
+        cameraAngle = newTransform.getRotationComponent().getPitch().getDegrees();
+        cameraHeightIns = Units.metersToInches(newTransform.getTranslationComponent().getMetersZ());
     }
 
 }

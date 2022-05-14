@@ -22,10 +22,11 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
-/** Add your docs here. */
+/** Tracks and identifies pre-defined targets with target data from photon camera. */
 public class BreakerPhotonTarget extends SubsystemBase {
+
     private BreakerPhotonCamera camera;
-    private double targetHightInches;
+    private double targetHeightInches;
     private BreakerGenericDrivetrain drivetrain;
     private Pose2d targetLocation;
     private double maxTargetCordinateDeveationInches;
@@ -34,55 +35,78 @@ public class BreakerPhotonTarget extends SubsystemBase {
     private boolean targetPreAssigned;
     private boolean assignedTargetFound;
 
+    /** Creates a new BreakerPhotonTarget that will activly search for a target that meets its pre-difined paramaters
+     * 
+     * @param camera Photon camera.
+     * @param drivetrain Robot drivetrain for position tracking.
+     * @param targetPosition Position of target relative to field.
+     * @param maxTargetCoordinateDeviationInches 
+     */
     public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericDrivetrain drivetrain,
-            BreakerPose3d targetPosition, double maxTargetCordinateDeviationInches) {
+            BreakerPose3d targetPosition, double maxTargetCoordinateDeviationInches) {
         this.camera = camera;
         this.drivetrain = drivetrain;
         targetLocation = targetPosition.get2dPoseComponent();
-        this.targetHightInches = Units.metersToInches(targetPosition.getTranslationComponent().getMetersZ());
-        this.maxTargetCordinateDeveationInches = maxTargetCordinateDeviationInches;
+        this.targetHeightInches = Units.metersToInches(targetPosition.getTranslationComponent().getMetersZ());
+        this.maxTargetCordinateDeveationInches = maxTargetCoordinateDeviationInches;
         targetPreAssigned = false;
         assignedTargetFound = false;
     }
 
+    /** Creates a new BreakerPhotonTarget with a given predefined target.
+     * 
+     * @param camera Photon camera.
+     * @param assignedTargetSupplier Supplies photon camera target.
+     * @param targetHeightInches Target height from ground.
+     */
     public BreakerPhotonTarget(BreakerPhotonCamera camera, Supplier<PhotonTrackedTarget> assignedTargetSupplier,
-            double targetHightInches) {
+            double targetHeightInches) {
         this.camera = camera;
         this.assignedTargetSupplier = assignedTargetSupplier;
         assignedTarget = assignedTargetSupplier.get();
         assignedTargetFound = (assignedTarget == null) ? false : true;
-        this.targetHightInches = targetHightInches;
+        this.targetHeightInches = targetHeightInches;
     }
 
+    /** Logic used to find a target. */
     private void findAssignedTarget() {
         int runs = 0;
         boolean foundTgt = false;
         if (!targetPreAssigned && camera.getCameraHasTargets()) {
+            // Loops through tracked targets.
             for (PhotonTrackedTarget prospTgt : camera.getAllRawTrackedTargets()) {
-                double distanceMeters = PhotonUtils.calculateDistanceToTargetMeters(
+                double distanceMeters = PhotonUtils.calculateDistanceToTargetMeters( // Distance from target based on constant parameters
                         BreakerUnits.inchesToMeters(camera.getCameraHeightIns()),
-                        BreakerUnits.inchesToMeters(targetHightInches), Math.toRadians(camera.getCameraAngle()),
+                        BreakerUnits.inchesToMeters(targetHeightInches), Math.toRadians(camera.getCameraAngle()),
                         Math.toRadians(prospTgt.getPitch()));
-                Translation2d prospTgtTransl = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters,
-                        Rotation2d.fromDegrees(prospTgt.getYaw()));
-                Transform2d prospTgtTransf = PhotonUtils.estimateCameraToTarget(prospTgtTransl, targetLocation,
-                        drivetrain.getOdometryPoseMeters().getRotation());
-                Pose2d prospTgtPose = drivetrain.getOdometryPoseMeters().transformBy(prospTgtTransf);
 
-                if (BreakerMath.getIsRoughlyEqualTo(prospTgtPose.getX(), targetLocation.getX(),
+                Translation2d prospTgtTranslation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, // Translation of target relative to camera
+                        Rotation2d.fromDegrees(prospTgt.getYaw()));
+
+                Transform2d prospTgtTransform = PhotonUtils.estimateCameraToTarget(prospTgtTranslation, targetLocation, // Transformation from target to camera.
+                        drivetrain.getOdometryPoseMeters().getRotation());
+
+                Pose2d prospTgtPose = drivetrain.getOdometryPoseMeters().transformBy(prospTgtTransform); // Target position relative to field.
+
+                // checks if transform result is close enough to required target location
+                if (BreakerMath.isRoughlyEqualTo(prospTgtPose.getX(), targetLocation.getX(),
                         Units.inchesToMeters(maxTargetCordinateDeveationInches)) &&
-                        BreakerMath.getIsRoughlyEqualTo(prospTgtPose.getY(), targetLocation.getY(),
+                        BreakerMath.isRoughlyEqualTo(prospTgtPose.getY(), targetLocation.getY(),
                                 Units.inchesToMeters(maxTargetCordinateDeveationInches))) {
                     assignedTarget = prospTgt;
                     foundTgt = true;
                 }
                 runs++;
             }
+
+            // checks if a target has been sugessfully found and assigned
             if (runs >= camera.getNumberOfCameraTargets() && foundTgt == true) {
                 assignedTargetFound = true;
             } else {
                 assignedTargetFound = false;
             }
+
+        // assigns the pre-supplyed target if the camera has targets
         } else if (camera.getCameraHasTargets()) {
             assignedTarget = assignedTargetSupplier.get();
             assignedTargetFound = (assignedTarget == null) ? false : true;
@@ -91,7 +115,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
 
     public double getTargetDistanceMeters() {
         return PhotonUtils.calculateDistanceToTargetMeters(BreakerUnits.inchesToMeters(camera.getCameraHeightIns()),
-                BreakerUnits.inchesToMeters(targetHightInches), Math.toRadians(camera.getCameraAngle()),
+                BreakerUnits.inchesToMeters(targetHeightInches), Math.toRadians(camera.getCameraAngle()),
                 Math.toRadians(getPitch()));
     }
 

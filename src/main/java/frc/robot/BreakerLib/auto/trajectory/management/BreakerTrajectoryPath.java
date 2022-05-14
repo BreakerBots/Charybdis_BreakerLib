@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.auto.trajectory.management;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.wpi.first.math.trajectory.Trajectory;

@@ -138,8 +138,16 @@ public class BreakerMath {
         return (2.0 * Math.PI / encoderTicks);
     }
 
-    public static boolean getIsRoughlyEqualTo(double imputNumber, double numberImputIsCompairedTo, double maxDeveation) {
-        return ((imputNumber <= (numberImputIsCompairedTo + maxDeveation)) && (imputNumber >= (numberImputIsCompairedTo - maxDeveation)));
+    /** Checks if two numbers are sufficiently proximate.
+     * 
+     * @param val1 First number.
+     * @param val2 Second number.
+     * @param maxDeviation Absolute value difference between val1 and val2
+     * 
+     * @return true if within deviation, false otherwise.
+     */
+    public static boolean isRoughlyEqualTo(double val1, double val2, double maxDeviation) {
+        return ((val1 <= (val2 + maxDeviation)) && (val1 >= (val2 - maxDeviation)));
     }
 
 }

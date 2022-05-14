@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoManager;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
-import frc.robot.BreakerLib.devices.misc.BreakerRoboRio;
+import frc.robot.BreakerLib.devices.misc.BreakerRoboRIO;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
 import frc.robot.BreakerLib.util.BreakerLog;
@@ -29,11 +29,18 @@ public class RobotContainer {
   private final Intake intakeSys = new Intake();
   private final Hopper hopperSys = new Hopper(intakeSys);
   private final SelfTest testSys = new SelfTest(5);
+  private BreakerAutoManager autoManager;
   public RobotContainer() {
     SelfTest.addDevice(imuSys);
     SelfTest.addDevice(drivetrainSys.getBaseDrivetrain());
     BreakerLog.startLog(false);
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
+
+    autoManager = new BreakerAutoManager(
+      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys, imuSys)),
+      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys, imuSys))
+    );
+
     configureButtonBindings();
   }
 
@@ -53,9 +60,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new BreakerAutoManager(
-      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys, imuSys)),
-      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys, imuSys))
-    ).getSelectedBaseCommandGroup();
+    return autoManager.getSelectedBaseCommandGroup();
   }
 }

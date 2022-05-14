@@ -6,12 +6,12 @@ import com.ctre.phoenix.sensors.Pigeon2_Faults;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.position.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 /* Good version of the CTRE Pigeon 2 class BAYBEEE! */
-public class BreakerPigeon2 implements BreakerGenaricDevice {
+public class BreakerPigeon2 implements BreakerGenericDevice {
   private WPI_Pigeon2 pigeon;
   private double imuInvert;
   private DeviceHealth currentHealth = DeviceHealth.NOMINAL;

@@ -8,21 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 public class SelfTest extends SubsystemBase {
   /** Creates a new SelfTest. */
   private int cycleCount;
   private static String lastSystemCheck;
-  private static List<BreakerGenaricDevice> devices = new ArrayList<BreakerGenaricDevice>();
+  private static List<BreakerGenericDevice> devices = new ArrayList<BreakerGenericDevice>();
   private static int cyclesbetweenPerSelfCecks = 250;
   private static boolean lastCheckPassed = true;
   public SelfTest(double secondsBetweenPeriodicSelfChecks) {
     cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
   }
 
-  public static void addDevice(BreakerGenaricDevice device) {
+  public static void addDevice(BreakerGenericDevice device) {
     devices.add(device);
   }
 
@@ -36,8 +36,8 @@ public class SelfTest extends SubsystemBase {
 
   public static void runSelfCheck() {
     StringBuilder work = new StringBuilder("\n RUNNING SELF CHECK: \n");
-    List<BreakerGenaricDevice> faultDevices = new ArrayList<BreakerGenaricDevice>();
-    for (BreakerGenaricDevice device: devices) {
+    List<BreakerGenericDevice> faultDevices = new ArrayList<BreakerGenericDevice>();
+    for (BreakerGenericDevice device: devices) {
       device.runSelfTest();
       if (device.hasFault()) {
         faultDevices.add(device);
@@ -46,7 +46,7 @@ public class SelfTest extends SubsystemBase {
     if (faultDevices.size() > 0) {
       work.append(" SELF CHECK FAILED - FAULTS FOUND: \n");
       lastCheckPassed = false;
-      for (BreakerGenaricDevice faultDiv: faultDevices) {
+      for (BreakerGenericDevice faultDiv: faultDevices) {
         work.append(" | " + faultDiv.getDeviceName() + "-" + faultDiv.getFaults() + " | ");
       }
     } else {

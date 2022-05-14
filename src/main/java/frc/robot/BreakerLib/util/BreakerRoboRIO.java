@@ -2,14 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.devices.misc;
+package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
+import edu.wpi.first.wpilibj.RobotState;
 
-/** RoboRIO wrapper class utilizing Subsystem framework. Manages time and robot mode. */
-public class BreakerRoboRio extends SubsystemBase {
+/**
+ * RoboRIO wrapper class utilizing Subsystem framework. Manages time and robot
+ * mode.
+ */
+public class BreakerRoboRIO extends SubsystemBase {
 
     /** Operating modes for robot. */
     public enum RobotMode {
@@ -22,9 +26,13 @@ public class BreakerRoboRio extends SubsystemBase {
     private static double prevTime = RobotController.getFPGATime();
     private static double diffTime = 0;
     private static RobotMode curMode = RobotMode.DISABLED;
+    private static BreakerRoboRIO roboRIO = new BreakerRoboRIO();
+
+    private BreakerRoboRIO() {
+    }
 
     /** Calculates time between cycles. Run periodically. */
-    private static double calculateInterCycleTime() {
+    private double calculateInterCycleTime() {
         double curTime = RobotController.getFPGATime(); // In microseconds
         double diffTime = curTime - prevTime;
         prevTime = curTime;

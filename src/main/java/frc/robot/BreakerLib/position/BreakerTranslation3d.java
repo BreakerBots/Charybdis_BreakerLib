@@ -8,9 +8,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 /** Represents an objects position in the X, Y, and Z axies */
 public class BreakerTranslation3d {
+
     private double metersX;
     private double metersY;
     private double metersZ;
+
+    /**
+     * Parameters follow field coordinate system.
+     */
     public BreakerTranslation3d(double metersX, double metersY, double metersZ) {
         this.metersX = metersX;
         this.metersY = metersY;

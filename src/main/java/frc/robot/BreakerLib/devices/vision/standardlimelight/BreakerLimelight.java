@@ -5,27 +5,34 @@
 package frc.robot.BreakerLib.devices.vision.standardlimelight;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.BreakerLib.devices.BreakerGenaricDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerLimelight implements BreakerGenaricDevice {
+public class BreakerLimelight implements BreakerGenericDevice {
   private double mountingAngle;
   private double mountingHeight;
   private String limelightName;
   private BreakerLimelightTarget currentTarget;
   private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
   private String faults = null;
-  /** Creates an new vision prossesing limelight
+
+  /**
+   * Creates an new vision prossesing limelight
+   * 
    * @param limelightName the network name of the limelight you are initializing
    */
   public BreakerLimelight(String limelightName) {
     limelightName = this.limelightName;
   }
 
-  /** sets the limelights mounting position relative to the ground
-   * @param mountingAngle the angle of the center of the limelights vision retive to the ground
-   * @param mountingHeight the height that the center of the limelight camera is mounted in relative to the ground
-  */
+  /**
+   * sets the limelights mounting position relative to the ground
+   * 
+   * @param mountingAngle  the angle of the center of the limelights vision retive
+   *                       to the ground
+   * @param mountingHeight the height that the center of the limelight camera is
+   *                       mounted in relative to the ground
+   */
   public void setMountingPosition(double mountingAngle, double mountingHeight) {
     mountingAngle = this.mountingAngle;
     mountingAngle = this.mountingHeight;
@@ -36,11 +43,9 @@ public class BreakerLimelight implements BreakerGenaricDevice {
     return NetworkTableInstance.getDefault().getTable(limelightName).getEntry("getPipe").getDouble(0);
   }
 
-
   public void setPipeline(double pipeline) {
     NetworkTableInstance.getDefault().getTable(limelightName).getEntry("pipeline").setNumber(pipeline);
   }
-
 
   public String getName() {
     return limelightName;
@@ -55,8 +60,11 @@ public class BreakerLimelight implements BreakerGenaricDevice {
     }
   }
 
-  /** Returns an array with all single vision values the limelight can return
-   * @return tv, tx, ty, ta, ts, tl, tshort, tlong, thor, tvert, getpipe, tx0, ty0, ta0, ts0, tx1, ty1, ta1, ts1, tx2, ty2, ta2, ts2
+  /**
+   * Returns an array with all single vision values the limelight can return
+   * 
+   * @return tv, tx, ty, ta, ts, tl, tshort, tlong, thor, tvert, getpipe, tx0,
+   *         ty0, ta0, ts0, tx1, ty1, ta1, ts1, tx2, ty2, ta2, ts2
    */
   public double[] getAllVisionData() {
     double[] info = new double[26];
@@ -99,11 +107,11 @@ public class BreakerLimelight implements BreakerGenaricDevice {
   }
 
   public double getMountingHeight() {
-      return mountingHeight;
+    return mountingHeight;
   }
 
   public double getMountingAngle() {
-      return mountingAngle;
+    return mountingAngle;
   }
 
   @Override

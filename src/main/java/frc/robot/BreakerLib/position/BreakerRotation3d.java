@@ -7,11 +7,19 @@ package frc.robot.BreakerLib.position;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-/** represnets an objects angular orentation in 3 dimentional space using yaw, pitch, and roll */
+/** Represents an object's angular orentation in 3-dimensional space using yaw, pitch, and roll */
 public class BreakerRotation3d {
+
     private Rotation2d pitch;
     private Rotation2d yaw;
     private Rotation2d roll;
+
+    /** Creates a new BreakerRotation3d.
+     * 
+     * @param pitch Pitch angle as Rotation2d.
+     * @param yaw Yaw angle as Rotation2d.
+     * @param roll Roll angle as Rotation2d.
+     */
     public BreakerRotation3d(Rotation2d pitch, Rotation2d yaw, Rotation2d roll) {
         this.pitch = pitch;
         this.yaw = yaw;
@@ -30,10 +38,11 @@ public class BreakerRotation3d {
         return roll;
     }
 
-    public BreakerRotation3d plus(BreakerRotation3d outher) {
-        Rotation2d newP = pitch.plus(outher.getPitch());
-        Rotation2d newY = yaw.plus(outher.getYaw());
-        Rotation2d newR = roll.plus(outher.getRoll());
+    /** Creates new Rotation3d with values based on the sum of this and other Rotation3d.  */
+    public BreakerRotation3d plus(BreakerRotation3d other) {
+        Rotation2d newP = pitch.plus(other.getPitch());
+        Rotation2d newY = yaw.plus(other.getYaw());
+        Rotation2d newR = roll.plus(other.getRoll());
         return new BreakerRotation3d(newP, newY, newR);
     }
 }

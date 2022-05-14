@@ -10,10 +10,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-/** Represents an objects 3 dimentional position and 3 axis angular orientation in space (Linear: XYZ / Angular: YPR) */
+/** Represents an object's 3-dimensional position and 3 axis angular orientation in space (Linear: XYZ / Angular: YPR) */
 public class BreakerPose3d {
+
     private BreakerTranslation3d translation;
     private BreakerRotation3d rotation;
+
     public BreakerPose3d(double metersX, double metersY, double metersZ, BreakerRotation3d rotation) {
         this.rotation = rotation;
         translation = new BreakerTranslation3d(metersX, metersY, metersZ);
@@ -41,9 +43,9 @@ public class BreakerPose3d {
         return new Pose2d(translation.getMetersX(), translation.getMetersY(), rotation.getYaw());
     }
 
-    public BreakerPose3d transformBy(BreakerTransform3d outher) {
-        BreakerTranslation3d newTrans = this.translation.plus(outher.getTranslationComponent());
-        BreakerRotation3d newRot = this.rotation.plus(outher.getRotationComponent());
+    public BreakerPose3d transformBy(BreakerTransform3d other) {
+        BreakerTranslation3d newTrans = this.translation.plus(other.getTranslationComponent());
+        BreakerRotation3d newRot = this.rotation.plus(other.getRotationComponent());
         return new BreakerPose3d(newTrans, newRot);
     }
 }
