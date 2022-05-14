@@ -22,7 +22,10 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
-/** Tracks and identifies pre-defined targets with target data from photon camera. */
+/**
+ * Tracks and identifies pre-defined targets with target data from photon
+ * camera.
+ */
 public class BreakerPhotonTarget extends SubsystemBase {
 
     private BreakerPhotonCamera camera;
@@ -35,12 +38,16 @@ public class BreakerPhotonTarget extends SubsystemBase {
     private boolean targetPreAssigned;
     private boolean assignedTargetFound;
 
-    /** Creates a new BreakerPhotonTarget that will activly search for a target that meets its pre-difined paramaters
+    /**
+     * Creates a new BreakerPhotonTarget that will activly search for a target that
+     * meets its pre-difined paramaters
      * 
-     * @param camera Photon camera.
-     * @param drivetrain Robot drivetrain for position tracking.
-     * @param targetPosition Position of target relative to field.
-     * @param maxTargetCoordinateDeviationInches Max allowed 
+     * @param camera                             Photon camera.
+     * @param drivetrain                         Robot drivetrain for position
+     *                                           tracking.
+     * @param targetPosition                     Position of target relative to
+     *                                           field.
+     * @param maxTargetCoordinateDeviationInches Max allowed
      */
     public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericDrivetrain drivetrain,
             BreakerPose3d targetPosition, double maxTargetCoordinateDeviationInches) {
@@ -53,11 +60,12 @@ public class BreakerPhotonTarget extends SubsystemBase {
         assignedTargetFound = false;
     }
 
-    /** Creates a new BreakerPhotonTarget with a given predefined target.
+    /**
+     * Creates a new BreakerPhotonTarget with a given predefined target.
      * 
-     * @param camera Photon camera.
+     * @param camera                 Photon camera.
      * @param assignedTargetSupplier Supplies photon camera target.
-     * @param targetHeightInches Target height from ground.
+     * @param targetHeightInches     Target height from ground.
      */
     public BreakerPhotonTarget(BreakerPhotonCamera camera, Supplier<PhotonTrackedTarget> assignedTargetSupplier,
             double targetHeightInches) {
@@ -90,10 +98,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
                 Pose2d prospTgtPose = drivetrain.getOdometryPoseMeters().transformBy(prospTgtTransform); // Target position relative to field.
 
                 // checks if transform result is close enough to required target location
-                if (BreakerMath.isRoughlyEqualTo(prospTgtPose.getX(), targetLocation.getX(),
-                        Units.inchesToMeters(maxTargetCordinateDeviationInches)) &&
-                        BreakerMath.isRoughlyEqualTo(prospTgtPose.getY(), targetLocation.getY(),
-                                Units.inchesToMeters(maxTargetCordinateDeviationInches))) {
+                if (targetIsCloseEnough(prospTgtPose)) {
                     assignedTarget = prospTgt;
                     foundTgt = true;
                 }
@@ -111,6 +116,19 @@ public class BreakerPhotonTarget extends SubsystemBase {
             assignedTarget = assignedTargetSupplier.get();
             assignedTargetFound = (assignedTarget == null) ? false : true;
         }
+    }
+
+    /**
+     * If prospective target is close enough to actual target position.
+     * 
+     * @param prospTgtPose Field relative pose of found prospective target
+     * @return If prospective target's X and Y coords are within the max deviation.
+     */
+    private boolean targetIsCloseEnough(Pose2d prospTgtPose) {
+        return BreakerMath.isRoughlyEqualTo(prospTgtPose.getX(), targetLocation.getX(),
+                Units.inchesToMeters(maxTargetCordinateDeviationInches)) &&
+                BreakerMath.isRoughlyEqualTo(prospTgtPose.getY(), targetLocation.getY(),
+                        Units.inchesToMeters(maxTargetCordinateDeviationInches));
     }
 
     /** @return Overall distance from target to camera. */
@@ -136,7 +154,8 @@ public class BreakerPhotonTarget extends SubsystemBase {
         return drivetrain.getOdometryPoseMeters().getTranslation().plus(getTargetTranslationFromCamera());
     }
 
-    /** Robot pose based on camera targeting.
+    /**
+     * Robot pose based on camera targeting.
      * 
      * @return Pose2d with robot coordinates relative to field.
      */
