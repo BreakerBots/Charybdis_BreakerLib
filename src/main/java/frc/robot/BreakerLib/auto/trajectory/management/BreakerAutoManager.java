@@ -7,9 +7,9 @@ package frc.robot.BreakerLib.auto.trajectory.management;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
-import frc.robot.BreakerLib.util.BreakerDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.BreakerLib.driverstation.BreakerDashboard;
 
 /** Class that manages all avalable autopaths for dashboard chosser */
 public class BreakerAutoManager {

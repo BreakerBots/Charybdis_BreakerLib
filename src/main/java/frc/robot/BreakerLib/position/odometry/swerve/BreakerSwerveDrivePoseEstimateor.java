@@ -29,14 +29,14 @@ public class BreakerSwerveDrivePoseEstimateor {
         return poseEstimator.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), moduleStates);
     }
     
-    public Pose2d addVisionMeasurment(Pose2d robotPoseFromVision) {
-        poseEstimator.addVisionMeasurement(robotPoseFromVision, Timer.getFPGATimestamp());
+    public Pose2d addVisionMeasurment(Pose2d robotPoseFromVision, double visionPipelineLatencySeconds) {
+        poseEstimator.addVisionMeasurement(robotPoseFromVision, Timer.getFPGATimestamp() - visionPipelineLatencySeconds);
         return poseEstimator.getEstimatedPosition();
     }
 
-    public Pose2d updateWithVision(Pose2d robotPoseFromVision, SwerveModuleState... moduleStates) {
+    public Pose2d updateWithVision(Pose2d robotPoseFromVision, double visionPipelineLatencySeconds, SwerveModuleState... moduleStates) {
         update(moduleStates);
-        addVisionMeasurment(robotPoseFromVision);
+        addVisionMeasurment(robotPoseFromVision, visionPipelineLatencySeconds);
         return poseEstimator.getEstimatedPosition();
     }
 

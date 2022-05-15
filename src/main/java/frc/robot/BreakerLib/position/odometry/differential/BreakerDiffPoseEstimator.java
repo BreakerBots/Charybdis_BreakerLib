@@ -33,8 +33,8 @@ public class BreakerDiffPoseEstimator {
         return currentPose;
     }
 
-    public Pose2d addVisionMeasurment(Pose2d robotPoseFromVision) {
-        poseEstimator.addVisionMeasurement(robotPoseFromVision, Timer.getFPGATimestamp());
+    public Pose2d addVisionMeasurment(Pose2d robotPoseFromVision, double visionPipelineLatencySeconds) {
+        poseEstimator.addVisionMeasurement(robotPoseFromVision, Timer.getFPGATimestamp() - visionPipelineLatencySeconds);
         currentPose = poseEstimator.getEstimatedPosition();
         return currentPose;
     }
@@ -43,9 +43,9 @@ public class BreakerDiffPoseEstimator {
         poseEstimator.setVisionMeasurementStdDevs(new MatBuilder<>(Nat.N3(), Nat.N1()).fill(visionStrdDevX, visionStrdDevY, visionStrdDevTheta));
     }
 
-    public Pose2d updateWithVision(BreakerDiffDriveState currentDriveState, Pose2d robotPoseFromVision) {
+    public Pose2d updateWithVision(BreakerDiffDriveState currentDriveState, Pose2d robotPoseFromVision, double visionPipelineLatencySeconds) {
         update(currentDriveState);
-        addVisionMeasurment(robotPoseFromVision);
+        addVisionMeasurment(robotPoseFromVision, visionPipelineLatencySeconds);
         currentPose = poseEstimator.getEstimatedPosition();
         return currentPose;
     }
