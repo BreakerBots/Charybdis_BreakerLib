@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 /** Add your docs here. */
-public class BreakerInterpolateingDoubleTreeMap extends Interpolateable {
+public class BreakerInterpolateingDoubleTreeMap extends BreakerInterpolateable {
     private TreeMap<Double, Double> indexesAndVectors;
     public BreakerInterpolateingDoubleTreeMap(TreeMap<Double, Double> indexesAndVectors) {
         this.indexesAndVectors = indexesAndVectors;

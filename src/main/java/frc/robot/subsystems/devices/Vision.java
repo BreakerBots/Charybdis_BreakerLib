@@ -8,9 +8,9 @@ import java.lang.annotation.Retention;
 
 import frc.robot.BreakerLib.devices.vision.photonvision.BreakerPhotonCamera;
 import frc.robot.BreakerLib.devices.vision.photonvision.BreakerPhotonTarget;
-import frc.robot.BreakerLib.position.BreakerRotation3d;
-import frc.robot.BreakerLib.position.BreakerTransform3d;
-import frc.robot.BreakerLib.position.BreakerTranslation3d;
+import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
+import frc.robot.BreakerLib.position.geometry.BreakerTransform3d;
+import frc.robot.BreakerLib.position.geometry.BreakerTranslation3d;
 
 /** Add your docs here. */
 public class Vision {

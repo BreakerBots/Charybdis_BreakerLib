@@ -1,6 +1,8 @@
 package frc.robot.BreakerLib.util.math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotController;
 
 //easily accessible conversion equations
@@ -148,6 +150,17 @@ public class BreakerMath {
      */
     public static boolean isRoughlyEqualTo(double val1, double val2, double maxDeviation) {
         return ((val1 <= (val2 + maxDeviation)) && (val1 >= (val2 - maxDeviation)));
+    }
+
+    public static Rotation2d getPointAngleRelativeToOutherPoint(Translation2d pointOne, Translation2d pointTwo) {
+        double x1 = pointOne.getX();
+        double y1 = pointOne.getY();
+        double x2 = pointTwo.getX();
+        double y2 = pointTwo.getY();
+        double startRelAng = Math.atan(x2 - x1 / y2 - y1) * 180/Math.PI;
+        double cor = (y2 - y2 / Math.abs(y2 - y1));
+        double finalAng = ((startRelAng * cor) + 90) * (-cor);
+        return Rotation2d.fromDegrees(finalAng).rotateBy(Rotation2d.fromDegrees(90));
     }
 
 }

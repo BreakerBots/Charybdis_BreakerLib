@@ -12,7 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 
 /** Add your docs here. */
-public class BreakerInterpolateingVector2TreeMap extends Interpolateable {
+public class BreakerInterpolateingVector2TreeMap extends BreakerInterpolateable {
     private TreeMap<Double, BreakerVector2> indexesAndVectors;
     public BreakerInterpolateingVector2TreeMap(TreeMap<Double, BreakerVector2> indexesAndVectors) {
         this.indexesAndVectors = indexesAndVectors;

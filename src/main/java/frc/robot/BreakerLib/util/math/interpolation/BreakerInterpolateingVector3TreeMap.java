@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import frc.robot.BreakerLib.physics.BreakerVector3;
 
 /** Add your docs here. */
-public class BreakerInterpolateingVector3TreeMap extends Interpolateable {
+public class BreakerInterpolateingVector3TreeMap extends BreakerInterpolateable {
     private TreeMap<Double, BreakerVector3> indexesAndVectors;
     public BreakerInterpolateingVector3TreeMap(TreeMap<Double, BreakerVector3> indexesAndVectors) {
         this.indexesAndVectors = indexesAndVectors;
