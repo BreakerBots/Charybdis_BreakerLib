@@ -8,8 +8,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.driverstation.BreakerDashboard;
+import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Class that manages all avalable autopaths for dashboard chosser */
 public class BreakerAutoManager {
@@ -18,7 +20,7 @@ public class BreakerAutoManager {
 
     public BreakerAutoManager(BreakerAutoPath...autoPaths) {
         this.autoPaths = autoPaths;
-        selector.addOption("Do Nouthing", null);
+        selector.addOption("Do Nouthing", new BreakerAutoPath("Default 'Do Nouthing' Path", new SequentialCommandGroup()) );
         for (BreakerAutoPath path: autoPaths) {
             selector.addOption(path.getPathName(), path);
         }
@@ -30,6 +32,7 @@ public class BreakerAutoManager {
     }
 
     public SequentialCommandGroup getSelectedBaseCommandGroup() {
+        BreakerLog.logBreakerLibEvent(" New Autopath Started: " + getSelected().getPathName()); 
         return getSelected().getBaseCommandGroup();
     }
 }
