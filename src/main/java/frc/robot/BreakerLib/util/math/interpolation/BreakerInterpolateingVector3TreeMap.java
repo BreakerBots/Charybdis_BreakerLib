@@ -16,7 +16,7 @@ public class BreakerInterpolateingVector3TreeMap extends Interpolateable {
         this.indexesAndVectors = indexesAndVectors;
     }
 
-    public BreakerVector3 getInterpolatedVector(Double interpolendValue) {
+    public BreakerVector3 getInterpolatedVector3(Double interpolendValue) {
         Entry<Double, BreakerVector3> low = indexesAndVectors.floorEntry(interpolendValue);
         Entry<Double, BreakerVector3> high = indexesAndVectors.ceilingEntry(interpolendValue);
 
