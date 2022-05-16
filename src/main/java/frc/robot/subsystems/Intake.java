@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity;
 
 import edu.wpi.first.math.Drake;
+import edu.wpi.first.math.spline.PoseWithCurvature;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
