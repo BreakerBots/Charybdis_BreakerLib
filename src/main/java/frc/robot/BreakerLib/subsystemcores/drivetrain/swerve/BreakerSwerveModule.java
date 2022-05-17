@@ -5,9 +5,18 @@
 package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
 
 import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFXPIDSetConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderFaults;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -46,6 +55,29 @@ public class BreakerSwerveModule {
         this.turnEncoder = turnEncoder;
 
         turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+        /** prelim switch to intagrated PID, work in progress and will likely be used only after the basic machanics of swerve are mastered */
+        // turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+
+        // // TalonFXConfiguration turnConfig = new TalonFXConfiguration();
+        // // turnConfig.remoteFilter0.remoteSensorDeviceID = turnEncoder.getDeviceID();
+        // // turnConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+        // // turnConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        // // turnConfig.slot0.kP = config.getModuleAnglekP();
+        // // turnConfig.slot0.kI = config.getModuleAnglekI();
+        // // turnConfig.slot0.kD = config.getModuleAngleKd();
+        // // turnMotor.configAllSettings(turnConfig);
+        // // turnMotor.setSensorPhase(turnMotor.getInverted());
+        // // turnMotor.selectProfileSlot(0, 0);
+
+        // TalonFXConfiguration driveConfig = new TalonFXConfiguration();
+        // driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        // driveConfig.slot0.kP = config.getModuleAnglekP();
+        // driveConfig.slot0.kI = config.getModuleAnglekI();
+        // driveConfig.slot0.kD = config.getModuleAngleKd();
+        // driveConfig.slot0.kF = config.getModuleAnglekF();
+        // driveMotor.configAllSettings(driveConfig);
+        //turnMotor.setSensorPhase();
+        // turnMotor.selectProfileSlot(0, 0);
 
         anglePID = new PIDController(config.getModuleAnglekP(), config.getModuleAnglekI(), config.getModuleAngleKd());
         drivePID = new PIDController(config.getModuleVelkP(), config.getModuleVelkI(), config.getModuleVelKd());

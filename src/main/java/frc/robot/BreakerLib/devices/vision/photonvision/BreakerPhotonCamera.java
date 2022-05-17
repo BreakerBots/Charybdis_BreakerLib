@@ -10,7 +10,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
-import frc.robot.BreakerLib.position.BreakerTransform3d;
+import frc.robot.BreakerLib.position.geometry.BreakerTransform3d;
 
 /** Photon camera */
 public class BreakerPhotonCamera {
@@ -22,7 +22,7 @@ public class BreakerPhotonCamera {
     private double horizontalFOV;
     private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot position.
 
-    /**
+    /**Creates a new camera that uses a Photonvision based computer vision algorithem
      * 
      * @param cameraName Name of camera used to retreive data.
      * @param verticalFOV Vertical field of view.
