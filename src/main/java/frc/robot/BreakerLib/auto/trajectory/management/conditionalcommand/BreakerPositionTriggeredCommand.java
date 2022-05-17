@@ -25,9 +25,9 @@ public class BreakerPositionTriggeredCommand implements BreakerConditionalComman
 
     @Override
     public boolean checkCondition() {
-        boolean satX = BreakerMath.isRoughlyEqualTo(triggerPose.getX(), currentPoseSupplier.get().getX(), tolerences.getX());
-        boolean satY = BreakerMath.isRoughlyEqualTo(triggerPose.getY(), currentPoseSupplier.get().getY(), tolerences.getY());
-        boolean satRot = BreakerMath.isRoughlyEqualTo(triggerPose.getRotation().getDegrees(), currentPoseSupplier.get().getRotation().getDegrees(), tolerences.getRotation().getDegrees());
+        boolean satX = BreakerMath.isRoughlyEqualTo(triggerPose.getX(), currentPoseSupplier.get().getX(), Math.abs(tolerences.getX()));
+        boolean satY = BreakerMath.isRoughlyEqualTo(triggerPose.getY(), currentPoseSupplier.get().getY(), Math.abs(tolerences.getY()));
+        boolean satRot = BreakerMath.isRoughlyEqualTo(triggerPose.getRotation().getDegrees(), currentPoseSupplier.get().getRotation().getDegrees(), Math.abs(tolerences.getRotation().getDegrees()));
         return satX && satY && satRot;
     }
 
