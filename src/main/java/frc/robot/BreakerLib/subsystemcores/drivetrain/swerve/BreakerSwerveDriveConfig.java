@@ -20,16 +20,16 @@ public class BreakerSwerveDriveConfig {
     private double moduleVelkP;
     private double moduleVelkI;
     private double moduleVelKd;
+    private double moduleVelKf;
     private double driveMotorGearRatioToOne;
     private double wheelDiameter;
     // private double velFeedForwardKs;
     // private double velFeedForwardKv;
-    private boolean tolerencesHaveBeenSet = false;
-    private double driveVelTol;
-    private double drivePosTol;
-    private double angPosTol;
-    private double angVelTol;
-    private double moduleVelKf;
+    // private boolean tolerencesHaveBeenSet = false;
+    // private double driveVelTol;
+    // private double drivePosTol;
+    // private double angPosTol;
+    // private double angVelTol;
 
     private SwerveDriveKinematics kinematics;
     /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. */
@@ -57,26 +57,26 @@ public class BreakerSwerveDriveConfig {
         kinematics = new SwerveDriveKinematics(wheelPositionsRelativeToCenter);
     }
 
-    public void setPidTolerences(double[] tolerences) {
-        drivePosTol = tolerences[0];
-        driveVelTol = tolerences[1];
-        angPosTol = tolerences[2];
-        angVelTol = tolerences[3];
-        tolerencesHaveBeenSet = true;
-    }
+    // public void setPidTolerences(double[] tolerences) {
+    //     drivePosTol = tolerences[0];
+    //     driveVelTol = tolerences[1];
+    //     angPosTol = tolerences[2];
+    //     angVelTol = tolerences[3];
+    //     tolerencesHaveBeenSet = true;
+    // }
 
-    public double[] getPidTolerences() {
-        double[] tolerences = new double[4];
-        tolerences[0] = drivePosTol;
-        tolerences[1] = driveVelTol;
-        tolerences[2] = angPosTol;
-        tolerences[3] = angVelTol;
-        return tolerences;
-    }
+    // public double[] getPidTolerences() {
+    //     double[] tolerences = new double[4];
+    //     tolerences[0] = drivePosTol;
+    //     tolerences[1] = driveVelTol;
+    //     tolerences[2] = angPosTol;
+    //     tolerences[3] = angVelTol;
+    //     return tolerences;
+    // }
 
-    public boolean getTolerencesHaveBeenSet() {
-        return tolerencesHaveBeenSet;
-    }
+    // public boolean getTolerencesHaveBeenSet() {
+    //     return tolerencesHaveBeenSet;
+    // }
 
     public SwerveDriveKinematics getKinematics() {
         return kinematics;

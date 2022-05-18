@@ -2,18 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
+package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFXPIDSetConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -22,21 +17,20 @@ import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
 import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Add your docs here. */
-public class BreakerSwerveModule {
+public class BreakerMK4iSwerveModule implements BreakerSwerveModule{
     private BreakerSwerveDriveConfig config;
     private PIDController drivePID;
     private PIDController anglePID;
-    private SimpleMotorFeedforward driveFF;
+    // private SimpleMotorFeedforward driveFF;
     private WPI_TalonFX turnMotor;
     private WPI_TalonFX driveMotor;
     private DeviceHealth turnMotorHealth = DeviceHealth.NOMINAL;
@@ -45,13 +39,13 @@ public class BreakerSwerveModule {
     private DeviceHealth encoderHealth = DeviceHealth.NOMINAL;
     private String faults = null;
     private WPI_CANCoder turnEncoder;
-    /** constructs a new swerve drive module, this class is meant to surve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class
+    /** constructs a new Swerve Drive Spetialties MK4I (inverted) swerve drive module, implaments the BreakerSwerveModule Interface
      * @param driveMotor - The TalonFX motor that moves the module's wheel linearly
      * @param turnMotor - The TalonFX motor that actuates module's wheel angle and changes the direction it is faceing
      * @param turnEncoder - The CTRE CANcoder magnetic encoder that the module uses to detirman wheel angle
      * @param config - The BreakerSwerveDriveConfig object that holds all constants for your drivetrain
      */
-    public BreakerSwerveModule(WPI_TalonFX driveMotor, WPI_TalonFX turnMotor, WPI_CANCoder turnEncoder, BreakerSwerveDriveConfig config) {
+    public BreakerMK4iSwerveModule(WPI_TalonFX driveMotor, WPI_TalonFX turnMotor, WPI_CANCoder turnEncoder, BreakerSwerveDriveConfig config) {
         this.config = config;
         this.turnMotor = turnMotor;
         this.driveMotor = driveMotor;
@@ -90,7 +84,8 @@ public class BreakerSwerveModule {
         //     anglePID.setTolerance(config.getPidTolerences()[2], config.getPidTolerences()[3]);
         // }
     }
-    
+ 
+    @Override
     public void setModuleTarget(Rotation2d tgtAngle, double speedMetersPreSec) {
         // turnMotor.set(anglePID.calculate(getModuleAngle(), tgtAngle.getDegrees()));
         // driveMotor.set(drivePID.calculate(getModuleVelMetersPerSec(), speedMetersPreSec) + (driveFF.calculate(speedMetersPreSec) / driveMotor.getBusVoltage()));
@@ -98,43 +93,53 @@ public class BreakerSwerveModule {
         driveMotor.set(TalonFXControlMode.Velocity, getMetersPerSecToFalconRSU(speedMetersPreSec));
     }
 
+    @Override
     public void setModuleTarget(SwerveModuleState targetState) {
         setModuleTarget(targetState.angle, targetState.speedMetersPerSecond);
     }
 
+    @Override
     public double getModuleAbsoluteAngle() {
         return turnEncoder.getAbsolutePosition();
     }
 
+    @Override
     public double getModuleRelativeAngle() {
         return turnEncoder.getPosition();
     }
-    
+ 
+    @Override
     public double getModuleVelMetersPerSec() {
        return Units.inchesToMeters(BreakerMath.ticksToInches(driveMotor.getSelectedSensorVelocity() * 10,
         BreakerMath.getTicksPerInch(2048, config.getDriveMotorGearRatioToOne(), config.getWheelDiameter())));
     }
 
-    private double getMetersPerSecToFalconRSU(double speedMetersPerSec) {
+    @Override
+    public double getMetersPerSecToFalconRSU(double speedMetersPerSec) {
         return (speedMetersPerSec / 10) * Units.inchesToMeters(BreakerMath.getTicksPerInch(2048, config.getDriveMotorGearRatioToOne(), config.getWheelDiameter()));
     }
 
+    @Override
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(getModuleVelMetersPerSec(), Rotation2d.fromDegrees(getModuleRelativeAngle()));
     }
 
+    @Override
     public boolean atAngleSetpoint() {
         return anglePID.atSetpoint();
     }
 
+    @Override
     public boolean atVelSetpoint() {
         return drivePID.atSetpoint();
     }
 
+    @Override
     public boolean atSetModuleState() {
         return (atAngleSetpoint() && atVelSetpoint());
     }
 
+    @Override
     public void runModuleSelfCheck() {
         faults = null;
         Faults curTurnFaults = new Faults();
@@ -200,6 +205,7 @@ public class BreakerSwerveModule {
 
     /** returns the modules health as an array [0] = overall, [1] = drive motor, [2] = turn motor, [3] = CANcoder
      */
+    @Override
     public DeviceHealth[] getModuleHealth() {
         DeviceHealth[] healths = new DeviceHealth[4];
         healths[0] = overallHealth;
@@ -209,13 +215,13 @@ public class BreakerSwerveModule {
         return healths;
     }
 
+    @Override
     public boolean moduleHasFault() {
         return overallHealth != DeviceHealth.NOMINAL;
     }
 
+    @Override
     public String getModuleFaults() {
         return faults;
     }
-
-
 }
