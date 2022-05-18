@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -15,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.CANCoderFaults;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
@@ -24,6 +26,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -54,53 +57,57 @@ public class BreakerSwerveModule {
         this.driveMotor = driveMotor;
         this.turnEncoder = turnEncoder;
 
-        turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
-        /** prelim switch to intagrated PID, work in progress and will likely be used only after the basic machanics of swerve are mastered */
-        // turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+        CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
+        encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        BreakerCTREMotorUtil.checkError(turnEncoder.configAllSettings(encoderConfig), " Failed to config swerve module turn encoder "); 
 
-        // // TalonFXConfiguration turnConfig = new TalonFXConfiguration();
-        // // turnConfig.remoteFilter0.remoteSensorDeviceID = turnEncoder.getDeviceID();
-        // // turnConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
-        // // turnConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        // // turnConfig.slot0.kP = config.getModuleAnglekP();
-        // // turnConfig.slot0.kI = config.getModuleAnglekI();
-        // // turnConfig.slot0.kD = config.getModuleAngleKd();
-        // // turnMotor.configAllSettings(turnConfig);
-        // // turnMotor.setSensorPhase(turnMotor.getInverted());
-        // // turnMotor.selectProfileSlot(0, 0);
+        TalonFXConfiguration turnConfig = new TalonFXConfiguration();
+        turnConfig.remoteFilter0.remoteSensorDeviceID = turnEncoder.getDeviceID();
+        turnConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+        turnConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        turnConfig.slot0.kP = config.getModuleAnglekP();
+        turnConfig.slot0.kI = config.getModuleAnglekI();
+        turnConfig.slot0.kD = config.getModuleAngleKd();
+        BreakerCTREMotorUtil.checkError(turnMotor.configAllSettings(turnConfig)," Failed to config swerve module turn motor "); 
+        turnMotor.selectProfileSlot(0, 0);
 
-        // TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        // driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        // driveConfig.slot0.kP = config.getModuleAnglekP();
-        // driveConfig.slot0.kI = config.getModuleAnglekI();
-        // driveConfig.slot0.kD = config.getModuleAngleKd();
-        // driveConfig.slot0.kF = config.getModuleAnglekF();
-        // driveMotor.configAllSettings(driveConfig);
-        //turnMotor.setSensorPhase();
-        // turnMotor.selectProfileSlot(0, 0);
+        TalonFXConfiguration driveConfig = new TalonFXConfiguration();
+        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        driveConfig.slot0.kP = config.getModuleVelkP();
+        driveConfig.slot0.kI = config.getModuleVelkI();
+        driveConfig.slot0.kD = config.getModuleVelKd();
+        driveConfig.slot0.kF = config.getModuleVelKf();
+        BreakerCTREMotorUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
+        driveMotor.selectProfileSlot(0, 0);
 
-        anglePID = new PIDController(config.getModuleAnglekP(), config.getModuleAnglekI(), config.getModuleAngleKd());
-        drivePID = new PIDController(config.getModuleVelkP(), config.getModuleVelkI(), config.getModuleVelKd());
-        driveFF = new SimpleMotorFeedforward(config.getVelFeedForwardKs(), config.getVelFeedForwardKv());
+        // anglePID = new PIDController(config.getModuleAnglekP(), config.getModuleAnglekI(), config.getModuleAngleKd());
+        // drivePID = new PIDController(config.getModuleVelkP(), config.getModuleVelkI(), config.getModuleVelKd());
+        // driveFF = new SimpleMotorFeedforward(config.getVelFeedForwardKs(), config.getVelFeedForwardKv());
 
-        if (config.getTolerencesHaveBeenSet()) {
-            drivePID.setTolerance(config.getPidTolerences()[0], config.getPidTolerences()[1]);
-            anglePID.setTolerance(config.getPidTolerences()[2], config.getPidTolerences()[3]);
-        }
+        // if (config.getTolerencesHaveBeenSet()) {
+        //     drivePID.setTolerance(config.getPidTolerences()[0], config.getPidTolerences()[1]);
+        //     anglePID.setTolerance(config.getPidTolerences()[2], config.getPidTolerences()[3]);
+        // }
     }
     
     public void setModuleTarget(Rotation2d tgtAngle, double speedMetersPreSec) {
-        turnMotor.set(anglePID.calculate(getModuleAngle(), tgtAngle.getDegrees()));
-        driveMotor.set(drivePID.calculate(getModuleVelMetersPerSec(), speedMetersPreSec) + (driveFF.calculate(speedMetersPreSec) / driveMotor.getBusVoltage()));
+        // turnMotor.set(anglePID.calculate(getModuleAngle(), tgtAngle.getDegrees()));
+        // driveMotor.set(drivePID.calculate(getModuleVelMetersPerSec(), speedMetersPreSec) + (driveFF.calculate(speedMetersPreSec) / driveMotor.getBusVoltage()));
+        turnMotor.set(TalonFXControlMode.Position, tgtAngle.getDegrees());
+        driveMotor.set(TalonFXControlMode.Velocity, getMetersPerSecToFalconRSU(speedMetersPreSec));
     }
 
     public void setModuleTarget(SwerveModuleState targetState) {
-        turnMotor.set(anglePID.calculate(getModuleAngle(), targetState.angle.getDegrees()));
-        driveMotor.set(drivePID.calculate(getModuleVelMetersPerSec(), targetState.speedMetersPerSecond) + (driveFF.calculate(targetState.speedMetersPerSecond) / driveMotor.getBusVoltage()));
+        setModuleTarget(targetState.angle, targetState.speedMetersPerSecond);
     }
 
-    public double getModuleAngle() {
+    public double getModuleAbsoluteAngle() {
         return turnEncoder.getAbsolutePosition();
+    }
+
+    public double getModuleRelativeAngle() {
+        return turnEncoder.getPosition();
     }
     
     public double getModuleVelMetersPerSec() {
@@ -108,8 +115,12 @@ public class BreakerSwerveModule {
         BreakerMath.getTicksPerInch(2048, config.getDriveMotorGearRatioToOne(), config.getWheelDiameter())));
     }
 
+    private double getMetersPerSecToFalconRSU(double speedMetersPerSec) {
+        return (speedMetersPerSec / 10) * Units.inchesToMeters(BreakerMath.getTicksPerInch(2048, config.getDriveMotorGearRatioToOne(), config.getWheelDiameter()));
+    }
+
     public SwerveModuleState getModuleState() {
-        return new SwerveModuleState(getModuleVelMetersPerSec(), Rotation2d.fromDegrees(getModuleAngle()));
+        return new SwerveModuleState(getModuleVelMetersPerSec(), Rotation2d.fromDegrees(getModuleRelativeAngle()));
     }
 
     public boolean atAngleSetpoint() {

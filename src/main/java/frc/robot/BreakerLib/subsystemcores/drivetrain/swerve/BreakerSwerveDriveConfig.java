@@ -21,21 +21,22 @@ public class BreakerSwerveDriveConfig {
     private double moduleVelkI;
     private double moduleVelKd;
     private double driveMotorGearRatioToOne;
-    public double wheelDiameter;
-    private double velFeedForwardKs;
-    private double velFeedForwardKv;
+    private double wheelDiameter;
+    // private double velFeedForwardKs;
+    // private double velFeedForwardKv;
     private boolean tolerencesHaveBeenSet = false;
     private double driveVelTol;
     private double drivePosTol;
     private double angPosTol;
     private double angVelTol;
+    private double moduleVelKf;
 
     private SwerveDriveKinematics kinematics;
     /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. */
     public BreakerSwerveDriveConfig(double maxForwardVel, double maxSidewaysVel, double maxAngVel, 
         double moduleAnglekP, double moduleAnglekI, double moduleAngleKd, double moduleVelkP,
-        double moduleVelkI, double moduleVelKd, double driveMotorGearRatioToOne,
-        double wheelDiameter, double velFeedForwardKs, double velFeedForwardKv, Translation2d... wheelPositionsRelativeToCenter) {
+        double moduleVelkI, double moduleVelKd, double moduleVelKf, double driveMotorGearRatioToOne,
+        double wheelDiameter, Translation2d... wheelPositionsRelativeToCenter) {
 
         this.maxForwardVel = maxForwardVel;
         this.maxSidewaysVel = maxSidewaysVel;
@@ -48,8 +49,9 @@ public class BreakerSwerveDriveConfig {
         this.moduleVelkP = moduleVelkP;
         this.wheelDiameter = wheelDiameter;
         this.driveMotorGearRatioToOne = driveMotorGearRatioToOne;
-        this.velFeedForwardKs = velFeedForwardKs;
-        this.velFeedForwardKv = velFeedForwardKv;
+        this.moduleVelKf = moduleVelKf;
+        // this.velFeedForwardKs = velFeedForwardKs;
+        // this.velFeedForwardKv = velFeedForwardKv;
 
         moduleNum = wheelPositionsRelativeToCenter.length;
         kinematics = new SwerveDriveKinematics(wheelPositionsRelativeToCenter);
@@ -108,6 +110,10 @@ public class BreakerSwerveDriveConfig {
         return moduleVelKd;
     }
 
+    public double getModuleVelKf() {
+        return moduleVelKf;
+    }
+
     public double getModuleAnglekP() {
         return moduleAnglekP;
     }
@@ -128,11 +134,11 @@ public class BreakerSwerveDriveConfig {
         return wheelDiameter;
     }
 
-    public double getVelFeedForwardKs() {
-        return velFeedForwardKs;
-    }
+    // public double getVelFeedForwardKs() {
+    //     return velFeedForwardKs;
+    // }
 
-    public double getVelFeedForwardKv() {
-        return velFeedForwardKv;
-    }
+    // public double getVelFeedForwardKv() {
+    //     return velFeedForwardKv;
+    // }
 }

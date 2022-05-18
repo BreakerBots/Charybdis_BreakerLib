@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.util;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -26,6 +27,12 @@ public class BreakerCTREMotorUtil {
 
   public static WPI_TalonFX[] createMotorArray(WPI_TalonFX... controllers) {
     return controllers;
+  }
+
+  public static void checkError(ErrorCode error, String Message) {
+    if (error != ErrorCode.OK) {
+      BreakerLog.logError(error + " - " + Message);
+    }
   }
 
   /**
