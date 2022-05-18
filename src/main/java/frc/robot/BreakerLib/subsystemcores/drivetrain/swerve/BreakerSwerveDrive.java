@@ -13,7 +13,7 @@ import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerMK4iSwerveModule;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerSwerveModule;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerGenericSwerveModule;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -23,10 +23,10 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
   private SwerveModuleState[] targetModuleStates;
   SwerveModuleState[] currentModuleStates;
 
-  private BreakerSwerveModule frontLeftModule;
-  private BreakerSwerveModule frontRightModule;
-  private BreakerSwerveModule backLeftModule;
-  private BreakerSwerveModule backRightModule;
+  private BreakerGenericSwerveModule frontLeftModule;
+  private BreakerGenericSwerveModule frontRightModule;
+  private BreakerGenericSwerveModule backLeftModule;
+  private BreakerGenericSwerveModule backRightModule;
 
   private BreakerPigeon2 pigeon2;
 
@@ -38,7 +38,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
    * @param config - the confiuration values for the drivetrain's charicotristics and behavor, passed in as a "BreakerSwerveDriveConfig" object
    * @param swerveModules - The four swerve drive modules that make up the drivetrain, must be passed in the same order shown below
    */
-  public BreakerSwerveDrive(BreakerSwerveDriveConfig config, BreakerPigeon2 pigeon2, BreakerSwerveModule frontLeftModule, BreakerSwerveModule frontRightModule, BreakerSwerveModule backLeftModule, BreakerSwerveModule backRightModule) {
+  public BreakerSwerveDrive(BreakerSwerveDriveConfig config, BreakerPigeon2 pigeon2, BreakerGenericSwerveModule frontLeftModule, BreakerGenericSwerveModule frontRightModule, BreakerGenericSwerveModule backLeftModule, BreakerGenericSwerveModule backRightModule) {
     odometer = new SwerveDriveOdometry(config.getKinematics(), Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
     this.config = config;
     this.frontLeftModule = frontRightModule;

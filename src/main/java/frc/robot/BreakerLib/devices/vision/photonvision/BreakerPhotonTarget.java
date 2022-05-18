@@ -143,13 +143,13 @@ public class BreakerPhotonTarget extends SubsystemBase {
         return Units.metersToInches(getTargetDistanceMeters());
     }
 
-    /** Help */
+    /** @return the relative distances in X and Y between the target and camera */
     public Translation2d getTargetTranslationFromCamera() {
         return PhotonUtils.estimateCameraToTargetTranslation(getTargetDistanceMeters(),
                 Rotation2d.fromDegrees(getYaw()));
     }
 
-    /** Help */
+    /** @return the calculated X and Y cordnates of the target relative to the field based on vision and odometry */
     public Translation2d getTargetTranslationFromField() {
         return drivetrain.getOdometryPoseMeters().getTranslation().plus(getTargetTranslationFromCamera());
     }

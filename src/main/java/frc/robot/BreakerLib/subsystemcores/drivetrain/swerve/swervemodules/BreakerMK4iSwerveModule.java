@@ -26,7 +26,7 @@ import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Add your docs here. */
-public class BreakerMK4iSwerveModule implements BreakerSwerveModule{
+public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule{
     private BreakerSwerveDriveConfig config;
     private PIDController drivePID;
     private PIDController anglePID;
