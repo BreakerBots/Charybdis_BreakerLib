@@ -36,7 +36,7 @@ public class Vision {
         hubTarget = new BreakerPhotonTarget(tgtCam, drivetrain.getBaseDrivetrain(), hubPosition, 12.0);
     }
 
-    public Rotation2d getHubPositionRelativeToRobot() {
+    public Rotation2d getHubAngleRelativeToRobot() {
         Rotation2d estAng = baseDrive.getOdometryPoseMeters().getRotation().plus(BreakerMath.getPointAngleRelativeToOutherPoint(baseDrive.getOdometryPoseMeters().getTranslation(), hubPosition.get2dPoseComponent().getTranslation()));
         return hubTarget.getAssignedTargetFound() ? Rotation2d.fromDegrees(hubTarget.getYaw()) : estAng;
     }

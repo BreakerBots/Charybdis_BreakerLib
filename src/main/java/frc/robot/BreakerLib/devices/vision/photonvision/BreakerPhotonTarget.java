@@ -200,5 +200,4 @@ public class BreakerPhotonTarget extends SubsystemBase {
     public void periodic() {
         findAssignedTarget();
     }
-
 }
