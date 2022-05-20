@@ -54,12 +54,12 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
             Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
             double maxVoltage, boolean stopAtEnd) {
-
-        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
-                + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " + trajectoryToFollow.toString() + " )");
-
         this.drivetrain = drivetrain;
         trajectoryToFollow = trajectoryPath.getBaseTrajectory();
+
+        BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
+                + trajectoryToFollow.getTotalTimeSeconds());
+
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), maxVoltage);
 
@@ -89,7 +89,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
             Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
             double maxVoltage, boolean stopAtEnd) {
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
-                + trajectoryToFollow.getTotalTimeSeconds() + " (T-STATS: " + trajectoryToFollow.toString() + " )");
+                + trajectoryToFollow.getTotalTimeSeconds());
         this.drivetrain = drivetrain;
         this.trajectoryToFollow = trajectoryPath.getBaseTrajectory();
         voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
@@ -185,7 +185,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
                 com.updateAutoRun();
             }
         } catch (Exception e) {
-            BreakerLog.logError(e.toString());
+         //   BreakerLog.logError(e.toString());
         }
         
     }

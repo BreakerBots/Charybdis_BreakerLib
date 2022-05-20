@@ -14,7 +14,7 @@
 // import frc.robot.BreakerLib.factories.BreakerCANCoderFactory;
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
-// import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveModule;
+// import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerMK4iSwerveModule;
 
 // /** Add your docs here. */
 // public class testSwerve extends SubsystemBase{
@@ -41,10 +41,10 @@
 //     private Translation2d transBL;
 //     private Translation2d transBR;
 
-//     private BreakerSwerveModule frontLeftModule;
-//     private BreakerSwerveModule frontRightModule;
-//     private BreakerSwerveModule backLeftModule;
-//     private BreakerSwerveModule backRightModule;
+//     private BreakerMK4iSwerveModule frontLeftModule;
+//     private BreakerMK4iSwerveModule frontRightModule;
+//     private BreakerMK4iSwerveModule backLeftModule;
+//     private BreakerMK4iSwerveModule backRightModule;
 
 //     private BreakerPigeon2 pigeon2;
     
@@ -71,12 +71,12 @@
 //         encoderBR = BreakerCANCoderFactory.createCANCoder(deviceID, absoluteSensorRange, absoluteOffsetDegress, invertEncoder);
 //         transBR = new Translation2d(x, y);
 
-//         config = new BreakerSwerveDriveConfig(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, transFL, transFR, transBL, transBR);
+//         config = new BreakerSwerveDriveConfig(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, transFL, transFR, transBL, transBR);
 
 //         frontLeftModule = new BreakerMK4iSwerveModule(driveFL, turnFL, encoderFL, config);
-//         frontRightModule = new BreakerSwerveModule(driveFR, turnFR, encoderFR, config);
-//         frontRightModule = new BreakerSwerveModule(driveFR, turnFR, encoderFR, config);
-//         backRightModule = new BreakerSwerveModule(driveBR, turnBR, encoderBR, config);
+//         frontRightModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
+//         frontRightModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
+//         backRightModule = new BreakerMK4iSwerveModule(driveBR, turnBR, encoderBR, config);
 
 //         drivetrain = new BreakerSwerveDrive(config, pigeon2, frontLeftModule, frontRightModule, backLeftModule, backRightModule);
 //     }

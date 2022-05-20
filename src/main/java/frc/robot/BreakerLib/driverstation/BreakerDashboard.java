@@ -5,6 +5,7 @@
 
 package frc.robot.BreakerLib.driverstation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /** Add your docs here. */
 public class BreakerDashboard {
-    private static List<ShuffleboardTab> allTabs;
+    private static List<ShuffleboardTab> allTabs = new ArrayList<>();
 
     public static ShuffleboardTab getMainTab() {
         return getTab("Main");

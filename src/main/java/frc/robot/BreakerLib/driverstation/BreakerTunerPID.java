@@ -7,9 +7,12 @@ package frc.robot.BreakerLib.driverstation;
 import edu.wpi.first.math.controller.PIDController;
 
 /** Add your docs here. */
-public class BreakerTunerPID extends BreakerTunerBase {
+public class BreakerTunerPID {
     private PIDController controller;
     private boolean usesPassedInController;
+    private double kP;
+    private double kI;
+    private double kD;
     public BreakerTunerPID(PIDController controller) {
         this.controller = controller;
         usesPassedInController = true;
@@ -17,6 +20,10 @@ public class BreakerTunerPID extends BreakerTunerBase {
 
     public BreakerTunerPID() {
         usesPassedInController = false;
+    }
+
+    private void createWidgit() {
+        
     }
 
 

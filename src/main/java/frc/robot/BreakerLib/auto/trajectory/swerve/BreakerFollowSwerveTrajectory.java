@@ -6,7 +6,9 @@ package frc.robot.BreakerLib.auto.trajectory.swerve;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -33,9 +35,12 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     private boolean stopAtEnd = false;
     private double currentTimeCycles = 0;
     private List<BreakerConditionalCommand> attachedCondtionalCommands;
+    private Supplier<Rotation2d> rotationSupplier;
+    private boolean usesSupplyedRotation = false;
 
     BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, boolean stopAtEnd,
             Subsystem requiredSubsystem, BreakerTrajectoryPath... trajectoryPaths) {
+        usesSupplyedRotation = false;
         drivetrain = config.getDrivetrain();
         this.config = config;
         this.stopAtEnd = stopAtEnd;
@@ -53,6 +58,30 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         }
         trajectoriesToFollow = arr;
     }
+   
+    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, Supplier<Rotation2d> rotationSupplier, boolean stopAtEnd,
+            Subsystem requiredSubsystem, BreakerTrajectoryPath... trajectoryPaths) {
+        usesSupplyedRotation = true;
+        drivetrain = config.getDrivetrain();
+        this.config = config;
+        this.stopAtEnd = stopAtEnd;
+        this.requiredSubsystem = requiredSubsystem;
+        this.rotationSupplier = rotationSupplier;
+        try {
+            for (BreakerTrajectoryPath path: trajectoryPaths) {
+                attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
+            }
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
+        Trajectory[] arr = new Trajectory[trajectoryPaths.length];
+        for (int i = 0; i <= trajectoryPaths.length; i++) {
+            arr[i] = trajectoryPaths[i].getBaseTrajectory();
+        }
+        trajectoriesToFollow = arr;
+    }
+
+    
 
     @Override
     public void initialize() {
@@ -70,10 +99,17 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         checkAttachedCommands();
         if (currentTrajectory != prevTrajectory) {
             try {
-                controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
+                if (usesSupplyedRotation) {
+                    controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
+                        drivetrain::getOdometryPoseMeters,
+                        drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
+                        config.getThetaAngPID(), rotationSupplier, drivetrain::setRawModuleStates, requiredSubsystem);
+                } else {
+                    controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
                         drivetrain::getOdometryPoseMeters,
                         drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
                         config.getThetaAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
+                }
                 controller.schedule();
                 BreakerLog.logBreakerLibEvent(
                         "BreakerSwerveTrajectoryAuto command instance has swiched to a new trajecotry (T-STATS: "
