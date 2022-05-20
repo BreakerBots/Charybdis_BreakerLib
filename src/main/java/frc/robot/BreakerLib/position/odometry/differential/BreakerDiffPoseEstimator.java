@@ -25,7 +25,7 @@ public class BreakerDiffPoseEstimator {
         poseEstimator = new DifferentialDrivePoseEstimator(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), initialPose,
             new MatBuilder<>(Nat.N5(), Nat.N1()).fill(stateModelStanderdDeveation[0], stateModelStanderdDeveation[1], stateModelStanderdDeveation[2], stateModelStanderdDeveation[3], stateModelStanderdDeveation[4]), // State measurement standard deviations. X, Y, theta., 
             new MatBuilder<>(Nat.N3(), Nat.N1()).fill(encoderAndGyroStandardDeveation[0], encoderAndGyroStandardDeveation[1], encoderAndGyroStandardDeveation[2]), // Local measurement standard deviations. Left encoder, right encoder, gyro.
-            new MatBuilder<>(Nat.N3(), Nat.N1()).fill(visionStanderdDeveation[0], visionStanderdDeveation[1], visionStanderdDeveation[2])); // Global measurement standard deviations. X, Y, and theta.
+            new MatBuilder<>(Nat.N3(), Nat.N1()).fill(visionStanderdDeveation[0], visionStanderdDeveation[1], visionStanderdDeveation[2])); // Global measurement standard deviations. X, Y, and theta.4
     }
 
     public Pose2d update(BreakerDiffDriveState currentDriveState) {
