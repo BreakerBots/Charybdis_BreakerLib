@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules;
 
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -223,5 +224,16 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule{
     @Override
     public String getModuleFaults() {
         return faults;
+    }
+
+    @Override
+    public void setDriveMotorBrakeMode(boolean isEnabled) {
+        driveMotor.setNeutralMode(isEnabled ? NeutralMode.Brake : NeutralMode.Coast);
+        
+    }
+
+    @Override
+    public void setTurnMotorBreakMode(boolean isEnabled) {
+        turnMotor.setNeutralMode(isEnabled ? NeutralMode.Brake : NeutralMode.Coast);
     }
 }

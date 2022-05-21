@@ -11,7 +11,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
-import frc.robot.BreakerLib.util.robotconfiguration.BreakerConfigManager;
 
 /** Add your docs here. */
 public class BreakerDiffDriveConfig {

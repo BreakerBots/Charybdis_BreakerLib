@@ -26,6 +26,12 @@ public class SelfTest extends SubsystemBase {
     devices.add(device);
   }
 
+  public static void addDevices(BreakerGenericDevice... devicesToAdd) {
+    for (BreakerGenericDevice div: devicesToAdd) {
+      devices.add(div);
+    }
+  }
+
   public static String getLastSelfCheck() {
     return lastSystemCheck;
   }

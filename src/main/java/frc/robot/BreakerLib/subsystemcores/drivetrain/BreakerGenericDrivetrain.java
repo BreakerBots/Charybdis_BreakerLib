@@ -24,4 +24,6 @@ public interface BreakerGenericDrivetrain {
     public abstract double[] getOdometryPosition();
 
     public abstract Pose2d getOdometryPoseMeters();
+
+    public abstract void setDrivetrainBrakeMode(boolean isEnabled);
 }

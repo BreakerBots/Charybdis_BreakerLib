@@ -170,5 +170,13 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     
   }
 
+  @Override
+  public void setDrivetrainBrakeMode(boolean isEnabled) {
+    frontLeftModule.setDriveMotorBrakeMode(isEnabled);
+    frontRightModule.setDriveMotorBrakeMode(isEnabled);
+    backLeftModule.setDriveMotorBrakeMode(isEnabled);
+    backRightModule.setDriveMotorBrakeMode(isEnabled);
+  }
+
 
 }
