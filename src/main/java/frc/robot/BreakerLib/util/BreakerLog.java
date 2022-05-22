@@ -27,13 +27,13 @@ public class BreakerLog {
     work.append(" AUTHORS: " + authorNames + "\n\n");
     work.append(" | ---------------------------------------------- | \n\n\n");
     BreakerLog.log(work.toString());
-    BreakerRoboRIO.setCurrentRobotMode(RobotMode.DISABLED);
+    // BreakerRoboRIO.updateRobotMode(RobotMode.DISABLED);
   }
 
   /** Logs robot mode change. Also changes current robot mode?! */
   public static void logRobotChangedMode(RobotMode newMode) {
     DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
-    BreakerRoboRIO.setCurrentRobotMode(newMode);
+    // BreakerRoboRIO.updateRobotMode(newMode);
   }
 
   /** Logs given event. */

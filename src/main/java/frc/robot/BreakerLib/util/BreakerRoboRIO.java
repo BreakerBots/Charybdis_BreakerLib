@@ -8,7 +8,7 @@ package frc.robot.BreakerLib.util;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
-import edu.wpi.first.wpilibj.RobotState;
+import static edu.wpi.first.wpilibj.RobotState.*;
 
 /**
  * RoboRIO wrapper class utilizing Subsystem framework. Manages time and robot
@@ -24,15 +24,18 @@ public class BreakerRoboRIO extends SubsystemBase {
         TEST
     }
 
-    private static double prevTime = RobotController.getFPGATime();
-    private static double diffTime = 0;
-    private static RobotMode curMode = RobotMode.DISABLED;
+    // RoboRIO object vars.
+    private double prevTime = RobotController.getFPGATime();
+    private double diffTime = 0;
+    private RobotMode currentMode = RobotMode.DISABLED;
+    private RobotMode prevMode = currentMode;
+
+    // Static RoboRIO object.
     private static BreakerRoboRIO roboRIO = new BreakerRoboRIO();
 
-    private BreakerRoboRIO() {
-    }
+    // RoboRIO object methods
 
-    /** Calculates time between cycles. Run periodically. */
+    /** Calculates time between cycles. Runs periodically. */
     private double calculateInterCycleTime() {
         double curTime = RobotController.getFPGATime(); // In microseconds
         double diffTime = curTime - prevTime;
@@ -40,12 +43,34 @@ public class BreakerRoboRIO extends SubsystemBase {
         return BreakerUnits.microsecondsToSeconds(diffTime);
     }
 
-    /** Returns time between cycles in seconds. */
-    public static double getInterCycleTimeSeconds() {
-        return diffTime;
+    /** Updates robot mode using {@link RobotState}. */
+    private void updateRobotMode() {
+        roboRIO.prevMode = roboRIO.currentMode;
+        if (isDisabled()) {
+            roboRIO.currentMode = RobotMode.DISABLED;
+        } else if (isTeleop()) {
+            roboRIO.currentMode = RobotMode.TELEOP;
+        } else if (isAutonomous()) {
+            roboRIO.currentMode = RobotMode.AUTONOMOUS;
+        } else {
+            roboRIO.currentMode = RobotMode.TEST;
+        }
     }
 
-    /** Returns time as long of microseconds??? */
+    @Override
+    public void periodic() {
+        diffTime = calculateInterCycleTime();
+        updateRobotMode();
+    }
+
+    // Static getters.
+
+    /** Returns time between cycles in seconds. */
+    public static double getInterCycleTimeSeconds() {
+        return roboRIO.diffTime;
+    }
+
+    /** Returns time as long of microseconds */
     public static long getRobotTimeMCRS() {
         return RobotController.getFPGATime();
     }
@@ -57,16 +82,11 @@ public class BreakerRoboRIO extends SubsystemBase {
 
     /** Returns current operating mode of robot. */
     public static RobotMode getCurrentRobotMode() {
-        return curMode;
+        return roboRIO.currentMode;
     }
 
-    /** Use in {@link Robot} class's init methods to update robot mode. */
-    public static void setCurrentRobotMode(RobotMode newMode) {
-        curMode = newMode;
-    }
-
-    @Override
-    public void periodic() {
-        diffTime = calculateInterCycleTime();
+    /** Checks if the RoboRIO's state has changed since the last cycle. */
+    public static boolean robotModeHasChanged() {
+        return roboRIO.currentMode != roboRIO.prevMode;
     }
 }
