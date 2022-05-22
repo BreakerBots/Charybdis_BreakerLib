@@ -33,7 +33,7 @@ public class BreakerRoboRIO extends SubsystemBase {
     // Static RoboRIO object.
     private static BreakerRoboRIO roboRIO = new BreakerRoboRIO();
 
-    // RoboRIO object methods
+    // RoboRIO object methods.
 
     /** Calculates time between cycles. Runs periodically. */
     private double calculateInterCycleTime() {
