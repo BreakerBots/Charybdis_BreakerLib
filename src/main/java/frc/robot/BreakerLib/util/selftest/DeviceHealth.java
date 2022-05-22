@@ -6,10 +6,10 @@ package frc.robot.BreakerLib.util.selftest;
 
 /** Add your docs here. */
 public enum DeviceHealth {
-    /** Device is functioning entirely or mostly within expected perameters */
+    /** Device is functioning entirely or mostly within expected perameters. */
     NOMINAL,
     /** Device has encountered one or more problems but can still function. */
     FAULT,
-    /** Device has encounterd one or more fatal errors, meaning the device is no longer in working condition */
+    /** Device has encounterd one or more fatal errors, meaning the device is no longer in working condition. */
     INOPERABLE
 }

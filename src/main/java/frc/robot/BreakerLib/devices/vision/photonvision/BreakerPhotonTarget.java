@@ -84,18 +84,33 @@ public class BreakerPhotonTarget extends SubsystemBase {
         if (!targetPreAssigned && camera.hasTargets()) {
             // Loops through tracked targets.
             for (PhotonTrackedTarget prospTgt : camera.getAllRawTrackedTargets()) {
-                double distanceMeters = PhotonUtils.calculateDistanceToTargetMeters( // Distance from target based on constant parameters
+                double distanceMeters = PhotonUtils.calculateDistanceToTargetMeters( // Distance from target based on
+                                                                                     // constant parameters
                         BreakerUnits.inchesToMeters(camera.getCameraHeightIns()),
                         BreakerUnits.inchesToMeters(targetHeightInches), Math.toRadians(camera.getCameraAngle()),
                         Math.toRadians(prospTgt.getPitch()));
 
-                Translation2d prospTgtTranslation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, // Translation of target relative to camera
+                Translation2d prospTgtTranslation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, // 2d
+                                                                                                                  // translation
+                                                                                                                  // of
+                                                                                                                  // target
+                                                                                                                  // relative
+                                                                                                                  // to
+                                                                                                                  // camera
                         Rotation2d.fromDegrees(prospTgt.getYaw()));
 
-                Transform2d prospTgtTransform = PhotonUtils.estimateCameraToTarget(prospTgtTranslation, targetLocation, // Transformation from target to camera.
+                Transform2d prospTgtTransform = PhotonUtils.estimateCameraToTarget(prospTgtTranslation, targetLocation, // 2d
+                                                                                                                        // transformation
+                                                                                                                        // from
+                                                                                                                        // target
+                                                                                                                        // to
+                                                                                                                        // camera.
                         drivetrain.getOdometryPoseMeters().getRotation());
 
-                Pose2d prospTgtPose = drivetrain.getOdometryPoseMeters().transformBy(prospTgtTransform); // Target position relative to field.
+                Pose2d prospTgtPose = drivetrain.getOdometryPoseMeters().transformBy(prospTgtTransform); // 2d target
+                                                                                                         // position
+                                                                                                         // relative to
+                                                                                                         // field.
 
                 // checks if transform result is close enough to required target location
                 if (targetIsCloseEnough(prospTgtPose)) {
@@ -111,7 +126,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
                 assignedTargetFound = false;
             }
 
-        // assigns the pre-supplied target if the camera has targets
+            // assigns the pre-supplied target if the camera has targets
         } else if (camera.hasTargets()) {
             assignedTarget = assignedTargetSupplier.get();
             assignedTargetFound = (assignedTarget == null) ? false : true;
@@ -149,7 +164,10 @@ public class BreakerPhotonTarget extends SubsystemBase {
                 Rotation2d.fromDegrees(getYaw()));
     }
 
-    /** @return the calculated X and Y cordnates of the target relative to the field based on vision and odometry */
+    /**
+     * @return the calculated X and Y cordnates of the target relative to the field
+     *         based on vision and odometry
+     */
     public Translation2d getTargetTranslationFromField() {
         return drivetrain.getOdometryPoseMeters().getTranslation().plus(getTargetTranslationFromCamera());
     }

@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
-/** Add your docs here. */
+/** Class for ultrasonic sensor. */
 public class BreakerUltrasonicSensor {
+
     private DigitalOutput pingCh;
     private DigitalInput echoCh;
     private Ultrasonic sonic;
+
     public BreakerUltrasonicSensor(int pingOutChannelDIO, int echoInChannelDIO) {
         pingCh = new DigitalOutput(pingOutChannelDIO);
         echoCh = new DigitalInput(echoInChannelDIO);
