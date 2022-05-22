@@ -44,6 +44,16 @@ public class BreakerMath {
         return deg % constraint;
     }
 
+    /** Calculates radians per second from rotations per minute. */
+    public static final double radPerSecFromRPM(double rpm) {
+        return ((rpm / 60) * (2 * Math.PI));
+    }
+
+    /** Calculates rotations per minute from radians per second. */
+    public static final double rpmFromRadPerSec(double radPerSec) {
+        return ((radPerSec * 60) / (2 * Math.PI));
+    }
+
     /**
      * Gets the amount of time in seconds between cycles.
      * 
@@ -63,7 +73,7 @@ public class BreakerMath {
 
     // Not necessary. Also misspelled smh
     // public static double getCircumferenceFromRadus(double radius) {
-    //     return (2 * radius) * Math.PI;
+    // return (2 * radius) * Math.PI;
     // }
 
     public static double getCircumferenceFromDiameter(double diameter) {
@@ -106,44 +116,67 @@ public class BreakerMath {
         return (((lastAvg * (cycleCount - 1)) + newVal) / cycleCount);
     }
 
-    /** Converts a fixed point notiation number into a double precision foating point number
-     * @param FixedPointVal fixed point number represented as a non-fractional integer
-     * @param bitsAfterDicimal fixed point notation is generaly represented as Qx.y where x 
-     * represents the number of bits before the decimal, and y prepresents the number of bits 
-     * after the decimal (EX: Q2.14)
+    /**
+     * Converts a fixed point notiation number into a double precision foating point
+     * number
+     * 
+     * @param FixedPointVal    fixed point number represented as a non-fractional
+     *                         integer
+     * @param bitsAfterDicimal fixed point notation is generaly represented as Qx.y
+     *                         where x
+     *                         represents the number of bits before the decimal, and
+     *                         y prepresents the number of bits
+     *                         after the decimal (EX: Q2.14)
      */
     public static double fixedToFloat(int FixedPointVal, int bitsAfterDicimal) {
         return ((Double.valueOf(FixedPointVal)) / (Math.pow(2, bitsAfterDicimal)));
     }
 
-    /** Converts a fixed point notiation number into a double precision foating point number
-    * @param FixedPointVal fixed point number represented as a non-fractional long integer
-    * @param bitsAfterDicimal fixed point notation is generaly represented as Qx.y where x 
-    * represents the number of bits before the decimal, and y prepresents the number of bits 
-    * after the decimal (EX: Q2.14)
-    */
+    /**
+     * Converts a fixed point notiation number into a double precision foating point
+     * number
+     * 
+     * @param FixedPointVal    fixed point number represented as a non-fractional
+     *                         long integer
+     * @param bitsAfterDicimal fixed point notation is generaly represented as Qx.y
+     *                         where x
+     *                         represents the number of bits before the decimal, and
+     *                         y prepresents the number of bits
+     *                         after the decimal (EX: Q2.14)
+     */
     public static double fixedToFloat(Long FixedPointVal, int bitsAfterDicimal) {
         return ((Double.valueOf(FixedPointVal)) / (Math.pow(2, bitsAfterDicimal)));
     }
 
-    /** Converts a fixed point notiation number into a double precision foating point number
-    * @param FixedPointVal fixed point number represented as a non-fractional short integer
-    * @param bitsAfterDicimal fixed point notation is generaly represented as Qx.y where x 
-    * represents the number of bits before the decimal, and y prepresents the number of bits 
-    * after the decimal (EX: Q2.14)
-    */
+    /**
+     * Converts a fixed point notiation number into a double precision foating point
+     * number
+     * 
+     * @param FixedPointVal    fixed point number represented as a non-fractional
+     *                         short integer
+     * @param bitsAfterDicimal fixed point notation is generaly represented as Qx.y
+     *                         where x
+     *                         represents the number of bits before the decimal, and
+     *                         y prepresents the number of bits
+     *                         after the decimal (EX: Q2.14)
+     */
     public static double fixedToFloat(Short FixedPointVal, int bitsAfterDicimal) {
         return ((Double.valueOf(FixedPointVal)) / (Math.pow(2, bitsAfterDicimal)));
     }
 
+    /**
+     * @param encoderTicks Ticks per rotation.
+     * @return Rotational position in radians.
+     */
     public static double radiansPerTick(double encoderTicks) {
         return (2.0 * Math.PI / encoderTicks);
     }
 
-    /** Checks if two numbers are sufficiently proximate.
+    /**
+     * Checks if two numbers are sufficiently proximate.
      * 
-     * @param val1 First number.
-     * @param val2 Second number.
+     * @param val1         First number.
+     * @param val2         Second number.
      * @param maxDeviation Absolute value difference between val1 and val2
      * 
      * @return true if within deviation, false otherwise.
@@ -152,17 +185,15 @@ public class BreakerMath {
         return ((val1 <= (val2 + maxDeviation)) && (val1 >= (val2 - maxDeviation)));
     }
 
-    public static Rotation2d getPointAngleRelativeToOutherPoint(Translation2d pointOne, Translation2d pointTwo) {
+    public static Rotation2d getPointAngleRelativeToOtherPoint(Translation2d pointOne, Translation2d pointTwo) {
         double x1 = pointOne.getX();
         double y1 = pointOne.getY();
         double x2 = pointTwo.getX();
         double y2 = pointTwo.getY();
-        double startRelAng = Math.atan(x2 - x1 / y2 - y1) * 180/Math.PI;
+        double startRelAng = Math.atan(x2 - x1 / y2 - y1) * 180 / Math.PI;
         double cor = (y2 - y2 / Math.abs(y2 - y1));
         double finalAng = ((startRelAng * cor) + 90) * (-cor);
         return Rotation2d.fromDegrees(finalAng).rotateBy(Rotation2d.fromDegrees(90));
     }
 
 }
-
-

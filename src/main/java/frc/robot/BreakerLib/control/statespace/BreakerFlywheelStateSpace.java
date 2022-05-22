@@ -16,6 +16,7 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
 public class BreakerFlywheelStateSpace extends SubsystemBase {
@@ -49,10 +50,12 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
     targetSpeedRadPerSec = 0;
   }
 
+  /** Sets target flywheel speed based on RPM. */
   public void setSpeedRPM(double targetSpeed) {
-    targetSpeedRadPerSec = ((targetSpeed / 60) * (2 * Math.PI));
+    targetSpeedRadPerSec = BreakerMath.radPerSecFromRPM(targetSpeed);
   }
 
+  /** Sets target flywheel speed based on radians per second. */
   public void setSpeedRadPerSec(double targetSpeed) {
     targetSpeedRadPerSec = targetSpeed;
   }
@@ -81,7 +84,7 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
       loop.setNextR(VecBuilder.fill(targetSpeedRadPerSec));
       loop.correct(
           VecBuilder.fill(BreakerUnits.falconVelRsuToRadPerSec(leadFlywheelMotor.getSelectedSensorVelocity())));
-      loop.predict(0.020);
+      loop.predict(0.020); // Predicts next cycle.
       nextVoltage = loop.getU(0);
     }
   }
