@@ -2,16 +2,17 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.devices.misc;
+package frc.robot.BreakerLib.devices.pneumatics;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*; // Just learned how to statically import enum values WOW!
 
 /** DoubleSolenoid with support for default state. */
 public class BreakerDoubleSolenoid {
     private DoubleSolenoid solenoid;
-    private Value defaultState = Value.kOff;
+    private Value defaultState = kOff;
 
     /** Constructs a BreakerDoubleSolenoid.
      * 

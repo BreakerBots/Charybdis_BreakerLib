@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.BreakerLib.devices.misc.BreakerDoubleSolenoid;
+import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 public class Intake extends SubsystemBase {
