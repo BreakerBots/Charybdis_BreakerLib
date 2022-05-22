@@ -38,7 +38,7 @@ public class BreakerRotation3d {
         return roll;
     }
 
-    /** Creates new Rotation3d with values based on the sum of this and other Rotation3d.  */
+    /** Returns new Rotation3d with values based on the sum of this and other Rotation3d.  */
     public BreakerRotation3d plus(BreakerRotation3d other) {
         Rotation2d newP = pitch.plus(other.getPitch());
         Rotation2d newY = yaw.plus(other.getYaw());

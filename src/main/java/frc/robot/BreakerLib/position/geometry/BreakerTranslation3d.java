@@ -9,12 +9,19 @@ import edu.wpi.first.math.geometry.Translation2d;
 /** Represents an objects position in the X, Y, and Z axies */
 public class BreakerTranslation3d {
 
+    // Position values in meters
     private double metersX;
     private double metersY;
     private double metersZ;
 
     /**
+     * Creates a new BreakerTranslation3d with given distance parameters.
+     * <p>
      * Parameters follow field coordinate system.
+     * 
+     * @param metersX Meters in x-position.
+     * @param metersY Meters in y-position.
+     * @param metersZ Meters in z-position.
      */
     public BreakerTranslation3d(double metersX, double metersY, double metersZ) {
         this.metersX = metersX;
@@ -22,6 +29,7 @@ public class BreakerTranslation3d {
         this.metersZ = metersZ;
     }
 
+    /** Returns 2d translation of x and y position. */
     public Translation2d get2dTranslationComponent() {
         return new Translation2d(metersX, metersY);
     }
@@ -38,7 +46,12 @@ public class BreakerTranslation3d {
         return metersZ;
     }
 
-    public BreakerTranslation3d plus(BreakerTranslation3d outher) {
-        return new BreakerTranslation3d(this.metersX + outher.metersX, this.metersY + outher.metersY, this.metersZ + outher.metersZ);
+    /** Returns new BreakerTranslation3d transformed by another BreakerTranslation3d. 
+     * 
+     * @other Other BreakerTranslation3d, position values are added to current BreakerTranslation3d.
+    */
+    public BreakerTranslation3d plus(BreakerTranslation3d other) {
+        return new BreakerTranslation3d(this.metersX + other.metersX, this.metersY + other.metersY,
+                this.metersZ + other.metersZ);
     }
 }

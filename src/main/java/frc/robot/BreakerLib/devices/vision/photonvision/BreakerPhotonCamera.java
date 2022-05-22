@@ -20,14 +20,19 @@ public class BreakerPhotonCamera {
     private double cameraHeightIns; // Height relative to ground. MAKE THIS METERS?
     private double verticalFOV;
     private double horizontalFOV;
-    private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot position.
+    private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot
+                                                              // position.
 
-    /**Creates a new camera that uses a Photonvision based computer vision algorithem
+    /**
+     * Creates a new camera that uses a PhotonVision-based computer vision
+     * algorithem
      * 
-     * @param cameraName Name of camera used to retreive data.
-     * @param verticalFOV Vertical field of view.
-     * @param horizontalFOV Horizontal field of view.
-     * @param cameraPositionRelativeToRobot Transformation between robot center and camera position (Z translation is relative to the ground).
+     * @param cameraName                    Name of camera used to retreive data.
+     * @param verticalFOV                   Vertical field of view.
+     * @param horizontalFOV                 Horizontal field of view.
+     * @param cameraPositionRelativeToRobot Transformation between robot center and
+     *                                      camera position (Z translation is
+     *                                      relative to the ground).
      */
     public BreakerPhotonCamera(String cameraName, double verticalFOV, double horizontalFOV,
             BreakerTransform3d cameraPositionRelativeToRobot) {
@@ -38,7 +43,7 @@ public class BreakerPhotonCamera {
                 .metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
         this.verticalFOV = verticalFOV;
         this.horizontalFOV = horizontalFOV;
-        
+
     }
 
     /** Overall raw result from photon camera. */
@@ -51,7 +56,10 @@ public class BreakerPhotonCamera {
         return getLatestRawResult().hasTargets();
     }
 
-    /** Returns a list of all raw PhotonTrackedTargets the camera has in its field of view */
+    /**
+     * Returns a list of all raw PhotonTrackedTargets the camera has in its field of
+     * view
+     */
     public PhotonTrackedTarget[] getAllRawTrackedTargets() {
         return getLatestRawResult().targets.toArray(new PhotonTrackedTarget[getLatestRawResult().targets.size()]);
     }
@@ -61,7 +69,7 @@ public class BreakerPhotonCamera {
         return getAllRawTrackedTargets().length;
     }
 
-    /** Camera latency in milliseconds*/
+    /** Camera latency in milliseconds */
     public double getPipelineLatancyMilliseconds() {
         return getLatestRawResult().getLatencyMillis();
     }
@@ -76,11 +84,15 @@ public class BreakerPhotonCamera {
         return camera.getPipelineIndex();
     }
 
-    /** Returns the raw PhotonTrackedTarget object representing the best tracked target according to the pipeline's native sort */
+    /**
+     * Returns the raw PhotonTrackedTarget object representing the best tracked
+     * target according to the pipeline's native sort
+     */
     public PhotonTrackedTarget getBestTarget() {
         return getLatestRawResult().getBestTarget();
     }
-    
+
+    /** Height is relative to ground. */
     public double getCameraHeightIns() {
         return cameraHeightIns;
     }
@@ -98,6 +110,7 @@ public class BreakerPhotonCamera {
         return horizontalFOV;
     }
 
+    /** 2d pose of camera relative to robot. */
     public Transform2d getCamPositionRelativeToRobot() {
         return cameraPositionRelativeToRobot.get2dTransformationComponent();
     }
