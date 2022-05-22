@@ -24,8 +24,8 @@ public class BreakerDashboard {
         return getTab("Setup");
     }
     
-    public static ShuffleboardTab getTuneingTab() {
-        return getTab("Tuneing");
+    public static ShuffleboardTab getTuningTab() {
+        return getTab("Tuning");
     }
 
     public static ShuffleboardTab getTab(String tabName) {
