@@ -32,7 +32,5 @@ public class BreakerCompressor {
     private void moduleSetup(int id) {
 
     }
-
-    private void 
     
 }
