@@ -21,14 +21,15 @@ public class BreakerRoboRIO extends SubsystemBase {
         DISABLED,
         AUTONOMOUS,
         TELEOP,
-        TEST
+        TEST,
+        UNKNOWN
     }
 
     // RoboRIO object vars.
     private double prevTime = RobotController.getFPGATime();
     private double diffTime = 0;
-    private RobotMode currentMode = RobotMode.DISABLED;
-    private RobotMode prevMode = currentMode;
+    private RobotMode currentMode = RobotMode.UNKNOWN;
+    private RobotMode prevMode = RobotMode.UNKNOWN;
 
     // Static RoboRIO object.
     private static BreakerRoboRIO roboRIO = new BreakerRoboRIO();
@@ -54,6 +55,9 @@ public class BreakerRoboRIO extends SubsystemBase {
             roboRIO.currentMode = RobotMode.AUTONOMOUS;
         } else {
             roboRIO.currentMode = RobotMode.TEST;
+        }
+        if (robotModeHasChanged()) {
+            BreakerLog.logRobotChangedMode(roboRIO.currentMode);
         }
     }
 

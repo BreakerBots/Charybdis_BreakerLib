@@ -10,7 +10,7 @@ import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 /** Add your docs here. */
 public class BreakerLog {
 
-  public static final String breakerLibVersion = "V1.2";
+  public static final String breakerLibVersion = "V1.3";
 
   public static void startLog(boolean autologNetworkTables) {
     DataLogManager.logNetworkTables(autologNetworkTables);
@@ -27,13 +27,11 @@ public class BreakerLog {
     work.append(" AUTHORS: " + authorNames + "\n\n");
     work.append(" | ---------------------------------------------- | \n\n\n");
     BreakerLog.log(work.toString());
-    // BreakerRoboRIO.updateRobotMode(RobotMode.DISABLED);
   }
 
-  /** Logs robot mode change. Also changes current robot mode?! */
+  /** Logs robot mode change. (automatacly called by BreakerRoboRIO) */
   public static void logRobotChangedMode(RobotMode newMode) {
     DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
-    // BreakerRoboRIO.updateRobotMode(newMode);
   }
 
   /** Logs given event. */
