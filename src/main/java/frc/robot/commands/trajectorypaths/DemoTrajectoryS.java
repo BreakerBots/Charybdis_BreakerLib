@@ -34,7 +34,7 @@ public class DemoTrajectoryS extends SequentialCommandGroup {
   Translation2d WP1;
   Translation2d WP2;
   List<Translation2d> waypoints;
-  public DemoTrajectoryS(Drive drivetrain, BreakerPigeon2 pigeon2) {
+  public DemoTrajectoryS(Drive drivetrain) {
 
     startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     endPose = new Pose2d(4, 0, Rotation2d.fromDegrees(0));
@@ -48,7 +48,7 @@ public class DemoTrajectoryS extends SequentialCommandGroup {
     partOne = new BreakerTrajectoryPath(TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config));
 
     addCommands(
-      new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose, pigeon2),
+      new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
       new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, 0.3, 0.5, 0.75, true)
     );
   }

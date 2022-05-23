@@ -36,8 +36,8 @@ public class RobotContainer {
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
 
     autoManager = new BreakerAutoManager(
-      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys, imuSys)),
-      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys, imuSys))
+      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
+      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys))
     );
 
     configureButtonBindings();

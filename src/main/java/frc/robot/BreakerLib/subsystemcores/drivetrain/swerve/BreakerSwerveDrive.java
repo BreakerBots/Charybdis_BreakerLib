@@ -11,13 +11,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerMK4iSwerveModule;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerGenericSwerveModule;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGenericDevice {
+public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGenericDevice, BreakerGenericOdometer {
   private BreakerSwerveDriveConfig config;
   /** [0] = frontLeft, [1] = frontRight, [2] = backLeft, [3] = backRight */
   private SwerveModuleState[] targetModuleStates;
@@ -98,28 +99,8 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
   }
 
   @Override
-  public void setOdometry(Pose2d poseMeters, double gyroAngle) {
-    odometer.resetPosition(poseMeters, Rotation2d.fromDegrees(gyroAngle));
-    
-  }
-
-  @Override
-  public Object getOdometer() {
-    return odometer;
-  }
-
-  @Override
   public void updateOdometry() {
     odometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getSwerveModuleStates());
-  }
-
-  @Override
-  public double[] getOdometryPosition() {
-    double [] pos = new double [3];
-    pos[0] = pigeon2.getRawAngles()[0];
-    pos[1] = BreakerUnits.metersToInches(odometer.getPoseMeters().getX());
-    pos[2] = BreakerUnits.metersToInches(odometer.getPoseMeters().getY());
-    return pos;
   }
 
   @Override
@@ -176,6 +157,16 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     frontRightModule.setDriveMotorBrakeMode(isEnabled);
     backLeftModule.setDriveMotorBrakeMode(isEnabled);
     backRightModule.setDriveMotorBrakeMode(isEnabled);
+  }
+
+  @Override
+  public Object getBaseOdometer() {
+    return odometer;
+  }
+
+  @Override
+  public void setOdometryPosition(Pose2d newPose) {
+   odometer.resetPosition(newPose, Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
   }
 
 

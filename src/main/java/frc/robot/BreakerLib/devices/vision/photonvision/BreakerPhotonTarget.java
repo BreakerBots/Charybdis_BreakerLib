@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.position.geometry.BreakerPose3d;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
@@ -30,7 +31,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
 
     private BreakerPhotonCamera camera;
     private double targetHeightInches;
-    private BreakerGenericDrivetrain drivetrain;
+    private BreakerGenericOdometer odometryProveider;
     private Pose2d targetLocation;
     private double maxTargetCordinateDeviationInches;
     private PhotonTrackedTarget assignedTarget;
@@ -43,16 +44,16 @@ public class BreakerPhotonTarget extends SubsystemBase {
      * meets its pre-difined paramaters
      * 
      * @param camera                             Photon camera.
-     * @param drivetrain                         Robot drivetrain for position
+     * @param odometryProvider                   BreakerGenericOdometer such as drivetrain or pose estimator for position
      *                                           tracking.
      * @param targetPosition                     Position of target relative to
      *                                           field.
      * @param maxTargetCoordinateDeviationInches Max allowed
      */
-    public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericDrivetrain drivetrain,
+    public BreakerPhotonTarget(BreakerPhotonCamera camera, BreakerGenericOdometer odometryProveider,
             BreakerPose3d targetPosition, double maxTargetCoordinateDeviationInches) {
         this.camera = camera;
-        this.drivetrain = drivetrain;
+        this.odometryProveider = odometryProveider;
         targetLocation = targetPosition.get2dPoseComponent(); // Target location on field as Pose2d.
         this.targetHeightInches = Units.metersToInches(targetPosition.getTranslationComponent().getMetersZ());
         this.maxTargetCordinateDeviationInches = maxTargetCoordinateDeviationInches;
@@ -105,9 +106,9 @@ public class BreakerPhotonTarget extends SubsystemBase {
                                                                                                                         // target
                                                                                                                         // to
                                                                                                                         // camera.
-                        drivetrain.getOdometryPoseMeters().getRotation());
+                        odometryProveider.getOdometryPoseMeters().getRotation());
 
-                Pose2d prospTgtPose = drivetrain.getOdometryPoseMeters().transformBy(prospTgtTransform); // 2d target
+                Pose2d prospTgtPose = odometryProveider.getOdometryPoseMeters().transformBy(prospTgtTransform); // 2d target
                                                                                                          // position
                                                                                                          // relative to
                                                                                                          // field.
@@ -169,7 +170,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
      *         based on vision and odometry
      */
     public Translation2d getTargetTranslationFromField() {
-        return drivetrain.getOdometryPoseMeters().getTranslation().plus(getTargetTranslationFromCamera());
+        return odometryProveider.getOdometryPoseMeters().getTranslation().plus(getTargetTranslationFromCamera());
     }
 
     /**
@@ -180,7 +181,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
     public Pose2d getRobotPose() {
         return PhotonUtils.estimateFieldToRobot(
                 PhotonUtils.estimateCameraToTarget(getTargetTranslationFromCamera(), targetLocation,
-                        drivetrain.getOdometryPoseMeters().getRotation()),
+                odometryProveider.getOdometryPoseMeters().getRotation()),
                 targetLocation, camera.getCamPositionRelativeToRobot());
     }
 
