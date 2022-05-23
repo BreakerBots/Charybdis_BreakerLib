@@ -13,9 +13,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 
 /** Add your docs here. */
-public class BreakerDiffPoseEstimator {
+public class BreakerDiffPoseEstimator implements BreakerGenericOdometer {
     private BreakerPigeon2 pigeon2;
     private DifferentialDrivePoseEstimator poseEstimator;
     private Pose2d currentPose;
@@ -50,17 +51,23 @@ public class BreakerDiffPoseEstimator {
         return currentPose;
     }
 
-    public Pose2d getCurrentPosition() {
-        currentPose = poseEstimator.getEstimatedPosition();
-        return currentPose;
-    }
-
-    public void setPosition(Pose2d newPose) {
+    public void setOdometryPosition(Pose2d newPose) {
         poseEstimator.resetPosition(newPose, Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
     }
 
     @Override
     public String toString() {
-        return "CURRENT POSE: " + getCurrentPosition().toString();
+        return "CURRENT POSE: " + getOdometryPoseMeters().toString();
+    }
+
+    @Override
+    public Object getBaseOdometer() {
+        return poseEstimator;
+    }
+
+    @Override
+    public Pose2d getOdometryPoseMeters() {
+        currentPose = poseEstimator.getEstimatedPosition();
+        return currentPose;
     }
 }

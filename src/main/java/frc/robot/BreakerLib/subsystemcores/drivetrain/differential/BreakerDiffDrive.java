@@ -24,13 +24,14 @@ import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.physics.BreakerVector3;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenericDevice {
+public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenericDevice, BreakerGenericOdometer {
   private WPI_TalonFX leftLead;
   private WPI_TalonFX[] leftMotors;
   private MotorControllerGroup leftDrive;
@@ -182,28 +183,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   }
 
   @Override
-  public void setOdometry(Pose2d poseMeters, double gyroAngle) {
-    resetDriveEncoders();
-    driveOdometer.resetPosition(poseMeters, Rotation2d.fromDegrees(gyroAngle));
-  }
-
-  @Override
-  public Object getOdometer() {
-    return driveOdometer; 
-  }
-
-  @Override
   public void updateOdometry() {
     driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(), getRightDriveMeters());
-  }
-
-  @Override
-  public double[] getOdometryPosition() {
-    Pose2d basePose = driveOdometer.getPoseMeters();
-    double xPos = Units.metersToInches(basePose.getX());
-    double yPos = Units.metersToInches(basePose.getY());
-    double degPos = basePose.getRotation().getDegrees();
-    return new double[] { xPos, yPos, degPos };
   }
 
   @Override
@@ -261,5 +242,16 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   public void setDeviceName(String newName) {
     deviceName = newName;
     
+  }
+
+  @Override
+  public void setOdometryPosition(Pose2d newPose) {
+    resetDriveEncoders();
+    driveOdometer.resetPosition(newPose, Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
+  }
+
+  @Override
+  public Object getBaseOdometer() {
+    return driveOdometer;
   }
 }

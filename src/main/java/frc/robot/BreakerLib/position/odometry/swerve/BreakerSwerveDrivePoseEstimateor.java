@@ -12,9 +12,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
 
-public class BreakerSwerveDrivePoseEstimateor {
+public class BreakerSwerveDrivePoseEstimateor implements BreakerGenericOdometer {
     private BreakerPigeon2 pigeon2;
     private SwerveDrivePoseEstimator poseEstimator;
     public BreakerSwerveDrivePoseEstimateor(BreakerPigeon2 pigeon2, Pose2d initialPose, BreakerSwerveDriveConfig config, double[] stateModelStanderdDeveation, double gyroStandardDeveation, double[] visionStanderdDeveation) {
@@ -44,17 +45,24 @@ public class BreakerSwerveDrivePoseEstimateor {
         poseEstimator.setVisionMeasurementStdDevs(new MatBuilder<>(Nat.N3(), Nat.N1()).fill(visionStrdDevX, visionStrdDevY, visionStrdDevTheta));
     }
 
-    public Pose2d getCurrentPosition() {
-        return poseEstimator.getEstimatedPosition();
+    @Override
+    public String toString() {
+        return "CURRENT POSE: " + getOdometryPoseMeters().toString();
     }
 
-    public void setPosition(Pose2d newPose) {
+    @Override
+    public void setOdometryPosition(Pose2d newPose) {
         poseEstimator.resetPosition(newPose, Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
     }
 
     @Override
-    public String toString() {
-        return "CURRENT POSE: " + getCurrentPosition().toString();
+    public Object getBaseOdometer() {
+        return poseEstimator;
+    }
+
+    @Override
+    public Pose2d getOdometryPoseMeters() {
+        return poseEstimator.getEstimatedPosition();
     }
 
 
