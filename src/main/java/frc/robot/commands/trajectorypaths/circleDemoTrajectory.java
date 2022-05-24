@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerStartTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
