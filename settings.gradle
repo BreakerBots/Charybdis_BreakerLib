@@ -26,9 +26,10 @@ pluginManagement {
     }
 }
 
-rootProject.name='charybdis_breakerlib'
-include 'BreakerLib'
-rootProject.children[0].buildFileName = "BreakerLib.gradle"
-if (!rootProject.children[0].buildFile.isFile()) {
-    rootProject.children[0].buildFileName = "build.gradle"
-}
+rootProject.name='Charybdis_BreakerLib'
+include ':BreakerLib'
+include ':BreakerLib:src'
+rootProject.children[0].buildFileName = "build.gradle"
+// if (!rootProject.children[0].buildFile.isFile()) {
+//     rootProject.children[0].buildFileName = "build.gradle"
+// }
