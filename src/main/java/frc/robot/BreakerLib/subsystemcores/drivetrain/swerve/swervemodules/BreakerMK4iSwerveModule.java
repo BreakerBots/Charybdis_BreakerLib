@@ -21,14 +21,16 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
 import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Add your docs here. */
-public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule{
+public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
     private BreakerSwerveDriveConfig config;
+    private String deviceName = "Swerve_Module_(SDS_MK4I)";
     private PIDController drivePID;
     private PIDController anglePID;
     // private SimpleMotorFeedforward driveFF;
@@ -142,6 +144,34 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule{
 
     @Override
     public void runModuleSelfCheck() {
+        
+    }
+
+    /** returns the modules health as an array [0] = overall, [1] = drive motor, [2] = turn motor, [3] = CANcoder
+     */
+    @Override
+    public DeviceHealth[] getModuleHealths() {
+        DeviceHealth[] healths = new DeviceHealth[4];
+        healths[0] = overallHealth;
+        healths[1] = driveMotorHealth;
+        healths[2] = turnMotorHealth;
+        healths[3] = encoderHealth;
+        return healths;
+    }
+
+    @Override
+    public void setDriveMotorBrakeMode(boolean isEnabled) {
+        driveMotor.setNeutralMode(isEnabled ? NeutralMode.Brake : NeutralMode.Coast);
+        
+    }
+
+    @Override
+    public void setTurnMotorBreakMode(boolean isEnabled) {
+        turnMotor.setNeutralMode(isEnabled ? NeutralMode.Brake : NeutralMode.Coast);
+    }
+
+    @Override
+    public void runSelfTest() {
         faults = null;
         Faults curTurnFaults = new Faults();
         Faults curDriveFaults = new Faults();
@@ -204,36 +234,29 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule{
         }
     }
 
-    /** returns the modules health as an array [0] = overall, [1] = drive motor, [2] = turn motor, [3] = CANcoder
-     */
     @Override
-    public DeviceHealth[] getModuleHealth() {
-        DeviceHealth[] healths = new DeviceHealth[4];
-        healths[0] = overallHealth;
-        healths[1] = driveMotorHealth;
-        healths[2] = turnMotorHealth;
-        healths[3] = encoderHealth;
-        return healths;
+    public DeviceHealth getHealth() {
+        return overallHealth;
     }
 
     @Override
-    public boolean moduleHasFault() {
-        return overallHealth != DeviceHealth.NOMINAL;
-    }
-
-    @Override
-    public String getModuleFaults() {
+    public String getFaults() {
         return faults;
     }
 
     @Override
-    public void setDriveMotorBrakeMode(boolean isEnabled) {
-        driveMotor.setNeutralMode(isEnabled ? NeutralMode.Brake : NeutralMode.Coast);
-        
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    /** returns the device's overall health */
+    @Override
+    public boolean hasFault() {
+        return overallHealth != DeviceHealth.NOMINAL;
     }
 
     @Override
-    public void setTurnMotorBreakMode(boolean isEnabled) {
-        turnMotor.setNeutralMode(isEnabled ? NeutralMode.Brake : NeutralMode.Coast);
+    public void setDeviceName(String newName) {
+        deviceName = newName;
     }
 }

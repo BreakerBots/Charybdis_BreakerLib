@@ -6,10 +6,11 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Interface for all Swerve Modules to allwo for easy interchangeablity, this class is meant to surve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class */
-public interface BreakerGenericSwerveModule {
+public interface BreakerGenericSwerveModule extends BreakerGenericDevice{
 
     /** default method for setting a swerve module to a given target state, 
      * automaticly calls the overloded version of this method that independently specifyes angle and speed*/
@@ -42,9 +43,5 @@ public interface BreakerGenericSwerveModule {
     public abstract void setTurnMotorBreakMode(boolean isEnabled);
 
     /** returns the modules health as an array [0] = overall, [1] = drive motor, [2] = turn motor, [3] = outher if supported (EX: CANCoder)*/
-    public abstract DeviceHealth[] getModuleHealth();
-
-    public abstract boolean moduleHasFault();
-
-    public abstract String getModuleFaults();
+    public abstract DeviceHealth[] getModuleHealths();
 }

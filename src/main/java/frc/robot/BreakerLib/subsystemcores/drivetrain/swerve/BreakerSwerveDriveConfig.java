@@ -32,7 +32,8 @@ public class BreakerSwerveDriveConfig {
     // private double angVelTol;
 
     private SwerveDriveKinematics kinematics;
-    /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. */
+    /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. 
+     * (wheel translations must be imputed in the same order as the swerve moduels themsleves are passed into your BreakerSwerveDrive constructor) */
     public BreakerSwerveDriveConfig(double maxForwardVel, double maxSidewaysVel, double maxAngVel, 
         double moduleAnglekP, double moduleAnglekI, double moduleAngleKd, double moduleVelkP,
         double moduleVelkI, double moduleVelKd, double moduleVelKf, double driveMotorGearRatioToOne,
