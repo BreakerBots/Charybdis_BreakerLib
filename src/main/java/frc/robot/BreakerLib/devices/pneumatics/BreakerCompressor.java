@@ -32,7 +32,10 @@ public class BreakerCompressor {
     private void moduleSetup(int id) {
 
     }
+<<<<<<< HEAD
 
     private void 
+=======
+>>>>>>> parent of 0a28919 (arrrrggggggg)
     
 }
