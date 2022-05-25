@@ -9,9 +9,11 @@ import javax.print.attribute.standard.MediaSize.Other;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Tracer;
+import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** represents a point with 2 axial vectors of ajustable magnatudes (one paralell with the point's X, and Y axis) */
-public class BreakerVector2 {
+public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
     private Rotation2d forceRotation;
     private double force;
     private double forceX;
@@ -19,6 +21,8 @@ public class BreakerVector2 {
     public BreakerVector2(double forceX, double forceY) {
         this.forceX = forceX;
         this.forceY = forceY;
+        forceRotation = new Rotation2d(Math.atan2(forceY, forceX));
+        force = Math.sqrt(Math.pow(forceX, 2) + Math.pow(forceY, 2));
     }
 
     private BreakerVector2(double forceX, double forceY, double force, Rotation2d forceRotation) {
@@ -52,5 +56,18 @@ public class BreakerVector2 {
     public boolean equals(Object obj) {
         return (Math.abs(((BreakerVector2) obj).forceX - forceX) < 1E-9) 
             && (Math.abs(((BreakerVector2) obj).forceY - forceY) < 1E-9); 
+    }
+
+    @Override
+    public BreakerVector2 interpolate(double interpolendValue, double highKey, BreakerVector2 highVal,
+            double lowKey, BreakerVector2 lowVal) {
+                double interX = BreakerMath.interpolateLinear(interpolendValue, highKey, lowKey, lowVal.getForceX(), highVal.getForceX());
+                double interY = BreakerMath.interpolateLinear(interpolendValue, highKey, lowKey, lowVal.getForceY(), highVal.getForceY());
+                return new BreakerVector2(interX, interY);
+    }
+
+    @Override
+    public BreakerVector2 getSelf() {
+        return this;
     }
 }

@@ -5,9 +5,11 @@
 package frc.robot.BreakerLib.physics;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** represents a point with 3 axial vectors of ajustable magnatudes (one on each X, Y, and Z axis) */
-public class BreakerVector3 {
+public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
 
     private double forceX;
     private double forceY;
@@ -29,5 +31,20 @@ public class BreakerVector3 {
 
     public double getForceZ() {
         return forceZ;
+    }
+
+    @Override
+    public BreakerVector3 interpolate(double interpolendValue, double highKey, BreakerVector3 highVal,
+            double lowKey, BreakerVector3 lowVal) {
+                double interX = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getForceX(), highVal.getForceX());
+                double interY = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getForceY(), highVal.getForceZ());
+                double interZ = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getForceZ(), highVal.getForceZ());
+        
+                return new BreakerVector3(interX, interY, interZ);
+    }
+
+    @Override
+    public BreakerVector3 getSelf() {
+        return this;
     }
 }

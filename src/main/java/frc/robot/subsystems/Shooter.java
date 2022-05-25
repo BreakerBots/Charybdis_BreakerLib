@@ -14,7 +14,8 @@
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 // import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
 // import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
-// import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateingVector2TreeMap;
+// import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+// import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateingTreeMap;
 // import frc.robot.subsystems.devices.Vision;
 
 // public class Shooter extends SubsystemBase {
@@ -28,7 +29,7 @@
 //   private WPI_TalonFX leftFlywheelMotor;
 //   private WPI_TalonFX rightFlywheelMotor;
 //   private Vision vision;
-//   private BreakerInterpolateingVector2TreeMap interpolateingShotPerameterMap;
+//   private BreakerInterpolateingTreeMap<Double, BreakerVector2> interpolateingShotPerameterMap;
 //   private BreakerDiffDrive drivetrain;
 //   private ShooterAimMode aimMode = ShooterAimMode.AUTO_AIM;
 //   public Shooter(Vision vision, Drive drive) {
@@ -52,7 +53,7 @@
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 
-//     interpolateingShotPerameterMap = new BreakerInterpolateingVector2TreeMap(shotPerameterMap);
+//     interpolateingShotPerameterMap = new BreakerInterpolateingTreeMap<>(shotPerameterMap);
 //   }
 
 //   public void setShooterAimMode(ShooterAimMode newAimMode) {
@@ -60,7 +61,7 @@
 //   }
 
 //   private BreakerVector2 getIntepolatedVector(double distanceMeters) {
-//     return interpolateingShotPerameterMap.getInterpolatedVector2(distanceMeters);
+//     return interpolateingShotPerameterMap.getInterpolatedValue(distanceMeters);
 //   }
 
 //   private double getDistanceToTarget() {
