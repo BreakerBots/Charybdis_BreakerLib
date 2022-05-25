@@ -1,13 +1,8 @@
-<<<<<<< Updated upstream:src/main/java/frc/robot/BreakerLib/devices/pneumatics/BreakerCompressor.java
-package frc.robot.BreakerLib.devices.pneumatics;
-
-=======
->>>>>>> Stashed changes:src/main/java/frc/BreakerLib/devices/pneumatics/BreakerCompressor.java
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.BreakerLib.devices.pneumatics;
+package frc.robot.BreakerLib.devices.pneumatics;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Compressor;
