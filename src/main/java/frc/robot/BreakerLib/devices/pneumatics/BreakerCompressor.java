@@ -5,13 +5,10 @@
 package frc.robot.BreakerLib.devices.pneumatics;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsBase;
-
-import static edu.wpi.first.wpilibj.PneumaticsModuleType.*;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * Compressor with built-in AnalogPotentiometer and pneumatic module support.
@@ -104,6 +101,11 @@ public class BreakerCompressor {
     /** Current in amps used by the compressor */
     public double getCompressorAmps() {
         return pneumaticModule.getCompressorCurrent();
+    }
+
+    /** Returns base pneumatic module. */
+    public PneumaticsBase getModule() {
+        return pneumaticModule;
     }
 
     /** Returns true if the compressor is enabled. */
