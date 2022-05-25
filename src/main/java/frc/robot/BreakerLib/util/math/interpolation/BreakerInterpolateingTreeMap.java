@@ -6,10 +6,11 @@ package frc.robot.BreakerLib.util.math.interpolation;
 
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** Add your docs here. */
-public class BreakerInterpolateingTreeMap<K,V> {
-    private TreeMap<K,BreakerInterpolateable<V>> indexesAndValues;
+public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>>
+    private TreeMap<K, BreakerInterpolateable<V>> indexesAndValues;
     public BreakerInterpolateingTreeMap(TreeMap<K, BreakerInterpolateable<V>> indexesAndValues) {
         this.indexesAndValues = indexesAndValues;
     }
