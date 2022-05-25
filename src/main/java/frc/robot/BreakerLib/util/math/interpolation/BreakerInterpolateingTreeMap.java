@@ -9,15 +9,15 @@ import java.util.TreeMap;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** Add your docs here. */
-public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>>
-    private TreeMap<K, BreakerInterpolateable<V>> indexesAndValues;
-    public BreakerInterpolateingTreeMap(TreeMap<K, BreakerInterpolateable<V>> indexesAndValues) {
+public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>> {
+    private TreeMap<K, V> indexesAndValues;
+    public BreakerInterpolateingTreeMap(TreeMap<K, V> indexesAndValues) {
         this.indexesAndValues = indexesAndValues;
     }
 
     public V getInterpolatedValue(K interpolendValue) {
-        Entry<K, BreakerInterpolateable<V>> low = indexesAndValues.floorEntry(interpolendValue);
-        Entry<K, BreakerInterpolateable<V>> high = indexesAndValues.ceilingEntry(interpolendValue);
+        Entry<K, V> low = indexesAndValues.floorEntry(interpolendValue);
+        Entry<K, V> high = indexesAndValues.ceilingEntry(interpolendValue);
 
         if (low == null) {
             return high.getValue().getSelf();
