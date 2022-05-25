@@ -34,7 +34,7 @@ public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
     }
 
     @Override
-    public BreakerVector3 interpolateBetween(double interpolendValue, double highKey, BreakerVector3 highVal,
+    public BreakerVector3 interpolate(double interpolendValue, double highKey, BreakerVector3 highVal,
             double lowKey, BreakerVector3 lowVal) {
                 double interX = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getForceX(), highVal.getForceX());
                 double interY = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getForceY(), highVal.getForceZ());
