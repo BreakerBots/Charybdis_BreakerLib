@@ -196,4 +196,8 @@ public class BreakerMath {
         return Rotation2d.fromDegrees(finalAng).rotateBy(Rotation2d.fromDegrees(90));
     }
 
+    public static double interpolateLinear(double knownX, double lowX, double highX, double lowY, double highY) {
+        return (((knownX - lowX) * (highY - lowY)) / (highX - lowX)) + lowY;
+    }
+
 }

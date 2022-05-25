@@ -5,11 +5,8 @@
 package frc.robot.BreakerLib.util.math.interpolation;
 
 /** Add your docs here. */
-public class BreakerInterpolateable {
-    
-    public double interpolateLinear(double knownX, double lowX, double highX, double lowY, double highY) {
-        return (((knownX - lowX) * (highY - lowY)) / (highX - lowX)) + lowY;
-    }
+public interface BreakerInterpolateable<V> {
+    public abstract V interpolate(double interpolendValue, double highKey, V highVal, double lowKey, V lowVal);
 
-
+    public abstract V getSelf();
 }
