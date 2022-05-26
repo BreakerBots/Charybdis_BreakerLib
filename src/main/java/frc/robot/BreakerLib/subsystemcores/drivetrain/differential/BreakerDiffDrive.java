@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -269,7 +270,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   }
 
   private void calculateMovementState(double timeToLastUpdateMilisecods) {
-    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), 0, prevMovementState);
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), BreakerMath.fromRobotRelativeSpeeds(driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), getOdometryPoseMeters().getRotation()), timeToLastUpdateMilisecods, prevMovementState);
     prevMovementState = curMovementState;
   }
 }

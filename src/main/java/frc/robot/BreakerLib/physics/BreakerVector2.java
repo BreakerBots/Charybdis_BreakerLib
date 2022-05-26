@@ -59,6 +59,12 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
         return forceY;
     }
 
+    public BreakerVector2 rotateBy(Rotation2d rotation) {
+        double cos = Math.cos(rotation.getRadians());
+        double sin = Math.sin(rotation.getRadians());
+        return new BreakerVector2((this.forceX * cos) - (this.forceY * sin), (this.forceX * sin) + (this.forceY * cos));
+    }
+
     @Override
     public boolean equals(Object obj) {
         return (Math.abs(((BreakerVector2) obj).forceX - forceX) < 1E-9) 

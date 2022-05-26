@@ -5,4 +5,8 @@
 package frc.robot.BreakerLib.physics.projectilemotion;
 
 /** Add your docs here. */
-public class BreakerProjectile {}
+public class BreakerProjectile {
+    public BreakerProjectile(double massKg, double dragCoeffiecnt, double crossSectionalAreaMetersSq, double termanalVelMetersPerSec) {
+        
+    }
+}

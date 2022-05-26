@@ -192,7 +192,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
 
   private void calculateMovementState(double timeToLastUpdateMiliseconds) {
     ChassisSpeeds speeds = config.getKinematics().toChassisSpeeds(getSwerveModuleStates());
-    curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), speeds, timeToLastUpdateMiliseconds, prevMovementState);
+    curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), BreakerMath.fromRobotRelativeSpeeds(speeds, getOdometryPoseMeters().getRotation()), timeToLastUpdateMiliseconds, prevMovementState);
     prevMovementState = curMovementState;
   }
 

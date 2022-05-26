@@ -7,6 +7,7 @@ package frc.robot.BreakerLib.util.CTRE;
 import java.util.HashMap;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.led.CANdleFaults;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -100,13 +101,23 @@ public class BreakerCTREUtil {
     }
     return work.toString();
   }
+
+  public static String getCANdleFaultsAsString(CANdleFaults faults) {
+    HashMap<Integer, String> map = new HashMap<Integer, String>();
+    map.put(0, " short_circut ");
+    map.put(1, " thermal_fault ");
+    map.put(2, " software_fuse ");
+    map.put(8, " API_error ");
+    map.put(9, " hardware_failure ");
+    return getDeviceFaultsAsString(faults.toBitfield(), map);
+  }
   
-  public static String getDeviceFaultsAsString(long l, HashMap<Integer, String> fieldPlacesAndFaultMessages) {
+  public static String getDeviceFaultsAsString(long faultBitField, HashMap<Integer, String> fieldPlacesAndFaultMessages) {
     StringBuilder work = new StringBuilder();
-    if (l != 0) {
-      int fieldMask = 1; // masks all but selected bit
+    if (faultBitField != 0) {
+      long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesAndFaultMessages.size(); fieldPlace++) {
-        if (((l & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
             work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
         }
         fieldMask <<= 1; // Scrolls to next bit.

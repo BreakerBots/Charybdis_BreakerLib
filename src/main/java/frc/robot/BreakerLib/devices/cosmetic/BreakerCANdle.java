@@ -39,6 +39,9 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
     private double switchTimeSec;
     private Color[] switchColors;
     private BreakerCANdleLedMode mode = BreakerCANdleLedMode.OFF;
+    private DeviceHealth health = DeviceHealth.NOMINAL;
+    private String faults;
+    private String diviceName = " CANdle_LED_Controller ";
 
     public BreakerCANdle(int canID, int numberOfLEDs, BreakerCANdleConfig config) {
         candle = new CANdle(canID);
@@ -133,48 +136,40 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
 
     @Override
     public void runSelfTest() {
-        HashMap<Integer, String> map = new HashMap<Integer, String>();
-        map.put(0, " short_circut ");
-        map.put(1, " thermal_fault ");
-        map.put(2, " software_fuse ");
-        map.put(8, " API_error ");
-        map.put(9, " hardware_failure ");
-        CANdleFaults faults = new CANdleFaults();
-        candle.getFaults(faults);
-        if (faults.hasAnyFault()) {
-            BreakerCTREUtil.getDeviceFaultsAsString((int) faults.toBitfield(), map);
-            
+        faults = null;
+        CANdleFaults faultsC = new CANdleFaults();
+        candle.getFaults(faultsC);
+        if (faultsC.hasAnyFault()) {
+            faults = BreakerCTREUtil.getCANdleFaultsAsString(faultsC);
+            health = DeviceHealth.INOPERABLE;
+        } else {
+            health = DeviceHealth.NOMINAL;
         }
         
     }
 
     @Override
     public DeviceHealth getHealth() {
-        // TODO Auto-generated method stub
-        return null;
+        return health;
     }
 
     @Override
     public String getFaults() {
-        // TODO Auto-generated method stub
-        return null;
+        return faults;
     }
 
     @Override
     public String getDeviceName() {
-        // TODO Auto-generated method stub
-        return null;
+        return diviceName;
     }
 
     @Override
     public boolean hasFault() {
-        // TODO Auto-generated method stub
-        return false;
+        return health != DeviceHealth.NOMINAL;
     }
 
     @Override
     public void setDeviceName(String newName) {
-        // TODO Auto-generated method stub
-        
+        diviceName = newName;
     }
 }
