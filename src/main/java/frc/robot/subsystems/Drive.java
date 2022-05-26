@@ -18,7 +18,7 @@ import frc.robot.BreakerLib.physics.Breaker6AxisForces;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDriveConfig;
-import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive. */
@@ -47,8 +47,8 @@ public class Drive extends SubsystemBase {
     right2 = new WPI_TalonFX(Constants.R2_ID);
     right3 = new WPI_TalonFX(Constants.R3_ID);
 
-    leftMotors = BreakerCTREMotorUtil.createMotorArray(left1, left2, left3);
-    rightMotors = BreakerCTREMotorUtil.createMotorArray(right1, right2, right3);
+    leftMotors = BreakerCTREUtil.createMotorArray(left1, left2, left3);
+    rightMotors = BreakerCTREUtil.createMotorArray(right1, right2, right3);
     
     leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
     leftSideRamsetePID.setTolerance(0.02, 0.05);

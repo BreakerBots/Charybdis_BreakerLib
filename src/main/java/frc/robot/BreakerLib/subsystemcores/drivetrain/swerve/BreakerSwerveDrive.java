@@ -13,10 +13,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
+import frc.robot.BreakerLib.physics.Breaker3AxisForces;
+import frc.robot.BreakerLib.physics.BreakerVector2;
+import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerMK4iSwerveModule;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerGenericSwerveModule;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -30,6 +34,8 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
   private BreakerPigeon2 pigeon2;
 
   private SwerveDriveOdometry odometer;
+
+  private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
 
   private String deviceName = "Swerve_Drivetrain";
   private String faults = null;
@@ -171,6 +177,14 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
   @Override
   public void setOdometryPosition(Pose2d newPose) {
    odometer.resetPosition(newPose, Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
+  }
+
+  @Override
+  public BreakerMovementState2d getMovementState() {
+    ChassisSpeeds speeds = config.getKinematics().toChassisSpeeds(getSwerveModuleStates());
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), speeds, prevMovementState);
+    prevMovementState = curMovementState;
+    return curMovementState;
   }
 
 

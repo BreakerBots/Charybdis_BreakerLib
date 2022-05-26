@@ -23,7 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
-import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -57,7 +57,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
         encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        BreakerCTREMotorUtil.checkError(turnEncoder.configAllSettings(encoderConfig), " Failed to config swerve module turn encoder "); 
+        BreakerCTREUtil.checkError(turnEncoder.configAllSettings(encoderConfig), " Failed to config swerve module turn encoder "); 
 
         TalonFXConfiguration turnConfig = new TalonFXConfiguration();
         turnConfig.remoteFilter0.remoteSensorDeviceID = turnEncoder.getDeviceID();
@@ -66,7 +66,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         turnConfig.slot0.kP = config.getModuleAnglekP();
         turnConfig.slot0.kI = config.getModuleAnglekI();
         turnConfig.slot0.kD = config.getModuleAngleKd();
-        BreakerCTREMotorUtil.checkError(turnMotor.configAllSettings(turnConfig)," Failed to config swerve module turn motor "); 
+        BreakerCTREUtil.checkError(turnMotor.configAllSettings(turnConfig)," Failed to config swerve module turn motor "); 
         turnMotor.selectProfileSlot(0, 0);
 
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
@@ -75,7 +75,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         driveConfig.slot0.kI = config.getModuleVelkI();
         driveConfig.slot0.kD = config.getModuleVelKd();
         driveConfig.slot0.kF = config.getModuleVelKf();
-        BreakerCTREMotorUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
+        BreakerCTREUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
         driveMotor.selectProfileSlot(0, 0);
 
         // anglePID = new PIDController(config.getModuleAnglekP(), config.getModuleAnglekI(), config.getModuleAngleKd());

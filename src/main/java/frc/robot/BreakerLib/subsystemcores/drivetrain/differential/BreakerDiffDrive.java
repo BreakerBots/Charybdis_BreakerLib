@@ -24,10 +24,11 @@ import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.physics.BreakerVector3;
+import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.BreakerCTREMotorUtil;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -135,8 +136,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   }
 
   public void setDrivetrainBrakeMode(boolean isEnabled) {
-    BreakerCTREMotorUtil.setBrakeMode(isEnabled, leftMotors);
-    BreakerCTREMotorUtil.setBrakeMode(isEnabled, rightMotors);
+    BreakerCTREUtil.setBrakeMode(isEnabled, leftMotors);
+    BreakerCTREUtil.setBrakeMode(isEnabled, rightMotors);
   }
   
   /** Returns an instance of the drivetrain's left side lead motor */
@@ -203,7 +204,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
       if (motorFaults.hasAnyFault()) {
         hasFault = true;
         work.append(" MOTOR ID (" + motorL.getDeviceID() + ") FAULTS: ");
-        work.append(BreakerCTREMotorUtil.getMotorFaultsAsString(motorFaults));
+        work.append(BreakerCTREUtil.getMotorFaultsAsString(motorFaults));
       }
     }
     for (WPI_TalonFX motorR: rightMotors) {
@@ -212,7 +213,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
       if (motorFaults.hasAnyFault()) {
         hasFault = true;
         work.append(" MOTOR ID (" + motorR.getDeviceID() + ") FAULTS: ");
-        work.append(BreakerCTREMotorUtil.getMotorFaultsAsString(motorFaults));
+        work.append(BreakerCTREUtil.getMotorFaultsAsString(motorFaults));
       }
     }
     faults = work.toString();
@@ -253,5 +254,11 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   @Override
   public Object getBaseOdometer() {
     return driveOdometer;
+  }
+
+  @Override
+  public BreakerMovementState2d getMovementState() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

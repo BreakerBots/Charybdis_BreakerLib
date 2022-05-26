@@ -16,10 +16,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.position.geometry.BreakerPose3d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
+import frc.robot.BreakerLib.util.BreakerRoboRIO;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
@@ -38,6 +41,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
     private Supplier<PhotonTrackedTarget> assignedTargetSupplier;
     private boolean targetPreAssigned;
     private boolean assignedTargetFound;
+    private double targetFoundTimestamp;
 
     /**
      * Creates a new BreakerPhotonTarget that will activly search for a target that
@@ -123,6 +127,7 @@ public class BreakerPhotonTarget extends SubsystemBase {
             // checks if a target has been successfully found and assigned
             if (runs >= camera.getNumberOfCameraTargets() && foundTgt == true) {
                 assignedTargetFound = true;
+                targetFoundTimestamp = Timer.getFPGATimestamp();
             } else {
                 assignedTargetFound = false;
             }
@@ -213,6 +218,11 @@ public class BreakerPhotonTarget extends SubsystemBase {
     /** If assigned target is found. */
     public boolean getAssignedTargetFound() {
         return assignedTargetFound;
+    }
+
+    public double getTargetDataAge() {
+        double timediffsec = Timer.getFPGATimestamp() - targetFoundTimestamp;
+        return Units.millisecondsToSeconds(camera.getPipelineLatancyMilliseconds()) + timediffsec;
     }
 
     @Override

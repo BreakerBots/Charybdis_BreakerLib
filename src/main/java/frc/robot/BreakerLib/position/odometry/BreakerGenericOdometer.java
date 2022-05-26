@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.position.odometry;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 
 public interface BreakerGenericOdometer {
   public abstract void setOdometryPosition(Pose2d newPose);
@@ -12,4 +13,6 @@ public interface BreakerGenericOdometer {
   public abstract Object getBaseOdometer();
 
   public abstract Pose2d getOdometryPoseMeters();
+
+  public abstract BreakerMovementState2d getMovementState();
 }
