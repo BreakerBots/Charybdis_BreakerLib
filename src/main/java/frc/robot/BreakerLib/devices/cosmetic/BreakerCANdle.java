@@ -4,16 +4,22 @@
 
 package frc.robot.BreakerLib.devices.cosmetic;
 
+import java.util.HashMap;
+
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.CANdleFaults;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** LED controller */
-public class BreakerCANdle extends SubsystemBase {
+public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice {
 
     public enum BreakerCANdleLedMode {
         COLOR_SWITCH,
@@ -123,5 +129,52 @@ public class BreakerCANdle extends SubsystemBase {
     public void periodic() {
         timer++;
         runLED();
+    }
+
+    @Override
+    public void runSelfTest() {
+        HashMap<Integer, String> map = new HashMap<Integer, String>();
+        map.put(0, " short_circut ");
+        map.put(1, " thermal_fault ");
+        map.put(2, " software_fuse ");
+        map.put(8, " API_error ");
+        map.put(9, " hardware_failure ");
+        CANdleFaults faults = new CANdleFaults();
+        candle.getFaults(faults);
+        if (faults.hasAnyFault()) {
+            BreakerCTREUtil.getDeviceFaultsAsString((int) faults.toBitfield(), map);
+            
+        }
+        
+    }
+
+    @Override
+    public DeviceHealth getHealth() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getFaults() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getDeviceName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean hasFault() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setDeviceName(String newName) {
+        // TODO Auto-generated method stub
+        
     }
 }

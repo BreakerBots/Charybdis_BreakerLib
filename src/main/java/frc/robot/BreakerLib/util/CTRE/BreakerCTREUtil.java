@@ -4,6 +4,8 @@
 
 package frc.robot.BreakerLib.util.CTRE;
 
+import java.util.HashMap;
+
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -50,7 +52,7 @@ public class BreakerCTREUtil {
     StringBuilder work = new StringBuilder();
     if (motorFaults.hasAnyFault()) {
       int field = motorFaults.toBitfield(); // Field for examining errors
-      int fieldMask = 1; // Need explanation
+      int fieldMask = 1; // masks all but selected bit
 
       for (int fieldPlace = 0; fieldPlace <= 13; fieldPlace++) {
         if ((field & fieldMask) != 0) { // Checks for 1s in bitfield that signifies error
@@ -90,6 +92,22 @@ public class BreakerCTREUtil {
               work.append(" unstable_supply_voltage ");
               break;
           }
+        }
+        fieldMask <<= 1; // Scrolls to next bit.
+      }
+    } else {
+      work.append(" none ");
+    }
+    return work.toString();
+  }
+  
+  public static String getDeviceFaultsAsString(int faultBitField, HashMap<Integer, String> fieldPlacesAndFaultMessages) {
+    StringBuilder work = new StringBuilder();
+    if (faultBitField != 0) {
+      int fieldMask = 1; // masks all but selected bit
+      for (int fieldPlace = 0; fieldPlace < fieldPlacesAndFaultMessages.size(); fieldPlace++) {
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+            work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
         }
         fieldMask <<= 1; // Scrolls to next bit.
       }

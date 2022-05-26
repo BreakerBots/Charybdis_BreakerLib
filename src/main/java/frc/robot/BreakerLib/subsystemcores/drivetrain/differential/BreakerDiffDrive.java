@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
@@ -28,7 +29,7 @@ import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -48,6 +49,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   private BreakerPigeon2 pigeon2;
   private DifferentialDriveOdometry driveOdometer;
   private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
+  private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
+  private double prevOdometryUpdateTimestamp = 0;
 
   private String deviceName = "Differential_Drivetrain";
   private String faults = null;
@@ -188,6 +191,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   @Override
   public void updateOdometry() {
     driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(), getRightDriveMeters());
+    calculateMovementState((Timer.getFPGATimestamp() - prevOdometryUpdateTimestamp) * 1000);
+    prevOdometryUpdateTimestamp = Timer.getFPGATimestamp();
   }
 
   @Override
@@ -260,8 +265,11 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
 
   @Override
   public BreakerMovementState2d getMovementState() {
-    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), prevMovementState);
-    prevMovementState = curMovementState;
     return curMovementState;
+  }
+
+  private void calculateMovementState(double timeToLastUpdateMilisecods) {
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), 0, prevMovementState);
+    prevMovementState = curMovementState;
   }
 }
