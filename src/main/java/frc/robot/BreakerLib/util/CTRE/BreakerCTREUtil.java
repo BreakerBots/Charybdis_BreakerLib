@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.util;
+package frc.robot.BreakerLib.util.CTRE;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.Faults;
@@ -10,6 +10,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.hal.CANAPIJNI;
+import edu.wpi.first.hal.CANData;
+import edu.wpi.first.hal.can.CANJNI;
+import edu.wpi.first.hal.can.CANStatus;
+import edu.wpi.first.wpilibj.CAN;
+import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Util class for CTRE motors. */
 public class BreakerCTREUtil {

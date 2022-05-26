@@ -29,6 +29,7 @@ import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -46,6 +47,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
 
   private BreakerPigeon2 pigeon2;
   private DifferentialDriveOdometry driveOdometer;
+  private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
 
   private String deviceName = "Differential_Drivetrain";
   private String faults = null;
@@ -258,7 +260,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
 
   @Override
   public BreakerMovementState2d getMovementState() {
-    // TODO Auto-generated method stub
-    return null;
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), prevMovementState);
+    prevMovementState = curMovementState;
+    return curMovementState;
   }
 }
