@@ -101,12 +101,12 @@ public class BreakerCTREUtil {
     return work.toString();
   }
   
-  public static String getDeviceFaultsAsString(int faultBitField, HashMap<Integer, String> fieldPlacesAndFaultMessages) {
+  public static String getDeviceFaultsAsString(long l, HashMap<Integer, String> fieldPlacesAndFaultMessages) {
     StringBuilder work = new StringBuilder();
-    if (faultBitField != 0) {
+    if (l != 0) {
       int fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesAndFaultMessages.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+        if (((l & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
             work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
         }
         fieldMask <<= 1; // Scrolls to next bit.
