@@ -32,6 +32,13 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
         this.forceRotation = forceRotation;
     }
 
+    public BreakerVector2() {
+        forceX = 0;
+        forceY = 0;
+        forceRotation = Rotation2d.fromDegrees(0);
+        force = 0;
+    }
+
     public static BreakerVector2 fromForceAndRotation(Rotation2d forceRotation, double force) {
         return new BreakerVector2(force * Math.cos(forceRotation.getRadians()), force * Math.sin(forceRotation.getRadians()), force, forceRotation);
     }

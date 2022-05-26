@@ -1,9 +1,14 @@
 package frc.robot.BreakerLib.util.math;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.BreakerLib.physics.Breaker3AxisForces;
+import frc.robot.BreakerLib.physics.BreakerVector2;
+import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 
 //easily accessible conversion equations
 public class BreakerMath {
@@ -198,6 +203,16 @@ public class BreakerMath {
 
     public static double interpolateLinear(double knownX, double lowX, double highX, double lowY, double highY) {
         return (((knownX - lowX) * (highY - lowY)) / (highX - lowX)) + lowY;
+    }
+
+    public static BreakerMovementState2d movementStateFromChassisSpeedsAndPreviousState(Pose2d currentPose, ChassisSpeeds speeds, BreakerMovementState2d prevMovementState) {
+        Breaker3AxisForces acceleration = new Breaker3AxisForces(new BreakerVector2(50 * (speeds.vxMetersPerSecond - prevMovementState.getVelocityComponent().getLinearForces().getForceX()), 
+        50 * (speeds.vyMetersPerSecond - prevMovementState.getVelocityComponent().getLinearForces().getForceY())),
+        50 * (speeds.omegaRadiansPerSecond - prevMovementState.getVelocityComponent().getAngularForces()));
+      Breaker3AxisForces jerk = new Breaker3AxisForces(new BreakerVector2(50 * (acceleration.getLinearForces().getForceX() - prevMovementState.getAccelerationComponent().getLinearForces().getForceY()), 
+        50 * (acceleration.getLinearForces().getForceY() - prevMovementState.getAccelerationComponent().getLinearForces().getForceY())), 
+        50 * (acceleration.getAngularForces() - prevMovementState.getAccelerationComponent().getAngularForces()));
+      return new BreakerMovementState2d(currentPose, new Breaker3AxisForces(new BreakerVector2(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond), acceleration, jerk);
     }
 
 }

@@ -5,10 +5,11 @@
 package frc.robot.BreakerLib.position.movement;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 
-/** Represents an objects 2 dimentional (linear: XY / Angular: Y) position, velocity, acceleration, and jerk at a given time */
+/** Represents an objects 2 dimentional (linear: XY / Angular: Y) position (meters & rad), velocity (m & rad/s), acceleration( m & rad/s/s), and jerk (m & rad /s/s/s) at a given time */
 public class BreakerMovementState2d {
     Pose2d position;
     Breaker3AxisForces velocity;
@@ -23,7 +24,14 @@ public class BreakerMovementState2d {
     public BreakerMovementState2d(Pose2d position, Breaker3AxisForces velocity, Breaker3AxisForces acceleration) {
         this.position = position;
         this.acceleration = acceleration;
-        jerk = new Breaker3AxisForces(new BreakerVector2(0, 0), 0);
+        jerk = new Breaker3AxisForces();
+    }
+
+    public BreakerMovementState2d() {
+        position = new Pose2d();
+        velocity = new Breaker3AxisForces();
+        acceleration = new Breaker3AxisForces();
+        jerk = new Breaker3AxisForces();
     }
 
     public Pose2d getPositionComponent() {
