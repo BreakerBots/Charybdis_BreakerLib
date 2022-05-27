@@ -51,4 +51,11 @@ public class BreakerRotation3d {
         Rotation2d newR = roll.plus(other.getRoll());
         return new BreakerRotation3d(newP, newY, newR);
     }
+
+    public BreakerRotation3d minus(BreakerRotation3d other) {
+        Rotation2d newP = pitch.minus(other.getPitch());
+        Rotation2d newY = yaw.minus(other.getYaw());
+        Rotation2d newR = roll.minus(other.getRoll());
+        return new BreakerRotation3d(newP, newY, newR);
+    }
 }

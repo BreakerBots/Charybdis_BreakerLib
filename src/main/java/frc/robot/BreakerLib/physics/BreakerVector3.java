@@ -34,7 +34,7 @@ public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
         this.forceRotation = forceRotation;
     }
 
-    public BreakerVector3 from(double magnatude, BreakerRotation3d forceRotation) {
+    public static BreakerVector3 fromMagnatudeAndForceRotation(double magnatude, BreakerRotation3d forceRotation) {
         double x = Math.cos(forceRotation.getYaw().getRadians()) * Math.cos(forceRotation.getPitch().getRadians());
         double y = Math.sin(forceRotation.getYaw().getRadians()) * Math.cos(forceRotation.getPitch().getRadians());
         double z = Math.sin(forceRotation.getPitch().getRadians());
@@ -59,6 +59,14 @@ public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
 
     public BreakerRotation3d getForceRotation() {
         return forceRotation;
+    }
+
+    public BreakerVector3 minus(BreakerVector3 outher) {
+        return new BreakerVector3(forceX - outher.forceX, forceY - outher.forceY, forceZ - outher.forceZ);
+    }
+
+    public BreakerVector3 plus(BreakerVector3 outher) {
+        return new BreakerVector3(forceX + outher.forceX, forceY + outher.forceY, forceZ + outher.forceZ);
     }
 
     @Override
