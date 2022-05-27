@@ -26,6 +26,12 @@ public class BreakerRotation3d {
         this.roll = roll;
     }
 
+    public BreakerRotation3d(Rotation2d pitch, Rotation2d yaw) {
+        this.pitch = pitch;
+        this.yaw = yaw;
+        roll = new Rotation2d();
+    }
+
     public Rotation2d getPitch() {
         return pitch;
     }

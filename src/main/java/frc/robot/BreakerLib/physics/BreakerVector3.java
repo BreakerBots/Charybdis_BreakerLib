@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.physics;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
@@ -14,11 +15,30 @@ public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
     private double forceX;
     private double forceY;
     private double forceZ;
+    private double magnatude;
+    private BreakerRotation3d forceRotation;
 
     public BreakerVector3(double forceX, double forceY, double forceZ) {
         this.forceX = forceX;
         this.forceY = forceY;
         this.forceZ = forceZ;
+        magnatude = Math.sqrt(Math.pow(forceX, 2) + Math.pow(forceY, 2) + Math.pow(forceZ, 2));
+        forceRotation = new BreakerRotation3d(new Rotation2d(Math.atan2(forceZ, forceY)), new Rotation2d(Math.atan2(forceY, forceX))); // need to check this math
+    }
+
+    private BreakerVector3(double forceX, double forceY, double forceZ, double magnatude, BreakerRotation3d forceRotation) {
+        this.forceX = forceX;
+        this.forceY = forceY;
+        this.forceZ = forceZ;
+        this.magnatude = magnatude;
+        this.forceRotation = forceRotation;
+    }
+
+    public BreakerVector3 from(double magnatude, BreakerRotation3d forceRotation) {
+        double x = Math.cos(forceRotation.getYaw().getRadians()) * Math.cos(forceRotation.getPitch().getRadians());
+        double y = Math.sin(forceRotation.getYaw().getRadians()) * Math.cos(forceRotation.getPitch().getRadians());
+        double z = Math.sin(forceRotation.getPitch().getRadians());
+        return new BreakerVector3(x, y, z, magnatude, forceRotation);
     }
 
     public double getForceX() {
@@ -31,6 +51,14 @@ public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
 
     public double getForceZ() {
         return forceZ;
+    }
+
+    public double getMagnatude() {
+        return magnatude;
+    }
+
+    public BreakerRotation3d getForceRotation() {
+        return forceRotation;
     }
 
     @Override
