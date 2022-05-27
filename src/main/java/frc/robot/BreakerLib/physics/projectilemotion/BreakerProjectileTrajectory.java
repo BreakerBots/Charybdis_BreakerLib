@@ -4,11 +4,14 @@
 
 package frc.robot.BreakerLib.physics.projectilemotion;
 
+import java.util.Vector;
+
 import org.opencv.core.Mat;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.drive.Vector2d;
 import frc.robot.BreakerLib.devices.sensors.BreakerUltrasonicSensor;
 import frc.robot.BreakerLib.physics.BreakerVector3;
 import frc.robot.BreakerLib.position.geometry.BreakerPose3d;
@@ -24,6 +27,14 @@ public class BreakerProjectileTrajectory {
     public BreakerProjectileTrajectory(BreakerProjectile projectile, BreakerVector3 initialVels, BreakerPose3d launchPoint) {
         this.projectile = projectile;
         this.initialVels = initialVels;
+    }
+
+    public double getMaxHeight() {
+        return (projectile.getTermanalVelSq() / (2 * BreakerUnits.METERS_PER_SECOND_SQUARED_IN_G)) * Math.log((Math.pow(initialVels.getForceZ(), 2) + projectile.getTermanalVelSq()) / projectile.getTermanalVelSq());
+    }
+
+    public double getApogeeTime() {
+        return (projectile.getTermanalVelMetersPerSec() / BreakerUnits.METERS_PER_SECOND_SQUARED_IN_G) * Math.atan(initialVels.getForceZ() / projectile.getTermanalVelMetersPerSec());
     }
 
     public Translation2d get2dTranslationAtGivenTime(double time) {
