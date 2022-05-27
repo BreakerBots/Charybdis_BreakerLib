@@ -16,7 +16,7 @@ import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
-/** object that represents a drag affected objects balisitc trajecotry without external propulsion (note: force vector matches field cordnate system and is field relative (EX: Z is up)) */
+/** Represents a drag affected object's balisitc trajectory without external propulsion (note: force vector matches field cordnate system and is field relative (EX: Z is up)) */
 public class BreakerProjectileTrajectory {
     private BreakerProjectile projectile;
     private BreakerVector3 initialVels;
@@ -71,4 +71,4 @@ public class BreakerProjectileTrajectory {
         BreakerVector3 corVec = reqImpactVec.minus(predImpactVec);
         return initialVels.plus(corVec);
     }
-    }
+}
