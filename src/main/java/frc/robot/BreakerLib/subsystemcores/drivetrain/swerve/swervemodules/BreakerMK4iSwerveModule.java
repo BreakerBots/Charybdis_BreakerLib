@@ -78,20 +78,10 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         BreakerCTREUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
         driveMotor.selectProfileSlot(0, 0);
 
-        // anglePID = new PIDController(config.getModuleAnglekP(), config.getModuleAnglekI(), config.getModuleAngleKd());
-        // drivePID = new PIDController(config.getModuleVelkP(), config.getModuleVelkI(), config.getModuleVelKd());
-        // driveFF = new SimpleMotorFeedforward(config.getVelFeedForwardKs(), config.getVelFeedForwardKv());
-
-        // if (config.getTolerencesHaveBeenSet()) {
-        //     drivePID.setTolerance(config.getPidTolerences()[0], config.getPidTolerences()[1]);
-        //     anglePID.setTolerance(config.getPidTolerences()[2], config.getPidTolerences()[3]);
-        // }
     }
  
     @Override
     public void setModuleTarget(Rotation2d tgtAngle, double speedMetersPreSec) {
-        // turnMotor.set(anglePID.calculate(getModuleAngle(), tgtAngle.getDegrees()));
-        // driveMotor.set(drivePID.calculate(getModuleVelMetersPerSec(), speedMetersPreSec) + (driveFF.calculate(speedMetersPreSec) / driveMotor.getBusVoltage()));
         turnMotor.set(TalonFXControlMode.Position, tgtAngle.getDegrees());
         driveMotor.set(TalonFXControlMode.Velocity, getMetersPerSecToFalconRSU(speedMetersPreSec));
     }

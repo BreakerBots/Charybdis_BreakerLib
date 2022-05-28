@@ -10,7 +10,7 @@ import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 /** Add your docs here. */
 public class BreakerLog {
 
-  public static final String breakerLibVersion = "V1.3";
+  public static final String breakerLibVersion = "V1.4";
 
   public static void startLog(boolean autologNetworkTables) {
     DataLogManager.logNetworkTables(autologNetworkTables);

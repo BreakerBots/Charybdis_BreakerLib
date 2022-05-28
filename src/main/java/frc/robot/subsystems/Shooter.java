@@ -11,6 +11,7 @@
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.Constants;
 // import frc.robot.BreakerLib.physics.BreakerVector2;
+// import frc.robot.BreakerLib.physics.projectilemotion.BreakerProjectile;
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 // import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
 // import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
@@ -32,6 +33,7 @@
 //   private BreakerInterpolateingTreeMap<Double, BreakerVector2> interpolateingShotPerameterMap;
 //   private BreakerDiffDrive drivetrain;
 //   private ShooterAimMode aimMode = ShooterAimMode.AUTO_AIM;
+//   private BreakerProjectile ball;
 //   public Shooter(Vision vision, Drive drive) {
 //     this.vision = vision;
 //     drivetrain = drive.getBaseDrivetrain();
@@ -43,6 +45,8 @@
 
 //     config = new BreakerFlywheelConfig(flywheelKp, flywheelKi, flywheelKd, flywheelPosTol, flywheelVelTol, flywheelGearing, flywheelMomentOfInertiaJulesKgMetersSquared, modelKalmanTrust, encoderKalmanTrust, lqrVelocityErrorTolerance, lqrControlEffort);
 //     flywheel = new BreakerFlywheel(config, leftFlywheelMotor, rightFlywheelMotor);
+
+//     ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
 
 //     TreeMap<Double, BreakerVector2> shotPerameterMap = new TreeMap<Double, BreakerVector2>();
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));

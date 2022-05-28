@@ -6,6 +6,8 @@ package frc.robot.BreakerLib.physics.projectilemotion;
 
 import javax.crypto.spec.GCMParameterSpec;
 
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate;
+
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
 /** Add your docs here. */
@@ -20,7 +22,7 @@ public class BreakerProjectile {
         this.massKg = massKg;
         this.dragCoeffiecnt = dragCoeffiecnt;
         this.crossSectionalAreaMetersSq = crossSectionalAreaMetersSq;
-        this.termanalVelMetersPerSec = termanalVelMetersPerSec;
+        termanalVelMetersPerSec = Math.sqrt((2 * massKg * BreakerUnits.METERS_PER_SECOND_SQUARED_IN_G) / (dragCoeffiecnt * BreakerUnits.AIR_DENCITY_KG_PER_METER_CUBED * crossSectionalAreaMetersSq));
         termanalVelSq = Math.pow(termanalVelMetersPerSec, 2);
         drag = 0.5 * dragCoeffiecnt * BreakerUnits.AIR_DENCITY_KG_PER_METER_CUBED * crossSectionalAreaMetersSq * termanalVelSq;
     }
