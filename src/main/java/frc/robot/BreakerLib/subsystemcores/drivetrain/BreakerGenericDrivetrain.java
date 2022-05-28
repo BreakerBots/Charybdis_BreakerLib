@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.subsystemcores.drivetrain;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 /** Contianer class for methods common to all drivetrain types */
 public interface BreakerGenericDrivetrain {
@@ -13,4 +14,8 @@ public interface BreakerGenericDrivetrain {
     public abstract void updateOdometry();
 
     public abstract void setDrivetrainBrakeMode(boolean isEnabled);
+
+    public abstract void setSlowMode(boolean isEnabled);
+
+    public abstract boolean isInSlowMode();
 }

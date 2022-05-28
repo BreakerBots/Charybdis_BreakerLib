@@ -93,6 +93,16 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
     diffDrive.arcadeDrive(netSpeed, turnSpeed);
   }
 
+  /** Standard drive command, optionaly applys slow mode */
+  public void arcadeDrive(double netSpeed, double turnSpeed, boolean useSlowMode) {
+    if (useSlowMode) {
+      netSpeed *= driveConfig.getSlowModeForwardMultiplier();
+      turnSpeed *= driveConfig.getSlowModeTurnMultiplier();
+    }
+
+    diffDrive.arcadeDrive(netSpeed, turnSpeed);
+  }
+
   public void tankDrive(double leftSpeed, double rightSpeed) {
     diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
@@ -177,10 +187,12 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
      BreakerUnits.inchesToMeters((getRightDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10));
   }
 
+  @Override
   public void setSlowMode(boolean isEnabled) {
     isInSlowMode = isEnabled;
   }
 
+  @Override
   public boolean isInSlowMode() {
     return isInSlowMode;
   }

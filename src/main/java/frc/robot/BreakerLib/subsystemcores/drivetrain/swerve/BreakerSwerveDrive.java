@@ -41,6 +41,8 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
   private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
   private double prevOdometryUpdateTimestamp = 0;
 
+  private boolean isInSlowMode;
+
   private String deviceName = "Swerve_Drivetrain";
   private String faults = null;
   /** Constructs a new swerve based drivetrain
@@ -54,7 +56,9 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     this.pigeon2 = pigeon2;
   }
 
-  /** sets each module to match a target module state in the order they were passed in */
+  /** sets each module to match a target module state in the order they were passed in
+   * <p> NOTE: not affected by drive slow mode
+   */
   public void setRawModuleStates(SwerveModuleState... targetModuleStates) {
     this.targetModuleStates = targetModuleStates;
     for (int i = 0; i <= swerveModules.length; i ++) {
@@ -62,11 +66,44 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     }
   }
 
-  /** Standard drivetrain movement command, specifyes robot velocity in each axis including robot rotation (radian per second). 
-   * All values are relative to the robot's orientation. */
+  /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
+   *<p> NOTE: All values are relative to the robot's orientation. 
+   @param robotRelativeVelocities ChassisSpeeds object representing the robots velocities in each axis relative to its local refrence frame 
+   */
+  public void move(ChassisSpeeds robotRelativeVelocities) {
+    if (isInSlowMode) {
+      robotRelativeVelocities.vxMetersPerSecond *= config.getSlowModeLinearMultiplier();
+      robotRelativeVelocities.vyMetersPerSecond *= config.getSlowModeLinearMultiplier();
+      robotRelativeVelocities.omegaRadiansPerSecond *= config.getSlowModeTurnMultiplier();
+    }
+    setRawModuleStates(config.getKinematics().toSwerveModuleStates(robotRelativeVelocities));
+  }
+
+    /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
+   *<p> NOTE: All values are relative to the robot's orientation. 
+   @param robotRelativeVelocities ChassisSpeeds object representing the robots velocities in each axis relative to its local refrence frame 
+   @param useSlowMode wether or not to apply the set slow mode multiplier to the given speeds
+   */
+  public void move(ChassisSpeeds robotRelativeVelocities, boolean useSlowMode) {
+    if (useSlowMode) {
+      robotRelativeVelocities.vxMetersPerSecond *= config.getSlowModeLinearMultiplier();
+      robotRelativeVelocities.vyMetersPerSecond *= config.getSlowModeLinearMultiplier();
+      robotRelativeVelocities.omegaRadiansPerSecond *= config.getSlowModeTurnMultiplier();
+    }
+    setRawModuleStates(config.getKinematics().toSwerveModuleStates(robotRelativeVelocities));
+  }
+
+  
+  /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
+   *<p> NOTE: All values are relative to the robot's orientation. */
   public void move(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
-    ChassisSpeeds speeds = new ChassisSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec);
-    setRawModuleStates(config.getKinematics().toSwerveModuleStates(speeds));
+    move(new ChassisSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec));
+  }
+
+   /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
+   *<p> NOTE: All values are relative to the robot's orientation. */
+  public void move(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec, boolean useSlowMode) {
+    move(new ChassisSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec), useSlowMode);
   }
 
   /** sets the target velocity of the robot to 0 in all axies */
@@ -82,13 +119,13 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
   /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the field */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
     ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, getOdometryPoseMeters().getRotation());
-    setRawModuleStates(config.getKinematics().toSwerveModuleStates(robotRelSpeeds));
+    move(robotRelSpeeds);
   }
 
   /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the field (this version of the method is for use with a custom odometry source) */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec, BreakerGenericOdometer odometer) {
     ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, odometer.getOdometryPoseMeters().getRotation());
-    setRawModuleStates(config.getKinematics().toSwerveModuleStates(robotRelSpeeds));
+    move(robotRelSpeeds);
   }
 
   /** effectivly equivlent to the "moveRelativeToField()" method but with speeds being passed in as a percentage of maximum represented as a decimal (1.0 to -1.0) */
@@ -194,6 +231,20 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     ChassisSpeeds speeds = config.getKinematics().toChassisSpeeds(getSwerveModuleStates());
     curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), BreakerMath.fromRobotRelativeSpeeds(speeds, getOdometryPoseMeters().getRotation()), timeToLastUpdateMiliseconds, prevMovementState);
     prevMovementState = curMovementState;
+  }
+
+  @Override
+  public void setSlowMode(boolean isEnabled) {
+    isInSlowMode = isEnabled;
+  }
+
+  @Override
+  public boolean isInSlowMode() {
+    return isInSlowMode;
+  }
+
+  public SwerveModuleState[] getTargetModuleStates() {
+      return targetModuleStates;
   }
 
 
