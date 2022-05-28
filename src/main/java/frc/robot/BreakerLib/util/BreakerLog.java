@@ -5,16 +5,28 @@
 package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerMusic;
 import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 
 /** Add your docs here. */
 public class BreakerLog {
 
   public static final String breakerLibVersion = "V1.4";
+  private static boolean usesOrchestra = false;
+  private static BreakerFalconOrchestra orchestra;
 
   public static void startLog(boolean autologNetworkTables) {
     DataLogManager.logNetworkTables(autologNetworkTables);
     DataLogManager.start();
+    BreakerLog.usesOrchestra = false;
+  }
+
+  public static void startLog(boolean autologNetworkTables, BreakerFalconOrchestra orchestra) {
+    DataLogManager.logNetworkTables(autologNetworkTables);
+    DataLogManager.start();
+    BreakerLog.usesOrchestra = true;
+    BreakerLog.orchestra = orchestra;
   }
 
   /** Startup message for robot. */
@@ -27,11 +39,19 @@ public class BreakerLog {
     work.append(" AUTHORS: " + authorNames + "\n\n");
     work.append(" | ---------------------------------------------- | \n\n\n");
     BreakerLog.log(work.toString());
+    if (usesOrchestra) {
+      orchestra.loadMusic(BreakerMusic.startupSound);
+      orchestra.playMusic();
+    }
   }
 
   /** Logs robot mode change. (automatacly called by BreakerRoboRIO) */
   public static void logRobotChangedMode(RobotMode newMode) {
     DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
+    if (usesOrchestra && BreakerRoboRIO.robotModeHasChanged() && newMode != RobotMode.DISABLED) {
+        orchestra.loadMusic(BreakerMusic.enableSound);
+        orchestra.playMusic();
+    }
   }
 
   /** Logs given event. */

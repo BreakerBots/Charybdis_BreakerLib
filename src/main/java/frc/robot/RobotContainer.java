@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoManager;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
 import frc.robot.BreakerLib.util.BreakerLog;
@@ -26,13 +27,16 @@ public class RobotContainer {
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID, Constants.IMU_INVERT);
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
+  private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
   private final Hopper hopperSys = new Hopper(intakeSys);
-  private final SelfTest testSys = new SelfTest(5);
+  private final SelfTest testSys = new SelfTest(5, orchestraSys);
   private BreakerAutoManager autoManager;
   public RobotContainer() {
+    orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
+    orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
     SelfTest.addDevice(imuSys);
     SelfTest.addDevice(drivetrainSys.getBaseDrivetrain());
-    BreakerLog.startLog(false);
+    BreakerLog.startLog(false, orchestraSys);
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
 
     autoManager = new BreakerAutoManager(

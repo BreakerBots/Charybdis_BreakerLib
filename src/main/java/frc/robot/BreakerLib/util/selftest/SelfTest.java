@@ -7,8 +7,12 @@ package frc.robot.BreakerLib.util.selftest;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerMusic;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 public class SelfTest extends SubsystemBase {
@@ -18,8 +22,23 @@ public class SelfTest extends SubsystemBase {
   private static List<BreakerGenericDevice> devices = new ArrayList<BreakerGenericDevice>();
   private static int cyclesbetweenPerSelfCecks = 250;
   private static boolean lastCheckPassed = true;
+  private static BreakerFalconOrchestra orchestra;
+  private static boolean usesOrchestra = false;
   public SelfTest(double secondsBetweenPeriodicSelfChecks) {
-    cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
+    SelfTest.cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
+    SelfTest.usesOrchestra = false;
+  }
+
+  public SelfTest(double secondsBetweenPeriodicSelfChecks, BreakerFalconOrchestra orchestra) {
+    SelfTest.cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
+    SelfTest.orchestra = orchestra;
+    SelfTest.usesOrchestra = true;
+  }
+
+  private static void runAlarm() {
+    if (usesOrchestra) {
+      orchestra.startLoopedSong(BreakerMusic.GeneralAlarmSound);
+    }
   }
 
   public static void addDevice(BreakerGenericDevice device) {
@@ -55,6 +74,7 @@ public class SelfTest extends SubsystemBase {
       for (BreakerGenericDevice faultDiv: faultDevices) {
         work.append(" | " + faultDiv.getDeviceName() + "-" + faultDiv.getFaults() + " | ");
       }
+      runAlarm();
     } else {
       work.append(" SELF CHECK PASSED ");
       lastCheckPassed = true;

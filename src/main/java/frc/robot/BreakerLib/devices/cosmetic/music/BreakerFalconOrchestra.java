@@ -2,15 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.devices.cosmetic;
+package frc.robot.BreakerLib.devices.cosmetic.music;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.music.Orchestra;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** Play audio via the speakers on CTRE Falcon 500 motors. */
-public class FalconOrchestra extends SubsystemBase {
+public class BreakerFalconOrchestra extends SubsystemBase {
 
     private Orchestra orchestra;
     private String[] currentPlaylist;
@@ -19,11 +26,19 @@ public class FalconOrchestra extends SubsystemBase {
     private boolean runPlaylist = false;
     private boolean runLooped = false;
 
-    public FalconOrchestra() {
+    public BreakerFalconOrchestra() {
         orchestra = new Orchestra();
     }
 
-    public void setOrchestraMotors(WPI_TalonFX... motors) {
+    public BreakerFalconOrchestra(WPI_TalonFX... motors){
+        Collection<TalonFX> mots = new ArrayList<>();
+        for (TalonFX mot: motors) {
+            mots.add(mot);
+        }
+        orchestra = new Orchestra(mots);
+    }
+
+    public void addOrchestraMotors(WPI_TalonFX... motors) {
         orchestra.clearInstruments();
         for (WPI_TalonFX motor : motors) {
             orchestra.addInstrument(motor);
@@ -70,8 +85,8 @@ public class FalconOrchestra extends SubsystemBase {
 
     /** Loads given Chirp file. Stops current playlist. */
     public void loadMusic(String musicFilepath) {
-        orchestra.loadMusic(musicFilepath);
         stopPlaylist();
+        orchestra.loadMusic(musicFilepath);
     }
 
     /** If music playback is paused. */

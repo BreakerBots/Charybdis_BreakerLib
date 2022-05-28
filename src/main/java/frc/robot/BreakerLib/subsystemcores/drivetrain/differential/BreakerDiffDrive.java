@@ -30,7 +30,7 @@ import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -284,5 +284,13 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   private void calculateMovementState(double timeToLastUpdateMilisecods) {
     BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), BreakerMath.fromRobotRelativeSpeeds(driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), getOdometryPoseMeters().getRotation()), timeToLastUpdateMilisecods, prevMovementState);
     prevMovementState = curMovementState;
+  }
+
+  public WPI_TalonFX[] getLeftMotors() {
+      return leftMotors;
+  }
+
+  public WPI_TalonFX[] getRightMotors() {
+      return rightMotors;
   }
 }

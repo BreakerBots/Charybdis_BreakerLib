@@ -8,7 +8,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
-import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
 
 /** Add your docs here. */
 public class BreakerCANCoderFactory {
