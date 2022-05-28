@@ -72,6 +72,7 @@
 //         transBR = new Translation2d(x, y);
 
 //         config = new BreakerSwerveDriveConfig(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, transFL, transFR, transBL, transBR);
+//         config.setSlowModeMultipliers(linearMulitplier, turnMultiplier);
 
 //         frontLeftModule = new BreakerMK4iSwerveModule(driveFL, turnFL, encoderFL, config);
 //         frontRightModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
