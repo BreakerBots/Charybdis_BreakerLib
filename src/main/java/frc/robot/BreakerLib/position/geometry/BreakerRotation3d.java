@@ -58,4 +58,9 @@ public class BreakerRotation3d {
         Rotation2d newR = roll.minus(other.getRoll());
         return new BreakerRotation3d(newP, newY, newR);
     }
+
+    @Override
+    public String toString() {
+        return "Yaw: " + yaw.toString() + ", Pitch: " + pitch.toString() + ", Roll: " + roll.toString();
+    }
 }

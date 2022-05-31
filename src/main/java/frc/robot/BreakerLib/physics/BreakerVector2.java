@@ -110,4 +110,9 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2> {
     public BreakerVector2 fromInterpolatableData(double[] interpolatableData) {
         return new BreakerVector2(interpolatableData[0], interpolatableData[1]);
     }
+
+    @Override
+    public String toString() {
+       return "Vector Magnatude:" + force + ", X-Magnatude: " + forceX + ", Y-Magnatude: " + forceY + ", Vector Angle: " + forceRotation.toString();
+    }
 }

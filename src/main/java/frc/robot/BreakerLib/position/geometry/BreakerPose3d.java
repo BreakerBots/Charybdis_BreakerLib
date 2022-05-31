@@ -74,4 +74,9 @@ public class BreakerPose3d {
         BreakerRotation3d newRot = this.rotation.plus(transformation.getRotationComponent());
         return new BreakerPose3d(newTrans, newRot);
     }
+
+    @Override
+    public String toString() {
+        return "Position: (" + translation.toString() + "), Rotation: (" + rotation.toString() + ")";
+    }
 }

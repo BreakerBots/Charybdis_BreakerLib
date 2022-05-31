@@ -54,4 +54,9 @@ public class BreakerTranslation3d {
         return new BreakerTranslation3d(this.metersX + other.metersX, this.metersY + other.metersY,
                 this.metersZ + other.metersZ);
     }
+
+    @Override
+    public String toString() {
+        return "X: " + metersX + ", Y: " + metersY + ", Z: " + metersZ;
+    }
 }

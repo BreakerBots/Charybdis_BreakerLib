@@ -57,4 +57,9 @@ public class BreakerTransform3d {
     public BreakerPose3d transformFromPose2d(Pose2d pose2d) {
         return new BreakerPose3d(pose2d).transformBy(this);
     }
+
+    @Override
+    public String toString() {
+        return " Translation: (" + translation.toString() + "), Rotation: (" + rotation.toString() + ")";
+    }
 }
