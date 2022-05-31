@@ -30,6 +30,9 @@ public class BreakerRoboRIO extends SubsystemBase {
     private double diffTime = 0;
     private RobotMode currentMode = RobotMode.UNKNOWN;
     private RobotMode prevMode = RobotMode.UNKNOWN;
+    private boolean prevBrownoutState = false;
+    private boolean curBrownoutState = false;
+    private int brownoutNum = 0;
 
     // Static RoboRIO object.
     private static BreakerRoboRIO roboRIO = new BreakerRoboRIO();
@@ -65,6 +68,7 @@ public class BreakerRoboRIO extends SubsystemBase {
     public void periodic() {
         diffTime = calculateInterCycleTime();
         updateRobotMode();
+        checkBrownout();
     }
 
     // Static getters.
@@ -92,5 +96,18 @@ public class BreakerRoboRIO extends SubsystemBase {
     /** Checks if the RoboRIO's state has changed since the last cycle. */
     public static boolean robotModeHasChanged() {
         return roboRIO.currentMode != roboRIO.prevMode;
+    }
+
+    private void checkBrownout() {
+        prevBrownoutState = curBrownoutState;
+        curBrownoutState = RobotController.isBrownedOut();
+        if (curBrownoutState != prevBrownoutState) {
+            if (curBrownoutState) {
+                brownoutNum ++;
+                BreakerLog.logEvent(" ROBORIO BROWNOUT DETECTED! ( #" + brownoutNum + ")");
+            } else {
+                BreakerLog.logEvent(" ROBORIO BROWNOUT ENDED! ( #" + brownoutNum + ")");
+            }
+        }
     }
 }
