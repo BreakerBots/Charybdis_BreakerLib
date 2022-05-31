@@ -195,16 +195,25 @@ public class BreakerMath {
         return lowY + (givenX - lowX) * slope;
     }
 
-    public static double interpolateLegrange(double queryX, Translation2d... knownPoints) {
+    /**
+     * Lagrange Polynomial interpolation of a Y value from an X value and a set of
+     * known points. https://en.wikipedia.org/wiki/Lagrange_polynomial
+     * 
+     * @param queryX      X-value to interpolate a Y-value for.
+     * @param knownPoints Known points in a 2D space.
+     * @return The approximate Y-Value that would corespond to the given X-Value
+     */
+    public static double interpolateLagrange(double queryX, Translation2d... knownPoints) {
         double result = 0;
-        for (int i = 0; i < knownPoints.length; i++) {
-            double term = knownPoints[i].getY();
-            for (int j = 0; j < knownPoints.length; j++) {
-                if (j != i) {
+        for (int i = 0; i < knownPoints.length; i++) { // Goes through points.
+            double term = knownPoints[i].getY(); // Y-value of selected point.
+            for (int j = 0; j < knownPoints.length; j++) { // Loops through non-identical points.
+                if (j != i) { // Avoids multiplication by 0.
+                    // Interpolates between selected and point from data set.
                     term *= (queryX - knownPoints[j].getX()) / (knownPoints[i].getX() - knownPoints[j].getX());
                 }
             }
-            result += term;
+            result += term; // Accumulated interpretation is added.
         }
         return result;
     }

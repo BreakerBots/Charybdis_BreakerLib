@@ -12,12 +12,20 @@ import edu.wpi.first.wpilibj.Tracer;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
-/** represents a point with 2 axial vectors of ajustable magnatudes (one paralell with the point's X, and Y axis) */
-public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
+/**
+ * represents a point with 2 axial vectors of ajustable magnatudes (one paralell
+ * with the point's X, and Y axis)
+ */
+public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2> {
     private Rotation2d forceRotation;
     private double force;
     private double forceX;
     private double forceY;
+
+    /**
+     * creates a new BreakerVector2 from the magnatudes of the vectors X and Y
+     * components
+     */
     public BreakerVector2(double forceX, double forceY) {
         this.forceX = forceX;
         this.forceY = forceY;
@@ -32,6 +40,7 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
         this.forceRotation = forceRotation;
     }
 
+    /** creates an empty BreakerVector2 with 0's for all values */
     public BreakerVector2() {
         forceX = 0;
         forceY = 0;
@@ -39,8 +48,13 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
         force = 0;
     }
 
+    /**
+     * creates a new BreakerVector2 from the vectors Magnatude and the vectors angle
+     * in the Yaw angular axis
+     */
     public static BreakerVector2 fromForceAndRotation(Rotation2d forceRotation, double force) {
-        return new BreakerVector2(force * Math.cos(forceRotation.getRadians()), force * Math.sin(forceRotation.getRadians()), force, forceRotation);
+        return new BreakerVector2(force * Math.cos(forceRotation.getRadians()),
+                force * Math.sin(forceRotation.getRadians()), force, forceRotation);
     }
 
     public double getForce() {
@@ -67,16 +81,18 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
 
     @Override
     public boolean equals(Object obj) {
-        return (Math.abs(((BreakerVector2) obj).forceX - forceX) < 1E-9) 
-            && (Math.abs(((BreakerVector2) obj).forceY - forceY) < 1E-9); 
+        return (Math.abs(((BreakerVector2) obj).forceX - forceX) < 1E-9)
+                && (Math.abs(((BreakerVector2) obj).forceY - forceY) < 1E-9);
     }
 
     @Override
     public BreakerVector2 interpolate(double interpolendValue, double highKey, BreakerVector2 highVal,
             double lowKey, BreakerVector2 lowVal) {
-                double interX = BreakerMath.interpolateLinear(interpolendValue, highKey, lowKey, lowVal.getForceX(), highVal.getForceX());
-                double interY = BreakerMath.interpolateLinear(interpolendValue, highKey, lowKey, lowVal.getForceY(), highVal.getForceY());
-                return new BreakerVector2(interX, interY);
+        double interX = BreakerMath.interpolateLinear(interpolendValue, highKey, lowKey, lowVal.getForceX(),
+                highVal.getForceX());
+        double interY = BreakerMath.interpolateLinear(interpolendValue, highKey, lowKey, lowVal.getForceY(),
+                highVal.getForceY());
+        return new BreakerVector2(interX, interY);
     }
 
     @Override
@@ -87,7 +103,7 @@ public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2>{
     /** [0] = X, [1] = Y */
     @Override
     public double[] getInterpolatableData() {
-        return new double[] {forceX, forceY};
+        return new double[] { forceX, forceY };
     }
 
     @Override

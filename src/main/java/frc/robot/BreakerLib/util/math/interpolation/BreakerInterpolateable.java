@@ -6,7 +6,19 @@ package frc.robot.BreakerLib.util.math.interpolation;
 
 /** Add your docs here. */
 public interface BreakerInterpolateable<V> {
-    public abstract V interpolate(double interpolendValue, double highKey, V highVal, double lowKey, V lowVal);
+
+    /**
+     * Linearly interpolates between 2 points based on a known X value
+     * 
+     * @param valToInterpolate X-value to interpolate to.
+     * @param highKey          X-value of high point.
+     * @param highVal          Output value of high point.
+     * @param lowKey           X-value of low point.
+     * @param lowVal           Output value of low point.
+     * 
+     * @return Implemented object interpolated based on the given points.
+     */
+    public abstract V interpolate(double valToInterpolate, double highKey, V highVal, double lowKey, V lowVal);
 
     public abstract V getSelf();
 

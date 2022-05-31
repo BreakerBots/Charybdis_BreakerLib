@@ -27,9 +27,9 @@ public class BreakerInterpolatableDouble implements BreakerInterpolateable<Break
     }
 
     @Override
-    public BreakerInterpolatableDouble interpolate(double interpolendValue, double highKey,
+    public BreakerInterpolatableDouble interpolate(double valToInterpolate, double highKey,
             BreakerInterpolatableDouble highVal, double lowKey, BreakerInterpolatableDouble lowVal) {
-        BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getValue(), highVal.getValue());
+        BreakerMath.interpolateLinear(valToInterpolate, lowKey, highKey, lowVal.getValue(), highVal.getValue());
         return new BreakerInterpolatableDouble(value);
     }
 
