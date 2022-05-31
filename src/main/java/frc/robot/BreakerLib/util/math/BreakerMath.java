@@ -221,20 +221,37 @@ public class BreakerMath {
         return result;
     }
 
-    public static BreakerMovementState2d movementStateFromChassisSpeedsAndPreviousState(Pose2d currentPose, ChassisSpeeds speeds, double timeToLastUpdateMiliseconds, BreakerMovementState2d prevMovementState) {
-        Breaker3AxisForces acceleration = new Breaker3AxisForces(new BreakerVector2((1000/timeToLastUpdateMiliseconds) * (speeds.vxMetersPerSecond - prevMovementState.getVelocityComponent().getLinearForces().getForceX()), 
-        (1000/timeToLastUpdateMiliseconds) * (speeds.vyMetersPerSecond - prevMovementState.getVelocityComponent().getLinearForces().getForceY())),
-        (1000/timeToLastUpdateMiliseconds)* (speeds.omegaRadiansPerSecond - prevMovementState.getVelocityComponent().getAngularForces()));
-      Breaker3AxisForces jerk = new Breaker3AxisForces(new BreakerVector2((1000/timeToLastUpdateMiliseconds) * (acceleration.getLinearForces().getForceX() - prevMovementState.getAccelerationComponent().getLinearForces().getForceY()), 
-        (1000/timeToLastUpdateMiliseconds) * (acceleration.getLinearForces().getForceY() - prevMovementState.getAccelerationComponent().getLinearForces().getForceY())), 
-        (1000/timeToLastUpdateMiliseconds) * (acceleration.getAngularForces() - prevMovementState.getAccelerationComponent().getAngularForces()));
-      return new BreakerMovementState2d(currentPose, new Breaker3AxisForces(new BreakerVector2(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond), acceleration, jerk);
+    public static BreakerMovementState2d movementStateFromChassisSpeedsAndPreviousState(Pose2d currentPose,
+            ChassisSpeeds speeds, double timeToLastUpdateMiliseconds, BreakerMovementState2d prevMovementState) {
+        Breaker3AxisForces acceleration = new Breaker3AxisForces(
+                new BreakerVector2(
+                        (1000 / timeToLastUpdateMiliseconds) * (speeds.vxMetersPerSecond
+                                - prevMovementState.getVelocityComponent().getLinearForces().getForceX()),
+                        (1000 / timeToLastUpdateMiliseconds) * (speeds.vyMetersPerSecond
+                                - prevMovementState.getVelocityComponent().getLinearForces().getForceY())),
+                (1000 / timeToLastUpdateMiliseconds)
+                        * (speeds.omegaRadiansPerSecond - prevMovementState.getVelocityComponent().getAngularForces()));
+        Breaker3AxisForces jerk = new Breaker3AxisForces(
+                new BreakerVector2(
+                        (1000 / timeToLastUpdateMiliseconds) * (acceleration.getLinearForces().getForceX()
+                                - prevMovementState.getAccelerationComponent().getLinearForces().getForceY()),
+                        (1000 / timeToLastUpdateMiliseconds) * (acceleration.getLinearForces().getForceY()
+                                - prevMovementState.getAccelerationComponent().getLinearForces().getForceY())),
+                (1000 / timeToLastUpdateMiliseconds) * (acceleration.getAngularForces()
+                        - prevMovementState.getAccelerationComponent().getAngularForces()));
+        return new BreakerMovementState2d(currentPose,
+                new Breaker3AxisForces(new BreakerVector2(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
+                        speeds.omegaRadiansPerSecond),
+                acceleration, jerk);
     }
 
     public static ChassisSpeeds fromRobotRelativeSpeeds(ChassisSpeeds robotRelativeSpeeds, Rotation2d robotAngle) {
         double cos = Math.cos(-robotAngle.getRadians());
         double sin = Math.sin(-robotAngle.getRadians());
-        return new ChassisSpeeds((robotRelativeSpeeds.vxMetersPerSecond * cos) - (robotRelativeSpeeds.vyMetersPerSecond * sin), (robotRelativeSpeeds.vxMetersPerSecond * sin) + (robotRelativeSpeeds.vyMetersPerSecond * cos), robotRelativeSpeeds.omegaRadiansPerSecond);
+        return new ChassisSpeeds(
+                (robotRelativeSpeeds.vxMetersPerSecond * cos) - (robotRelativeSpeeds.vyMetersPerSecond * sin),
+                (robotRelativeSpeeds.vxMetersPerSecond * sin) + (robotRelativeSpeeds.vyMetersPerSecond * cos),
+                robotRelativeSpeeds.omegaRadiansPerSecond);
     }
 
 }
