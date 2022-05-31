@@ -203,8 +203,19 @@ public class BreakerMath {
         return Rotation2d.fromDegrees(finalAng).rotateBy(Rotation2d.fromDegrees(90));
     }
 
-    public static double interpolateLinear(double knownX, double lowX, double highX, double lowY, double highY) {
-        return (((knownX - lowX) * (highY - lowY)) / (highX - lowX)) + lowY;
+    /**
+     * Linearly interpolates between 2 points to find y-val at given x.
+     * 
+     * @param givenX X-value to interpolate from.
+     * @param lowX   X-val of low point.
+     * @param highX  X-val of high point.
+     * @param lowY   Y-val of low point.
+     * @param highY  Y-val of high point.
+     * @return Approximate Y-value at given X.
+     */
+    public static double interpolateLinear(double givenX, double lowX, double highX, double lowY, double highY) {
+        double slope = (highY - lowY) / (highX - lowX);
+        return lowY + (givenX - lowX) * slope;
     }
 
     public static double interpolateLegrange(double queryX, Translation2d... knownPoints) {
