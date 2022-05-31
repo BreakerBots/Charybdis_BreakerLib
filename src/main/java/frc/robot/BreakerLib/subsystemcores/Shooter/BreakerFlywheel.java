@@ -14,10 +14,9 @@ import frc.robot.BreakerLib.control.statespace.BreakerFlywheelStateSpace;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
-/** Add your docs here. */
+/** A class representing a robot's shooter flywheel and its assocated controle loop */
 public class BreakerFlywheel extends SubsystemBase {
     private PIDController flyPID;
-    // private SimpleMotorFeedforward flyFF;
     private boolean runFlywheel = false;
     private double flywheelTargetRSU = 0;
     private MotorControllerGroup flywheel;
@@ -64,7 +63,6 @@ public class BreakerFlywheel extends SubsystemBase {
         if (runFlywheel) {
             flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
             double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed();
-            /* (flyFF.calculate(flywheelTargetRSU) / lFlyMotor.getBusVoltage()) */;
             flywheel.set(flySetSpd);
         }
     }

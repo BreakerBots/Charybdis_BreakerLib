@@ -11,8 +11,8 @@ public interface BreakerGenericInterpolateingMap<K, V> {
      * interpolates the Map to return the aproxamate value(Y) that would corespond
      * to a given Key(X) based on the data points provided
      * 
-     * @param interpolendValue the Key(Y) value to base the estimation on
-     * @return
+     * @param interpolendValue the Key(X) value to base the estimation on
+     * @return the predected Value(Y) that would corespond to the given Key(X) based on the given set of points
      */
     public abstract V getInterpolatedValue(K interpolendValue);
 

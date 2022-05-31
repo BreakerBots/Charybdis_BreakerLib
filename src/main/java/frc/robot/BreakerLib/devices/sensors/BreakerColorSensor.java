@@ -74,7 +74,7 @@ public class BreakerColorSensor implements BreakerGenericDevice {
 
   @Override
   public boolean hasFault() {
-    return false;
+    return currentHealth != DeviceHealth.NOMINAL;
   }
 
   @Override
