@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.util.math.interpolation;
+package frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps;
 
 import java.util.Map.Entry;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** Add your docs here. */
-public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>> extends java.util.AbstractMap<K, V>  {
+public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>> extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolateingMap<K, V> {
     private TreeMap<K, V> indexesAndValues;
     public BreakerInterpolateingTreeMap(TreeMap<K, V> indexesAndValues) {
         this.indexesAndValues = indexesAndValues;
@@ -21,6 +21,7 @@ public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>
         indexesAndValues = new TreeMap<K, V>();
     }
 
+    @Override
     public V getInterpolatedValue(K interpolendValue) {
         Entry<K, V> low = indexesAndValues.floorEntry(interpolendValue);
         Entry<K, V> high = indexesAndValues.ceilingEntry(interpolendValue);

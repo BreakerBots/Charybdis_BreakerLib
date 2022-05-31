@@ -1,4 +1,4 @@
-package frc.robot.BreakerLib.util.math.interpolation;
+package frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps;
 
 import java.util.Map.Entry;
 
@@ -15,7 +15,7 @@ import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** Add your docs here. */
-public class BreakerLegrangeInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>> extends java.util.AbstractMap<K, V>  {
+public class BreakerLegrangeInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>> extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolateingMap<K, V>  {
     private TreeMap<K, V> indexesAndValues;
     public BreakerLegrangeInterpolateingTreeMap(TreeMap<K, V> indexesAndValues) {
         this.indexesAndValues = indexesAndValues;
@@ -25,6 +25,7 @@ public class BreakerLegrangeInterpolateingTreeMap<K, V extends BreakerInterpolat
         indexesAndValues = new TreeMap<K, V>();
     }
 
+    @Override
     public V getInterpolatedValue(K interpolendValue) {
         V refVal = indexesAndValues.pollFirstEntry().getValue();
         List<List<Double>> interpolatableVals = new ArrayList<>();
