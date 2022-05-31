@@ -17,17 +17,6 @@ public class BreakerMath {
 
     private static double prevTime = 0;
 
-    // Drive logistic curve constants
-
-    /** L constant for logistic curve */
-    private static double L = 0.9;
-    /** k constant for logistic curve */
-    private static double k = 7.5;
-    /** x0 constant for logistic curve */
-    private static double x0 = 0.6;
-    /** Vertical translation for logistic curve */
-    private static double b = 0.15;
-
     /**
      * Constrains an angle value in degrees within +- 360 degrees.
      * 
@@ -101,18 +90,6 @@ public class BreakerMath {
      */
     public static double ticksToInches(double ticks, double ticksPerInch) {
         return ticks / ticksPerInch;
-    }
-
-    /**
-     * Returns y when x is fed into pre-determined logistic curve.
-     * 
-     * @param x Value between -1 and 1.
-     * @return Value between -1 and 1.
-     */
-    public static double driveCurve(double x) {
-        double absX = MathUtil.applyDeadband(Math.abs(x), 0.05);
-        double y = (Math.signum(x) * L) / (1 + Math.pow(Math.E, -k * (absX - x0))) + b;
-        return y;
     }
 
     public static double rollingAvg(double avg, double newVal) {
@@ -192,11 +169,11 @@ public class BreakerMath {
         return ((val1 <= (val2 + maxDeviation)) && (val1 >= (val2 - maxDeviation)));
     }
 
-    public static Rotation2d getPointAngleRelativeToOtherPoint(Translation2d pointOne, Translation2d pointTwo) {
-        double x1 = pointOne.getX();
-        double y1 = pointOne.getY();
-        double x2 = pointTwo.getX();
-        double y2 = pointTwo.getY();
+    public static Rotation2d getPointAngleRelativeToOtherPoint(Translation2d point1, Translation2d point2) {
+        double x1 = point1.getX();
+        double y1 = point1.getY();
+        double x2 = point2.getX();
+        double y2 = point2.getY();
         double startRelAng = Math.atan(x2 - x1 / y2 - y1) * 180 / Math.PI;
         double cor = (y2 - y2 / Math.abs(y2 - y1));
         double finalAng = ((startRelAng * cor) + 90) * (-cor);
