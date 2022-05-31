@@ -10,18 +10,23 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.position.geometry.BreakerTransform3d;
+import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Photon camera */
-public class BreakerPhotonCamera {
+public class BreakerPhotonCamera implements BreakerGenericDevice {
 
     private PhotonCamera camera;
+    private String cameraName;
     private double cameraAngle; // Mounting angle
     private double cameraHeightIns; // Height relative to ground. MAKE THIS METERS?
     private double verticalFOV;
     private double horizontalFOV;
-    private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot
-                                                              // position.
+    private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot position.
+    
+    private String faults;
+    private DeviceHealth deviceHealth = DeviceHealth.NOMINAL;
 
     /**
      * Creates a new camera that uses a PhotonVision-based computer vision
@@ -37,6 +42,7 @@ public class BreakerPhotonCamera {
     public BreakerPhotonCamera(String cameraName, double verticalFOV, double horizontalFOV,
             BreakerTransform3d cameraPositionRelativeToRobot) {
         camera = new PhotonCamera(cameraName);
+        this.cameraName = cameraName;
         this.cameraPositionRelativeToRobot = cameraPositionRelativeToRobot;
         this.cameraAngle = cameraPositionRelativeToRobot.getRotationComponent().getPitch().getDegrees();
         this.cameraHeightIns = Units
@@ -120,5 +126,40 @@ public class BreakerPhotonCamera {
         cameraAngle = newTransform.getRotationComponent().getPitch().getDegrees();
         cameraHeightIns = Units.metersToInches(newTransform.getTranslationComponent().getMetersZ());
     }
+
+    @Override
+    public void runSelfTest() {
+        faults = null;
+        if (getPipelineLatancyMilliseconds() == 0) {
+            deviceHealth = DeviceHealth.INOPERABLE;
+            faults = " camera_not_connected ";
+        } else {
+            deviceHealth = DeviceHealth.NOMINAL;
+        }
+    }
+
+    @Override
+    public DeviceHealth getHealth() {
+        return deviceHealth;
+    }
+
+    @Override
+    public String getFaults() {
+        return faults;
+    }
+
+    @Override
+    public String getDeviceName() {
+        return cameraName;
+    }
+
+    @Override
+    public boolean hasFault() {
+        return deviceHealth != DeviceHealth.NOMINAL;
+    }
+
+    @Override
+    // DOES NOUTHING, exists to satisfy BreakerGenericDevice Interface
+    public void setDeviceName(String newName) {}
 
 }

@@ -9,12 +9,14 @@ import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity
 
 import edu.wpi.first.math.Drake;
 import edu.wpi.first.math.spline.PoseWithCurvature;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
 import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.selftest.BreakerSystemDiagnostics;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
@@ -23,12 +25,15 @@ public class Intake extends SubsystemBase {
   private WPI_TalonSRX rightIndexerMotor;
   private WPI_TalonSRX primaryIntakeMotor;
   private Boolean hopperFeedEnabled = false;
+  private BreakerSystemDiagnostics diagnostics;
   public Intake() {
     intakeSol = new BreakerDoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKESOL_FWD, Constants.INTAKESOL_REV, Constants.PCM_ID, Value.kReverse);
     leftIndexerMotor = new WPI_TalonSRX(Constants.LEFT_INDEXER_ID);
     rightIndexerMotor = new WPI_TalonSRX(Constants.RIGHT_INDEXER_ID);
     leftIndexerMotor.setInverted(true);
     primaryIntakeMotor = new WPI_TalonSRX(Constants.PRIM_INTAKE_ID);
+    diagnostics = new BreakerSystemDiagnostics(" Intake ");
+    diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor, primaryIntakeMotor);
   }
 
   public void extendIntakeArm() {
