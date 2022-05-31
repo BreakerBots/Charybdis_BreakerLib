@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
-import frc.robot.BreakerLib.devices.cosmetic.music.BreakerMusic;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerSounds;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 public class SelfTest extends SubsystemBase {
@@ -37,7 +37,7 @@ public class SelfTest extends SubsystemBase {
 
   private static void runAlarm() {
     if (usesOrchestra) {
-      orchestra.startLoopedSong(BreakerMusic.GeneralAlarmSound);
+      orchestra.startLoopedSong(BreakerSounds.GeneralAlarmSound);
     }
   }
 

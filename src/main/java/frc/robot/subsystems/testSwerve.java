@@ -72,12 +72,16 @@
 //         transBR = new Translation2d(x, y);
 
 //         config = new BreakerSwerveDriveConfig(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, transFL, transFR, transBL, transBR);
-//         config.setSlowModeMultipliers(linearMulitplier, turnMultiplier);
+//         config.setSlowModeMultipliers(0.5, 0.5);
 
 //         frontLeftModule = new BreakerMK4iSwerveModule(driveFL, turnFL, encoderFL, config);
+//             frontLeftModule.setDeviceName(" Front_Left_Module ");
 //         frontRightModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
-//         frontRightModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
+//             frontRightModule.setDeviceName(" Front_Right_Module ");
+//         backLeftModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
+//             backLeftModule.setDeviceName(" Back_Left_Module ");
 //         backRightModule = new BreakerMK4iSwerveModule(driveBR, turnBR, encoderBR, config);
+//             backRightModule.setDeviceName(" Back_Right_Module ");
 
 //         drivetrain = new BreakerSwerveDrive(config, pigeon2, frontLeftModule, frontRightModule, backLeftModule, backRightModule);
 //     }

@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.position.odometry;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 
 public interface BreakerGenericOdometer {
@@ -15,4 +16,10 @@ public interface BreakerGenericOdometer {
   public abstract Pose2d getOdometryPoseMeters();
 
   public abstract BreakerMovementState2d getMovementState();
+  
+  public abstract ChassisSpeeds getRobotRelativeChassisSpeeds();
+    
+  public abstract ChassisSpeeds getFieldRelativeChassisSpeeds();
+
+  public abstract ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer);
 }

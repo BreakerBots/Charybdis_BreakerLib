@@ -1,5 +1,7 @@
 package frc.robot.BreakerLib.util.math;
 
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -203,6 +205,20 @@ public class BreakerMath {
 
     public static double interpolateLinear(double knownX, double lowX, double highX, double lowY, double highY) {
         return (((knownX - lowX) * (highY - lowY)) / (highX - lowX)) + lowY;
+    }
+
+    public static double interpolateLegrange(double queryX, Translation2d... knownPoints) {
+        double result = 0;
+        for (int i = 0; i < knownPoints.length; i++) {
+            double term = knownPoints[i].getY();
+            for (int j = 0; j < knownPoints.length; j++) {
+                if (j != i) {
+                    term *= (queryX - knownPoints[j].getX()) / (knownPoints[i].getX() - knownPoints[j].getX());
+                }
+            }
+            result += term;
+        }
+        return result;
     }
 
     public static BreakerMovementState2d movementStateFromChassisSpeedsAndPreviousState(Pose2d currentPose, ChassisSpeeds speeds, double timeToLastUpdateMiliseconds, BreakerMovementState2d prevMovementState) {

@@ -9,4 +9,8 @@ public interface BreakerInterpolateable<V> {
     public abstract V interpolate(double interpolendValue, double highKey, V highVal, double lowKey, V lowVal);
 
     public abstract V getSelf();
+
+    public abstract double[] getInterpolatableData();
+
+    public abstract V fromInterpolatableData(double[] interpolatableData);
 }

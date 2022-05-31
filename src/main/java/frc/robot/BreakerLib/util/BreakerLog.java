@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
-import frc.robot.BreakerLib.devices.cosmetic.music.BreakerMusic;
+import frc.robot.BreakerLib.devices.cosmetic.music.BreakerSounds;
 import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 
 /** Add your docs here. */
@@ -39,17 +39,13 @@ public class BreakerLog {
     work.append(" AUTHORS: " + authorNames + "\n\n");
     work.append(" | ---------------------------------------------- | \n\n\n");
     BreakerLog.log(work.toString());
-    if (usesOrchestra) {
-      orchestra.loadMusic(BreakerMusic.startupSound);
-      orchestra.playMusic();
-    }
   }
 
   /** Logs robot mode change. (automatacly called by BreakerRoboRIO) */
   public static void logRobotChangedMode(RobotMode newMode) {
     DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
     if (usesOrchestra && BreakerRoboRIO.robotModeHasChanged() && newMode != RobotMode.DISABLED) {
-        orchestra.loadMusic(BreakerMusic.enableSound);
+        orchestra.loadMusic(BreakerSounds.enableSound);
         orchestra.playMusic();
     }
   }

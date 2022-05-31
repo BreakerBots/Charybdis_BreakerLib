@@ -9,6 +9,7 @@ import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
@@ -68,6 +69,24 @@ public class BreakerSwerveDrivePoseEstimateor implements BreakerGenericOdometer 
 
     @Override
     public BreakerMovementState2d getMovementState() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ChassisSpeeds getRobotRelativeChassisSpeeds() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ChassisSpeeds getFieldRelativeChassisSpeeds() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -66,19 +66,6 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     }
   }
 
-  /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
-   *<p> NOTE: All values are relative to the robot's orientation. 
-   @param robotRelativeVelocities ChassisSpeeds object representing the robots velocities in each axis relative to its local refrence frame 
-   */
-  public void move(ChassisSpeeds robotRelativeVelocities) {
-    if (isInSlowMode) {
-      robotRelativeVelocities.vxMetersPerSecond *= config.getSlowModeLinearMultiplier();
-      robotRelativeVelocities.vyMetersPerSecond *= config.getSlowModeLinearMultiplier();
-      robotRelativeVelocities.omegaRadiansPerSecond *= config.getSlowModeTurnMultiplier();
-    }
-    setRawModuleStates(config.getKinematics().toSwerveModuleStates(robotRelativeVelocities));
-  }
-
     /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
    *<p> NOTE: All values are relative to the robot's orientation. 
    @param robotRelativeVelocities ChassisSpeeds object representing the robots velocities in each axis relative to its local refrence frame 
@@ -91,6 +78,14 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
       robotRelativeVelocities.omegaRadiansPerSecond *= config.getSlowModeTurnMultiplier();
     }
     setRawModuleStates(config.getKinematics().toSwerveModuleStates(robotRelativeVelocities));
+  }
+
+   /** Standard drivetrain movement command, specifies robot velocity in each axis including robot rotation (radian per second). 
+   *<p> NOTE: All values are relative to the robot's orientation. 
+   @param robotRelativeVelocities ChassisSpeeds object representing the robots velocities in each axis relative to its local refrence frame 
+   */
+  public void move(ChassisSpeeds robotRelativeVelocities) {
+    move(robotRelativeVelocities, isInSlowMode);
   }
 
   
@@ -229,7 +224,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
 
   private void calculateMovementState(double timeToLastUpdateMiliseconds) {
     ChassisSpeeds speeds = config.getKinematics().toChassisSpeeds(getSwerveModuleStates());
-    curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), BreakerMath.fromRobotRelativeSpeeds(speeds, getOdometryPoseMeters().getRotation()), timeToLastUpdateMiliseconds, prevMovementState);
+    curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMiliseconds, prevMovementState);
     prevMovementState = curMovementState;
   }
 
@@ -245,6 +240,21 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
 
   public SwerveModuleState[] getTargetModuleStates() {
       return targetModuleStates;
+  }
+
+  @Override
+  public ChassisSpeeds getRobotRelativeChassisSpeeds() {
+    return config.getKinematics().toChassisSpeeds(getSwerveModuleStates());
+  }
+
+  @Override
+  public ChassisSpeeds getFieldRelativeChassisSpeeds() {
+    return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(), getOdometryPoseMeters().getRotation());
+  }
+
+  @Override
+  public ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer) {
+    return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(), odometer.getOdometryPoseMeters().getRotation());
   }
 
 

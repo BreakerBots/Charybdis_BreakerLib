@@ -282,7 +282,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
   }
 
   private void calculateMovementState(double timeToLastUpdateMilisecods) {
-    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), BreakerMath.fromRobotRelativeSpeeds(driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds()), getOdometryPoseMeters().getRotation()), timeToLastUpdateMilisecods, prevMovementState);
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMilisecods, prevMovementState);
     prevMovementState = curMovementState;
   }
 
@@ -292,5 +292,20 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGeneri
 
   public WPI_TalonFX[] getRightMotors() {
       return rightMotors;
+  }
+
+  @Override
+  public ChassisSpeeds getRobotRelativeChassisSpeeds() {
+    return driveConfig.getKinematics().toChassisSpeeds(getWheelSpeeds());
+  }
+
+  @Override
+  public ChassisSpeeds getFieldRelativeChassisSpeeds() {
+    return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(), getOdometryPoseMeters().getRotation());
+  }
+
+  @Override
+  public ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer) {
+    return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(), odometer.getOdometryPoseMeters().getRotation());
   }
 }

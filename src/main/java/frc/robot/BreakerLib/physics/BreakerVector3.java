@@ -83,4 +83,15 @@ public class BreakerVector3 implements BreakerInterpolateable<BreakerVector3>{
     public BreakerVector3 getSelf() {
         return this;
     }
+
+    /** [0] = X, [1] = Y, [2] = Z */
+    @Override
+    public double[] getInterpolatableData() {
+        return new double[] {forceX, forceY, forceZ};
+    }
+
+    @Override
+    public BreakerVector3 fromInterpolatableData(double[] interpolatableData) {
+        return new BreakerVector3(interpolatableData[0], interpolatableData[1], interpolatableData[2]);
+    }
 }

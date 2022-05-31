@@ -11,6 +11,7 @@ import org.opencv.core.Mat;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import frc.robot.BreakerLib.devices.sensors.BreakerUltrasonicSensor;
 import frc.robot.BreakerLib.physics.BreakerVector3;
@@ -68,14 +69,14 @@ public class BreakerProjectileTrajectory {
         return new BreakerVector3(x, y, z);
     }
 
-    public Translation2d getMovingLaunchCorectionAsNewTargetLocation(BreakerMovementState2d fieldRelativeMovementState, Translation2d targetLocation) {
-        BreakerProjectileTrajectory trajectory = new BreakerProjectileTrajectory(projectile, new BreakerVector3(initialVels.getForceX() + fieldRelativeMovementState.getVelocityComponent().getLinearForces().getForceX(), initialVels.getForceY() + fieldRelativeMovementState.getVelocityComponent().getLinearForces().getForceY(), initialVels.getForceZ()), launchPoint);
+    public Translation2d getMovingLaunchCorectionAsNewTargetLocation(ChassisSpeeds fieldRelativeSpeeds, Translation2d targetLocation) {
+        BreakerProjectileTrajectory trajectory = new BreakerProjectileTrajectory(projectile, new BreakerVector3(initialVels.getForceX() + fieldRelativeSpeeds.vxMetersPerSecond, initialVels.getForceY() + fieldRelativeSpeeds.vyMetersPerSecond, initialVels.getForceZ()), launchPoint);
         Translation2d cor = targetLocation.minus(trajectory.get2dTranslationAtGivenTime(getTimeOfFightToTarget(targetLocation)));
         return targetLocation.plus(cor);
     }
 
-    public BreakerVector3 getMovingLaunchCorectionAsNewLaunchForces(BreakerMovementState2d fieldRelativeMovementState, Translation2d targetLocation) {
-        BreakerProjectileTrajectory trajectory = new BreakerProjectileTrajectory(projectile, new BreakerVector3(initialVels.getForceX() + fieldRelativeMovementState.getVelocityComponent().getLinearForces().getForceX(), initialVels.getForceY() + fieldRelativeMovementState.getVelocityComponent().getLinearForces().getForceY(), initialVels.getForceZ()), launchPoint);
+    public BreakerVector3 getMovingLaunchCorectionAsNewLaunchForces(ChassisSpeeds fieldRelativeSpeeds, Translation2d targetLocation) {
+        BreakerProjectileTrajectory trajectory = new BreakerProjectileTrajectory(projectile, new BreakerVector3(initialVels.getForceX() + fieldRelativeSpeeds.vxMetersPerSecond, initialVels.getForceY() + fieldRelativeSpeeds.vyMetersPerSecond, initialVels.getForceZ()), launchPoint);
         double reqImpactTime = getTimeOfFightToTarget(targetLocation);
         BreakerVector3 reqImpactVec = getForceVectorAtGivenTime(reqImpactTime);
         BreakerVector3 predImpactVec = trajectory.getForceVectorAtGivenTime(reqImpactTime);

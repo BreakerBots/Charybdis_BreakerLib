@@ -31,8 +31,7 @@ public class RobotContainer {
   private final SelfTest testSys = new SelfTest(5);
   private BreakerAutoManager autoManager;
   public RobotContainer() {
-    SelfTest.addDevice(imuSys);
-    SelfTest.addDevice(drivetrainSys.getBaseDrivetrain());
+    SelfTest.addDevices(imuSys, drivetrainSys.getBaseDrivetrain());
     BreakerLog.startLog(false);
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
 

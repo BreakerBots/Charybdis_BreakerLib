@@ -29,5 +29,15 @@ public class BreakerInterpolatableDouble implements BreakerInterpolateable<Break
         return new BreakerInterpolatableDouble(value);
     }
 
+    @Override
+    public double[] getInterpolatableData() {
+        return new double[] {value};
+    }
+
+    @Override
+    public BreakerInterpolatableDouble fromInterpolatableData(double[] interpolatableData) {
+        return new BreakerInterpolatableDouble(interpolatableData[0]);
+    }
+
 
 }
