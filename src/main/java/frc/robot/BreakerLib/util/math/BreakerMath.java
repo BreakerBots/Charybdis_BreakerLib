@@ -183,16 +183,16 @@ public class BreakerMath {
     /**
      * Linearly interpolates between 2 points to find y-val at given x.
      * 
-     * @param givenX X-value to interpolate from.
+     * @param queryX X-value to interpolate from.
      * @param lowX   X-val of low point.
      * @param highX  X-val of high point.
      * @param lowY   Y-val of low point.
      * @param highY  Y-val of high point.
      * @return Approximate Y-value at given X.
      */
-    public static double interpolateLinear(double givenX, double lowX, double highX, double lowY, double highY) {
+    public static double interpolateLinear(double queryX, double lowX, double highX, double lowY, double highY) {
         double slope = (highY - lowY) / (highX - lowX);
-        return lowY + (givenX - lowX) * slope;
+        return lowY + (queryX - lowX) * slope;
     }
 
     /**

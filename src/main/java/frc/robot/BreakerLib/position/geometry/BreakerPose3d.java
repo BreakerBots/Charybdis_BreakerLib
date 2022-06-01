@@ -4,11 +4,9 @@
 
 package frc.robot.BreakerLib.position.geometry;
 
-import edu.wpi.first.hal.I2CJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /**
  * Represents an object's 3-dimensional position and 3 axis angular orientation
@@ -16,8 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
  * <p>
  * Combines {@link BreakerTranslation3d} and {@link BreakerRotation3d} into one pose.
  */
-public class BreakerPose3d {
-
+public class BreakerPose3d implements BreakerInterpolateable<BreakerPose3d>{
     private BreakerTranslation3d translation;
     private BreakerRotation3d rotation;
 
@@ -78,5 +75,30 @@ public class BreakerPose3d {
     @Override
     public String toString() {
         return "Position: (" + translation.toString() + "), Rotation: (" + rotation.toString() + ")";
+    }
+
+    @Override
+    public BreakerPose3d interpolate(double interpolendValue, double highKey, BreakerPose3d highVal, double lowKey, BreakerPose3d lowVal) {
+                BreakerTranslation3d interT = translation.interpolate(interpolendValue, highKey, highVal.translation, lowKey, lowVal.translation);
+                BreakerRotation3d interR = rotation.interpolate(interpolendValue, highKey, highVal.rotation, lowKey, lowVal.rotation);
+                return new BreakerPose3d(interT, interR);
+    }
+
+    @Override
+    public BreakerPose3d getSelf() {
+        return this;
+    }
+
+    /**[0-2] = Translation, [3-5] = Rotation */
+    @Override
+    public double[] getInterpolatableData() {
+        return new double[] {translation.getMetersX(), translation.getMetersY(),
+             translation.getMetersZ(), rotation.getPitch().getRadians(), 
+             rotation.getYaw().getRadians(), rotation.getRoll().getRadians()};
+    }
+
+    @Override
+    public BreakerPose3d fromInterpolatableData(double[] interpolatableData) {
+        return new BreakerPose3d(interpolatableData[0], interpolatableData[1], interpolatableData[2], rotation.fromInterpolatableData(new double[] {interpolatableData[3], interpolatableData[4], interpolatableData[5]}));
     }
 }

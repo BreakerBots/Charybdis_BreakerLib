@@ -5,9 +5,11 @@
 package frc.robot.BreakerLib.position.geometry;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
 /** Represents an objects position in the X, Y, and Z axies */
-public class BreakerTranslation3d {
+public class BreakerTranslation3d implements BreakerInterpolateable<BreakerTranslation3d> {
 
     // Position values in meters
     private double metersX;
@@ -58,5 +60,31 @@ public class BreakerTranslation3d {
     @Override
     public String toString() {
         return "X: " + metersX + ", Y: " + metersY + ", Z: " + metersZ;
+    }
+
+    @Override
+    public BreakerTranslation3d interpolate(double valToInterpolate, double highKey, BreakerTranslation3d highVal,
+            double lowKey, BreakerTranslation3d lowVal) {
+                double interX = BreakerMath.interpolateLinear(valToInterpolate, lowKey, highKey, lowVal.getMetersX(), highVal.getMetersX());
+                double interY = BreakerMath.interpolateLinear(valToInterpolate, lowKey, highKey, lowVal.getMetersY(), highVal.getMetersZ());
+                double interZ = BreakerMath.interpolateLinear(valToInterpolate, lowKey, highKey, lowVal.getMetersZ(), highVal.getMetersZ());
+        
+                return new BreakerTranslation3d(interX, interY, interZ);
+    }
+
+    @Override
+    public BreakerTranslation3d getSelf() {
+        return this;
+    }
+
+    /** [0] = X, [1] = Y, [2] = Z */
+    @Override
+    public double[] getInterpolatableData() {
+        return new double[] {metersX, metersY, metersZ};
+    }
+
+    @Override
+    public BreakerTranslation3d fromInterpolatableData(double[] interpolatableData) {
+        return new BreakerTranslation3d(interpolatableData[0], interpolatableData[1], interpolatableData[2]);
     }
 }

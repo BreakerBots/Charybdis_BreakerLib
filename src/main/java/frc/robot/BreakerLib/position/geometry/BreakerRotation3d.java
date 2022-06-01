@@ -4,11 +4,12 @@
 
 package frc.robot.BreakerLib.position.geometry;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
 
-/** Represents an object's angular orentation in 3-dimensional space using yaw, pitch, and roll */
-public class BreakerRotation3d {
+/** Represents an object's angular orentation in 3-dimensional space using Euler Angles (yaw, pitch, and roll) */
+public class BreakerRotation3d implements BreakerInterpolateable<BreakerRotation3d> {
 
     private Rotation2d pitch;
     private Rotation2d yaw;
@@ -62,5 +63,30 @@ public class BreakerRotation3d {
     @Override
     public String toString() {
         return "Yaw: " + yaw.toString() + ", Pitch: " + pitch.toString() + ", Roll: " + roll.toString();
+    }
+
+    @Override
+    public BreakerRotation3d interpolate(double interpolendValue, double highKey, BreakerRotation3d highVal,
+            double lowKey, BreakerRotation3d lowVal) {
+        double interP = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getPitch().getRadians(), highVal.getPitch().getRadians());
+        double interY = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getYaw().getRadians(), highVal.getYaw().getRadians());
+        double interR = BreakerMath.interpolateLinear(interpolendValue, lowKey, highKey, lowVal.getRoll().getRadians(), highVal.getRoll().getRadians());
+        return new BreakerRotation3d(new Rotation2d(interP), new Rotation2d(interY), new Rotation2d(interR));
+    }
+
+    @Override
+    public BreakerRotation3d getSelf() {
+        return this;
+    }
+
+    /** [0] = pitchRad, [1] = yawRad, [2] = rollRad */
+    @Override
+    public double[] getInterpolatableData() {
+        return new double[] {pitch.getRadians(), yaw.getRadians(), roll.getRadians()};
+    }
+
+    @Override
+    public BreakerRotation3d fromInterpolatableData(double[] interpolatableData) {
+        return new BreakerRotation3d(new Rotation2d(interpolatableData[0]), new Rotation2d(interpolatableData[1]), new Rotation2d(interpolatableData[2]));
     }
 }

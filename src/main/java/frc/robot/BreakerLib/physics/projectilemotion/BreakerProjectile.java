@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate;
 
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
-/** Add your docs here. */
+/** A class that represents the properties of a projectile such as a ball */
 public class BreakerProjectile {
     private double massKg;
     private double dragCoeffiecnt;
