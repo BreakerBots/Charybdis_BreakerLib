@@ -22,14 +22,14 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
-/** OUR version of a differential drive ramsete command.  */
+/** OUR version of a differential drive ramsete command. */
 public class BreakerRamsete extends CommandBase implements BreakerGenericTrajecotryFollower {
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
-    private BreakerDiffDrive drivetrain;
+    private DiffDrive drivetrain;
     private TrajectoryConfig config;
     private DifferentialDriveVoltageConstraint voltageConstraints;
     private double currentTimeCycles = 0;
@@ -41,17 +41,17 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     /**
      * Constructor for BreakerRamsete controller.
      * 
-     * @param trajectoryToFollow Self-explanatory.
-     * @param drivetrain Differential drivetrain to use.
+     * @param trajectoryToFollow    Self-explanatory.
+     * @param drivetrain            Differential drivetrain to use.
      * @param subsystemRequirements Self-explanatory.
-     * @param ramseteB Proportional constant for ramsete.
-     * @param ramseteZeta Damping constant for ramsete.
-     * @param maxVel In m/s
-     * @param maxAccel In m/s^2
-     * @param maxVoltage Max amount of volts that can be applied
-     * @param stopAtEnd Whether the robot stops on completion.
+     * @param ramseteB              Proportional constant for ramsete.
+     * @param ramseteZeta           Damping constant for ramsete.
+     * @param maxVel                In m/s
+     * @param maxAccel              In m/s^2
+     * @param maxVoltage            Max amount of volts that can be applied
+     * @param stopAtEnd             Whether the robot stops on completion.
      */
-    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, DiffDrive drivetrain,
             Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
             double maxVoltage, boolean stopAtEnd) {
         this.drivetrain = drivetrain;
@@ -84,7 +84,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
         }
     }
 
-    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, DiffDrive drivetrain,
             Supplier<Pose2d> currentPoseSupplyer,
             Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
             double maxVoltage, boolean stopAtEnd) {
@@ -174,20 +174,20 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
     @Override
     public void attachConditionalCommands(BreakerConditionalCommand... conditionalCommands) {
-        for (BreakerConditionalCommand com: conditionalCommands) {
+        for (BreakerConditionalCommand com : conditionalCommands) {
             attachedCondtionalCommands.add(com);
         }
     }
 
     private void checkAttachedCommands() {
         try {
-            for (BreakerConditionalCommand com: attachedCondtionalCommands) {
+            for (BreakerConditionalCommand com : attachedCondtionalCommands) {
                 com.updateAutoRun();
             }
         } catch (Exception e) {
-         //   BreakerLog.logError(e.toString());
+            // BreakerLog.logError(e.toString());
         }
-        
+
     }
 
 }

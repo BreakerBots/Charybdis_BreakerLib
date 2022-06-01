@@ -18,11 +18,11 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
-import frc.robot.BreakerLib.auto.trajectory.management.BreakerStartTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.management.StartTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerPositionTriggeredCommand;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDrive;
 import frc.robot.subsystems.Drive;
 
 public class DemoTrajectoryS extends SequentialCommandGroup {
@@ -34,6 +34,7 @@ public class DemoTrajectoryS extends SequentialCommandGroup {
   Translation2d WP1;
   Translation2d WP2;
   List<Translation2d> waypoints;
+
   public DemoTrajectoryS(Drive drivetrain) {
 
     startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
@@ -45,11 +46,11 @@ public class DemoTrajectoryS extends SequentialCommandGroup {
     waypoints.add(new Translation2d(3, -1));
 
     // creates first trajecotry to follow
-    partOne = new BreakerTrajectoryPath(TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config));
+    partOne = new BreakerTrajectoryPath(
+        TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config));
 
     addCommands(
-      new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
-      new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, 0.3, 0.5, 0.75, true)
-    );
+        new StartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
+        new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, 0.3, 0.5, 0.75, true));
   }
 }

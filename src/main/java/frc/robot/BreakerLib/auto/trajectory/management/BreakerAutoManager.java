@@ -18,11 +18,12 @@ public class BreakerAutoManager {
     private BreakerAutoPath[] autoPaths;
     private SendableChooser<BreakerAutoPath> selector;
 
-    public BreakerAutoManager(BreakerAutoPath...autoPaths) {
+    public BreakerAutoManager(BreakerAutoPath... autoPaths) {
         this.autoPaths = autoPaths;
         selector = new SendableChooser<BreakerAutoPath>();
-        selector.addOption("Do Nouthing", new BreakerAutoPath("Default 'Do Nouthing' Path", new SequentialCommandGroup()) );
-        for (BreakerAutoPath path: autoPaths) {
+        selector.addOption("Do Nouthing",
+                new BreakerAutoPath("Default 'Do Nouthing' Path", new SequentialCommandGroup()));
+        for (BreakerAutoPath path : autoPaths) {
             selector.addOption(path.getPathName(), path);
         }
         BreakerDashboard.getSetupTab().add("AUTOPATH SELECTOR", selector).withWidget(BuiltInWidgets.kComboBoxChooser);
@@ -33,7 +34,7 @@ public class BreakerAutoManager {
     }
 
     public SequentialCommandGroup getSelectedBaseCommandGroup() {
-        BreakerLog.logBreakerLibEvent(" New Autopath Started: " + getSelected().getPathName()); 
+        BreakerLog.logBreakerLibEvent(" New Autopath Started: " + getSelected().getPathName());
         return getSelected().getBaseCommandGroup();
     }
 }

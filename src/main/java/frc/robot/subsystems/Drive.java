@@ -15,15 +15,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker6AxisForces;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDriveConfig;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.GenericDrivetrain;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDriveConfig;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive. */
-  private BreakerDiffDrive drivetrain;
-  private BreakerDiffDriveConfig driveConfig;
+  private DiffDrive drivetrain;
+  private DiffDriveConfig driveConfig;
 
   private WPI_TalonFX left1;
   private WPI_TalonFX left2;
@@ -49,28 +49,34 @@ public class Drive extends SubsystemBase {
 
     leftMotors = BreakerCTREUtil.createMotorArray(left1, left2, left3);
     rightMotors = BreakerCTREUtil.createMotorArray(right1, right2, right3);
-    
-    leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+
+    leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI,
+        Constants.DRIVE_RS_PID_KD);
     leftSideRamsetePID.setTolerance(0.02, 0.05);
-    rightSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+    rightSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI,
+        Constants.DRIVE_RS_PID_KD);
     rightSideRamsetePID.setTolerance(0.02, 0.05);
 
-    driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO, Constants.DRIVE_COLSON_DIAMETER, 
-      Constants.DRIVE_FF_KS, Constants.DRIVE_FF_KV, Constants.DRIVE_FF_KA, Constants.DRIVE_TRACK_WIDTH, leftSideRamsetePID, rightSideRamsetePID);
-    driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER, Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
+    driveConfig = new DiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO,
+        Constants.DRIVE_COLSON_DIAMETER,
+        Constants.DRIVE_FF_KS, Constants.DRIVE_FF_KV, Constants.DRIVE_FF_KA, Constants.DRIVE_TRACK_WIDTH,
+        leftSideRamsetePID, rightSideRamsetePID);
+    driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER,
+        Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
 
-    drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
+    drivetrain = new DiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
 
     drivetrain.setOdometryPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
   }
 
-  public BreakerDiffDrive getBaseDrivetrain() {
+  public DiffDrive getBaseDrivetrain() {
     return drivetrain;
   }
 
   @Override
   public void periodic() {
     drivetrain.updateOdometry();
-    System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks() + " Ticks L: " + drivetrain.getLeftDriveTicks());
+    System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks()
+        + " Ticks L: " + drivetrain.getLeftDriveTicks());
   }
 }

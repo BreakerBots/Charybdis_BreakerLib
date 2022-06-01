@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.auto.trajectory.swerve;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.SwerveDrive;
 
 /** Add your docs here. */
 public class BreakerFollowSwerveTrajectoryConfig {
@@ -15,10 +15,10 @@ public class BreakerFollowSwerveTrajectoryConfig {
     private PIDController xPosPID;
     private PIDController yPosPID;
     private ProfiledPIDController tAngPID;
-    private BreakerSwerveDrive drivetrain;
+    private SwerveDrive drivetrain;
     private Constraints constraints;
 
-    public BreakerFollowSwerveTrajectoryConfig(BreakerSwerveDrive drivetrain, double xPositionKp, double xPositionKi,
+    public BreakerFollowSwerveTrajectoryConfig(SwerveDrive drivetrain, double xPositionKp, double xPositionKi,
             double xPositionKd, double yPositionKp, double yPositionKi, double yPositionKd,
             double thetaAngleKp, double thetaAngleKi, double thetaAngleKd, double maxAllowedThetaVel,
             double maxAllowedThetaAccel) {
@@ -47,7 +47,7 @@ public class BreakerFollowSwerveTrajectoryConfig {
         return yPosPID;
     }
 
-    public BreakerSwerveDrive getDrivetrain() {
+    public SwerveDrive getDrivetrain() {
         return drivetrain;
     }
 }
