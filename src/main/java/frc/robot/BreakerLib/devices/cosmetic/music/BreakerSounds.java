@@ -18,4 +18,5 @@ public class BreakerSounds {
     public static final String slowAlarmSound = deployDir.resolve("Breaker_Alarm_Slow.chrp").toString();
     public static final String rushE = deployDir.resolve("Breaker_Rush_E.chrp").toString();
     public static final String megalovania = deployDir.resolve("Breaker_Megalovania.chrp").toString();
+    public static final String turretOpera = deployDir.resolve("Turret Opera.chrp").toString();
 }

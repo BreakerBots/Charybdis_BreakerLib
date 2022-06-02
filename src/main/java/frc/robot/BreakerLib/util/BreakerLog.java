@@ -16,12 +16,14 @@ public class BreakerLog {
   private static boolean usesOrchestra = false;
   private static BreakerFalconOrchestra orchestra;
 
+  /** Commences logging. */
   public static void startLog(boolean autologNetworkTables) {
     DataLogManager.logNetworkTables(autologNetworkTables);
     DataLogManager.start();
     BreakerLog.usesOrchestra = false;
   }
 
+  /** Commences logging and turns on Orchestra-controlled robot sounds. */
   public static void startLog(boolean autologNetworkTables, BreakerFalconOrchestra orchestra) {
     DataLogManager.logNetworkTables(autologNetworkTables);
     DataLogManager.start();
@@ -41,12 +43,15 @@ public class BreakerLog {
     BreakerLog.log(work.toString());
   }
 
-  /** Logs robot mode change. (automatacly called by BreakerRoboRIO) */
+  /**
+   * Logs robot mode change and plays enable tune. (automatically called by
+   * BreakerRoboRIO)
+   */
   public static void logRobotChangedMode(RobotMode newMode) {
     DataLogManager.log("| ---- ROBOT MODE CHANGED TO: " + newMode + " ---- |");
     if (usesOrchestra && BreakerRoboRIO.robotModeHasChanged() && newMode != RobotMode.DISABLED) {
-        orchestra.loadMusic(BreakerSounds.enableSound);
-        orchestra.playMusic();
+      orchestra.loadMusic(BreakerSounds.enableSound);
+      orchestra.playMusic();
     }
   }
 
