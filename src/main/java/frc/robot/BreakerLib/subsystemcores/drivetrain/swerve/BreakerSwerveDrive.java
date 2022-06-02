@@ -37,6 +37,8 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
 
   private SwerveDriveOdometry odometer;
 
+  private Rotation2d fieldRelativeMovementAngleOffset = Rotation2d.fromDegrees(0);
+
   private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
   private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
   private double prevOdometryUpdateTimestamp = 0;
@@ -113,13 +115,13 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
 
   /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the field */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec) {
-    ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, getOdometryPoseMeters().getRotation());
+    ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, getOdometryPoseMeters().getRotation().plus(fieldRelativeMovementAngleOffset));
     move(robotRelSpeeds);
   }
 
   /** effectivly equivlent to the "move()" mothod but with all vleocitys being passed in as movements relative to the field (this version of the method is for use with a custom odometry source) */
   public void moveRelativeToField(double forwardVelMetersPerSec, double horizontalVelMetersPerSec, double radPerSec, BreakerGenericOdometer odometer) {
-    ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, odometer.getOdometryPoseMeters().getRotation());
+    ChassisSpeeds robotRelSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardVelMetersPerSec, horizontalVelMetersPerSec, radPerSec, odometer.getOdometryPoseMeters().getRotation().plus(fieldRelativeMovementAngleOffset));
     move(robotRelSpeeds);
   }
 
@@ -257,5 +259,14 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGene
     return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(), odometer.getOdometryPoseMeters().getRotation());
   }
 
+  /** sets the angle all field relative movement is offset by (default is 0) */
+  public void setFieldRelativeMovementAngleOffset(Rotation2d angleOffset) {
+      fieldRelativeMovementAngleOffset = angleOffset;
+  }
+  
+  /** returns the angle all field relative movement is offset by (default is 0) */
+  public Rotation2d getFieldRelativeMovementAngleOffset() {
+      return fieldRelativeMovementAngleOffset;
+  }
 
 }
