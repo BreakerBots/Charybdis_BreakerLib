@@ -31,14 +31,15 @@ public class RobotContainer {
   private final Hopper hopperSys = new Hopper(intakeSys);
   private final SelfTest testSys = new SelfTest(5);
 
-  private BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
-  orchestraSys.setOrchestraMotors(new WPI_TalonFX(1));
+  private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
 
   private BreakerAutoManager autoManager;
 
   public RobotContainer() {
     SelfTest.addDevices(imuSys, drivetrainSys.getBaseDrivetrain());
-    BreakerLog.startLog(false);
+    BreakerLog.startLog(false, orchestraSys);
+    orchestraSys.setOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
+    orchestraSys.setOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
 
     autoManager = new BreakerAutoManager(
