@@ -5,15 +5,14 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ToggleSlowMode extends InstantCommand {
-  private DiffDrive baseDrivetrain;
-
-  public ToggleSlowMode(DiffDrive baseDrivetrain) {
+  private BreakerDiffDrive baseDrivetrain;
+  public ToggleSlowMode(BreakerDiffDrive baseDrivetrain) {
     this.baseDrivetrain = baseDrivetrain;
   }
 

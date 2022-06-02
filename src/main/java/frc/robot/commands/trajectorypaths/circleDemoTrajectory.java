@@ -14,7 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
-import frc.robot.BreakerLib.auto.trajectory.management.StartTrajectoryPath;
+import frc.robot.BreakerLib.auto.trajectory.management.BreakerStartTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.subsystems.Drive;
@@ -28,7 +28,6 @@ public class circleDemoTrajectory extends SequentialCommandGroup {
   Translation2d WP1;
   Translation2d WP2;
   List<Translation2d> waypoints;
-
   public circleDemoTrajectory(Drive drivetrain) {
 
     startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
@@ -44,11 +43,11 @@ public class circleDemoTrajectory extends SequentialCommandGroup {
     waypoints.add(new Translation2d(-0.848, 0.352));
 
     // creates first trajecotry to follow
-    partOne = new BreakerTrajectoryPath(
-        TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config));
+    partOne = new BreakerTrajectoryPath(TrajectoryGenerator.generateTrajectory(startingPose, waypoints, endPose, config)); 
 
     addCommands(
-        new StartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
-        new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, 0.3, 0.5, 0.75, true));
+      new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
+      new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, 0.3, 0.5, 0.75, true)
+    );
   }
 }

@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.SwerveDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
@@ -25,7 +25,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     private SwerveControllerCommand controller;
     private BreakerFollowSwerveTrajectoryConfig config;
-    private SwerveDrive drivetrain;
+    private BreakerSwerveDrive drivetrain;
     private Subsystem requiredSubsystem; // Swerve drive subsystem
     private Trajectory[] trajectoriesToFollow;
     private int currentTrajectory = 0;
@@ -46,7 +46,29 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         this.stopAtEnd = stopAtEnd;
         this.requiredSubsystem = requiredSubsystem;
         try {
-            for (BreakerTrajectoryPath path : trajectoryPaths) {
+            for (BreakerTrajectoryPath path: trajectoryPaths) {
+                attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
+            }
+        } catch (Exception e) {
+            BreakerLog.logError(e.toString());
+        }
+        Trajectory[] arr = new Trajectory[trajectoryPaths.length];
+        for (int i = 0; i <= trajectoryPaths.length; i++) {
+            arr[i] = trajectoryPaths[i].getBaseTrajectory();
+        }
+        trajectoriesToFollow = arr;
+    }
+   
+    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, Supplier<Rotation2d> rotationSupplier, boolean stopAtEnd,
+            Subsystem requiredSubsystem, BreakerTrajectoryPath... trajectoryPaths) {
+        usesSupplyedRotation = true;
+        drivetrain = config.getDrivetrain();
+        this.config = config;
+        this.stopAtEnd = stopAtEnd;
+        this.requiredSubsystem = requiredSubsystem;
+        this.rotationSupplier = rotationSupplier;
+        try {
+            for (BreakerTrajectoryPath path: trajectoryPaths) {
                 attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
             }
         } catch (Exception e) {
@@ -59,28 +81,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         trajectoriesToFollow = arr;
     }
 
-    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, Supplier<Rotation2d> rotationSupplier,
-            boolean stopAtEnd,
-            Subsystem requiredSubsystem, BreakerTrajectoryPath... trajectoryPaths) {
-        usesSupplyedRotation = true;
-        drivetrain = config.getDrivetrain();
-        this.config = config;
-        this.stopAtEnd = stopAtEnd;
-        this.requiredSubsystem = requiredSubsystem;
-        this.rotationSupplier = rotationSupplier;
-        try {
-            for (BreakerTrajectoryPath path : trajectoryPaths) {
-                attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
-            }
-        } catch (Exception e) {
-            BreakerLog.logError(e.toString());
-        }
-        Trajectory[] arr = new Trajectory[trajectoryPaths.length];
-        for (int i = 0; i <= trajectoryPaths.length; i++) {
-            arr[i] = trajectoryPaths[i].getBaseTrajectory();
-        }
-        trajectoriesToFollow = arr;
-    }
+    
 
     @Override
     public void initialize() {
@@ -100,15 +101,14 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
             try {
                 if (usesSupplyedRotation) {
                     controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
-                            drivetrain::getOdometryPoseMeters,
-                            drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
-                            config.getThetaAngPID(), rotationSupplier, drivetrain::setRawModuleStates,
-                            requiredSubsystem);
+                        drivetrain::getOdometryPoseMeters,
+                        drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
+                        config.getThetaAngPID(), rotationSupplier, drivetrain::setRawModuleStates, requiredSubsystem);
                 } else {
                     controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
-                            drivetrain::getOdometryPoseMeters,
-                            drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
-                            config.getThetaAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
+                        drivetrain::getOdometryPoseMeters,
+                        drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
+                        config.getThetaAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
                 }
                 controller.schedule();
                 BreakerLog.logBreakerLibEvent(
@@ -197,19 +197,19 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     @Override
     public void attachConditionalCommands(BreakerConditionalCommand... conditionalCommands) {
-        for (BreakerConditionalCommand com : conditionalCommands) {
+        for (BreakerConditionalCommand com: conditionalCommands) {
             attachedCondtionalCommands.add(com);
         }
     }
 
     private void checkAttachedCommands() {
         try {
-            for (BreakerConditionalCommand com : attachedCondtionalCommands) {
+            for (BreakerConditionalCommand com: attachedCondtionalCommands) {
                 com.updateAutoRun();
             }
         } catch (Exception e) {
             BreakerLog.logError(e.toString());
         }
-
+        
     }
 }

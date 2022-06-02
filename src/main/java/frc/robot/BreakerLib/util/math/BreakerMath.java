@@ -9,8 +9,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
-import frc.robot.BreakerLib.physics.Vector2;
-import frc.robot.BreakerLib.position.movement.MovementState2d;
+import frc.robot.BreakerLib.physics.BreakerVector2;
+import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 
 //easily accessible conversion equations
 public class BreakerMath {
@@ -218,10 +218,10 @@ public class BreakerMath {
         return result;
     }
 
-    public static MovementState2d movementStateFromChassisSpeedsAndPreviousState(Pose2d currentPose,
-            ChassisSpeeds speeds, double timeToLastUpdateMiliseconds, MovementState2d prevMovementState) {
+    public static BreakerMovementState2d movementStateFromChassisSpeedsAndPreviousState(Pose2d currentPose,
+            ChassisSpeeds speeds, double timeToLastUpdateMiliseconds, BreakerMovementState2d prevMovementState) {
         Breaker3AxisForces acceleration = new Breaker3AxisForces(
-                new Vector2(
+                new BreakerVector2(
                         (1000 / timeToLastUpdateMiliseconds) * (speeds.vxMetersPerSecond
                                 - prevMovementState.getVelocityComponent().getLinearForces().getForceX()),
                         (1000 / timeToLastUpdateMiliseconds) * (speeds.vyMetersPerSecond
@@ -229,15 +229,15 @@ public class BreakerMath {
                 (1000 / timeToLastUpdateMiliseconds)
                         * (speeds.omegaRadiansPerSecond - prevMovementState.getVelocityComponent().getAngularForces()));
         Breaker3AxisForces jerk = new Breaker3AxisForces(
-                new Vector2(
+                new BreakerVector2(
                         (1000 / timeToLastUpdateMiliseconds) * (acceleration.getLinearForces().getForceX()
                                 - prevMovementState.getAccelerationComponent().getLinearForces().getForceY()),
                         (1000 / timeToLastUpdateMiliseconds) * (acceleration.getLinearForces().getForceY()
                                 - prevMovementState.getAccelerationComponent().getLinearForces().getForceY())),
                 (1000 / timeToLastUpdateMiliseconds) * (acceleration.getAngularForces()
                         - prevMovementState.getAccelerationComponent().getAngularForces()));
-        return new MovementState2d(currentPose,
-                new Breaker3AxisForces(new Vector2(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
+        return new BreakerMovementState2d(currentPose,
+                new Breaker3AxisForces(new BreakerVector2(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
                         speeds.omegaRadiansPerSecond),
                 acceleration, jerk);
     }
