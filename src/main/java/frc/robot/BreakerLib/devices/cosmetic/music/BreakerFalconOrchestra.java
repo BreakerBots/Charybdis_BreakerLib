@@ -30,15 +30,15 @@ public class BreakerFalconOrchestra extends SubsystemBase {
         orchestra = new Orchestra();
     }
 
-    public BreakerFalconOrchestra(WPI_TalonFX... motors){
-        Collection<TalonFX> mots = new ArrayList<>();
-        for (TalonFX mot: motors) {
-            mots.add(mot);
+    public BreakerFalconOrchestra(WPI_TalonFX... motors) {
+        Collection<TalonFX> instruments = new ArrayList<>();
+        for (TalonFX motor : motors) {
+            instruments.add(motor);
         }
-        orchestra = new Orchestra(mots);
+        orchestra = new Orchestra(instruments);
     }
 
-    public void addOrchestraMotors(WPI_TalonFX... motors) {
+    public void setOrchestraMotors(WPI_TalonFX... motors) {
         orchestra.clearInstruments();
         for (WPI_TalonFX motor : motors) {
             orchestra.addInstrument(motor);

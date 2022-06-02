@@ -20,25 +20,30 @@ import frc.robot.commands.trajectorypaths.circleDemoTrajectory;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class RobotContainer {
+
   private final BreakerXboxController controllerSys = new BreakerXboxController(0);
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID, Constants.IMU_INVERT);
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
   private final Hopper hopperSys = new Hopper(intakeSys);
   private final SelfTest testSys = new SelfTest(5);
+
+  private BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
+  orchestraSys.setOrchestraMotors(new WPI_TalonFX(1));
+
   private BreakerAutoManager autoManager;
+
   public RobotContainer() {
     SelfTest.addDevices(imuSys, drivetrainSys.getBaseDrivetrain());
     BreakerLog.startLog(false);
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
 
     autoManager = new BreakerAutoManager(
-      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
-      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys))
-    );
+        new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
+        new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)));
 
     configureButtonBindings();
   }
