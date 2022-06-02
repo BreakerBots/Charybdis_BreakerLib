@@ -8,7 +8,7 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
-import frc.robot.BreakerLib.position.geometry.Rotation3d;
+import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -110,15 +110,13 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
     return (BreakerMath.fixedToFloat(getRawAccelerometerVals()[2], 14) * 0.02);
   }
 
-  /**
-   * How long the Pigeon has been running for, in seconds. Maxes out at 255 sec.
-   */
+  /** How long the Pigeon has been running for, in seconds. Maxes out at 255 sec.*/
   public int getPigeonUpTime() {
     return pigeon.getUpTime();
   }
 
-  public Rotation3d getRotation3d() {
-    return new Rotation3d(Rotation2d.fromDegrees(getRawAngles()[1]), Rotation2d.fromDegrees(getRawAngles()[0]),
+  public BreakerRotation3d getRotation3d() {
+    return new BreakerRotation3d(Rotation2d.fromDegrees(getRawAngles()[1]), Rotation2d.fromDegrees(getRawAngles()[0]),
         Rotation2d.fromDegrees(getRawAngles()[2]));
   }
 
@@ -127,7 +125,7 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
     faults = null;
     Pigeon2_Faults curFaults = new Pigeon2_Faults();
     pigeon.getFaults(curFaults);
-
+    
     if (curFaults.HardwareFault) {
       currentHealth = DeviceHealth.INOPERABLE;
       faults += " HARDWARE_FAULT ";

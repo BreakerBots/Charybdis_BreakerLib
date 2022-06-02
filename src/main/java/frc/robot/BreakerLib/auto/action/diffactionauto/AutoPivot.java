@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.auto.action.diffactionauto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 
 public class AutoPivot extends CommandBase {
   AutoController auto;
@@ -15,25 +15,16 @@ public class AutoPivot extends CommandBase {
   double target;
   double speedClamp;
   double lastAngle;
-  DiffDrive drivetrain;
-
-  /**
-   * Autonomous command used to turn the robot in place a specified number of
-   * degrees
-   * relative to the direction in which it was facing when the command is first
-   * called
+  BreakerDiffDrive drivetrain;
+  /** Autonomous command used to turn the robot in place a specified number of degrees 
+   * relative to the direction in which it was facing when the command is first called 
    * 
-   * @param driveArg      Drive subsystem from RobotContainer
-   * @param imuArg        IMU subsystem from RobotContainer
-   * @param targetDegrees the number of degrees you want the robot to turn
-   *                      relative to its orientation on command start (+ is right
-   *                      and - is left)
-   * @param speedLimit    the precent of max speed you wish the robot to be caped
-   *                      at (0.0 to 1.0) (DO NOT make argument negative) (NOTE:
-   *                      3.0 or below tends to be quite slow)
+   * @param driveArg Drive subsystem from RobotContainer
+   * @param imuArg IMU subsystem from RobotContainer
+   * @param targetDegrees the number of degrees you want the robot to turn relative to its orientation on command start (+ is right and - is left)
+   * @param speedLimit the precent of max speed you wish the robot to be caped at (0.0 to 1.0) (DO NOT make argument negative) (NOTE: 3.0 or below tends to be quite slow)
    */
-  public AutoPivot(AutoController autoArg, DiffDrive drivetrainArg, BreakerPigeon2 imuArg, double targetDegrees,
-      double speedLimit) {
+  public AutoPivot(AutoController autoArg, BreakerDiffDrive drivetrainArg, BreakerPigeon2 imuArg, double targetDegrees, double speedLimit) {
     auto = autoArg;
     drivetrain = drivetrainArg;
     imu = imuArg;
@@ -50,23 +41,21 @@ public class AutoPivot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double curAngle = imu.getYaw();
-    if (Math.abs(curAngle - lastAngle) > 90)
-      curAngle *= -1;
-    lastAngle = curAngle;
-    double turnPercent = auto.calculatePivotPID(curAngle, target);
-    turnPercent = MathUtil.clamp(turnPercent, -speedClamp, speedClamp); // Restricts motor speed
-    turnPercent += (turnPercent > 0 ? auto.getPivotFeedForward() : -auto.getPivotFeedForward());
-    System.out.println(
-        "CurrAng: " + curAngle + " TgtAng: " + target + " AngErr: " + auto.getPivotError() + " Turn %: " + turnPercent);
-    drivetrain.arcadeDrive(0, turnPercent); // Turns in place
-
+      double curAngle = imu.getYaw();
+      if (Math.abs(curAngle - lastAngle)>90)
+        curAngle *= -1;
+      lastAngle = curAngle;
+      double turnPercent = auto.calculatePivotPID(curAngle, target);
+      turnPercent = MathUtil.clamp(turnPercent, -speedClamp, speedClamp); // Restricts motor speed
+      turnPercent += (turnPercent > 0 ? auto.getPivotFeedForward() : -auto.getPivotFeedForward());
+      System.out.println("CurrAng: " + curAngle + " TgtAng: " + target + " AngErr: " + auto.getPivotError() + " Turn %: " + turnPercent);
+      drivetrain.arcadeDrive(0, turnPercent); // Turns in place
+      
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

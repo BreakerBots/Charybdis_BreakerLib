@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.auto.action.diffactionauto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.DiffDrive;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 
 /** Robot moves forward/back to target distance */
@@ -18,28 +18,18 @@ public class AutoMoveStraight extends CommandBase {
   private double speedClamp;
   private double time;
   private AutoController auto;
-  private DiffDrive driveTrain;
+  private BreakerDiffDrive driveTrain;
   private double ticksPerInch;
-
-  /**
-   * Autonomous command used to move the robot forward or backward a specified
-   * number of inches
+  /** Autonomous command used to move the robot forward or backward a specified number of inches
    * 
-   * @param driveArg       Drive subsystem from RobotContainer
-   * @param imuArg         IMU device from RobotContainer
-   * @param distanceInches the distance in inches you want the robot to travel (+
-   *                       is forward and - is reverse) (relative to intake as
-   *                       front)
-   * @param speedLimit     the precent of max speed you wish the robot to be caped
-   *                       at (0.0 to 1.0) (DO NOT make argument negative)
-   *                       (WARNING: 7.0 or above is EXTREAMLY FAST)
-   * @param secArg         the time limit (in seconds) on this particular instance
-   *                       of this command befor it times out and cancles (safty
-   *                       feature to prevent accadents)
+   * @param driveArg Drive subsystem from RobotContainer
+   * @param imuArg IMU device from RobotContainer
+   * @param distanceInches the distance in inches you want the robot to travel (+ is forward and - is reverse) (relative to intake as front)
+   * @param speedLimit the precent of max speed you wish the robot to be caped at (0.0 to 1.0) (DO NOT make argument negative) (WARNING: 7.0 or above is EXTREAMLY FAST)
+   * @param secArg the time limit (in seconds) on this particular instance of this command befor it times out and cancles (safty feature to prevent accadents)
    */
-  public AutoMoveStraight(AutoController autoArg, DiffDrive driveTrainArg, BreakerPigeon2 imuArg, double distanceInches,
-      double speedLimit, double secArg, double ticksPerInchArg) {
-    time = secArg * 50;
+  public AutoMoveStraight(AutoController autoArg, BreakerDiffDrive driveTrainArg, BreakerPigeon2 imuArg, double distanceInches, double speedLimit, double secArg, double ticksPerInchArg) {
+    time = secArg * 50; 
     auto = autoArg;
     imu = imuArg;
     driveTrain = driveTrainArg;
@@ -54,13 +44,13 @@ public class AutoMoveStraight extends CommandBase {
   public void initialize() {
     driveTrain.resetDriveEncoders();
     imu.reset();
-
+  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    cyclecount++;
+    cyclecount ++;
     double curDist = BreakerMath.ticksToInches(driveTrain.getLeftDriveTicks(), ticksPerInch);
     System.out.println("Ticks: " + driveTrain.getLeftDriveTicks());
     double motorSpeed = auto.calculateMoveStraightPID(curDist, targetDistance);
