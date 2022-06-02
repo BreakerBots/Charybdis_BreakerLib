@@ -35,7 +35,7 @@ import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerDiffDrive implements BreakerGenericDrivetrain, BreakerGenericDevice, BreakerGenericOdometer {
+public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   private WPI_TalonFX leftLead;
   private WPI_TalonFX[] leftMotors;
   private MotorControllerGroup leftDrive;

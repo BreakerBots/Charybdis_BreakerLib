@@ -6,10 +6,11 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 
 /** Contianer class for methods common to all drivetrain types */
-public interface BreakerGenericDrivetrain {
+public interface BreakerGenericDrivetrain extends BreakerGenericOdometer, BreakerGenericDevice {
     
     /** Updates the odometer position. */
     public abstract void updateOdometry();
