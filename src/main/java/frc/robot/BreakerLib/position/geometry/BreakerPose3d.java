@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.position.geometry;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /**
  * Represents an object's 3-dimensional position and 3 axis angular orientation
@@ -14,7 +14,7 @@ import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
  * <p>
  * Combines {@link BreakerTranslation3d} and {@link BreakerRotation3d} into one pose.
  */
-public class BreakerPose3d implements BreakerInterpolateable<BreakerPose3d>{
+public class BreakerPose3d implements BreakerInterpolable<BreakerPose3d>{
     private BreakerTranslation3d translation;
     private BreakerRotation3d rotation;
 

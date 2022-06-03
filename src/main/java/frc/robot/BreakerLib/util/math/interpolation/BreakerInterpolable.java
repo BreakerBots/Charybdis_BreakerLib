@@ -5,7 +5,7 @@
 package frc.robot.BreakerLib.util.math.interpolation;
 
 /** Add your docs here. */
-public interface BreakerInterpolateable<V> {
+public interface BreakerInterpolable<V> {
 
     /**
      * Linearly interpolates between 2 points based on a known X value

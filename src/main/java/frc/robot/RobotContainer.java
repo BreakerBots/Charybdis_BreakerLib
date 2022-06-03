@@ -28,18 +28,17 @@ public class RobotContainer {
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID, Constants.IMU_INVERT);
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
-  private final Hopper hopperSys = new Hopper(intakeSys);
-  private final SelfTest testSys = new SelfTest(5);
-
   private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
+  private final Hopper hopperSys = new Hopper(intakeSys);
+  private final SelfTest testSys = new SelfTest(5, orchestraSys);
 
   private BreakerAutoManager autoManager;
 
   public RobotContainer() {
     SelfTest.addDevices(imuSys, drivetrainSys.getBaseDrivetrain());
     BreakerLog.startLog(false, orchestraSys);
-    orchestraSys.setOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
-    orchestraSys.setOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
+    orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
+    orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
 
     autoManager = new BreakerAutoManager(

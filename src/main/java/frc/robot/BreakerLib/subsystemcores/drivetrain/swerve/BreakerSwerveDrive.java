@@ -26,7 +26,7 @@ import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
-public class BreakerSwerveDrive implements BreakerGenericDrivetrain, BreakerGenericDevice, BreakerGenericOdometer {
+public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
   private BreakerSwerveDriveConfig config;
   /** [0] = frontLeft, [1] = frontRight, [2] = backLeft, [3] = backRight */
   private SwerveModuleState[] targetModuleStates;

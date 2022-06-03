@@ -6,10 +6,10 @@ package frc.robot.BreakerLib.position.geometry;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /** Represents an object's angular orentation in 3-dimensional space using Euler Angles (yaw, pitch, and roll) */
-public class BreakerRotation3d implements BreakerInterpolateable<BreakerRotation3d> {
+public class BreakerRotation3d implements BreakerInterpolable<BreakerRotation3d> {
 
     private Rotation2d pitch;
     private Rotation2d yaw;

@@ -8,10 +8,10 @@ import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /** Add your docs here. */
-public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>> extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolateingMap<K, V> {
+public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolable<V>> extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolateingMap<K, V> {
     private TreeMap<K, V> indexesAndValues;
 
     public BreakerInterpolateingTreeMap(TreeMap<K, V> indexesAndValues) {

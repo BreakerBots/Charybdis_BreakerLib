@@ -12,10 +12,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /** A TreeMap of Key Value pairs that uses Legrange Polynomial interpolation */
-public class BreakerLegrangeInterpolateingTreeMap<K, V extends BreakerInterpolateable<V>>
+public class BreakerLegrangeInterpolateingTreeMap<K, V extends BreakerInterpolable<V>>
         extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolateingMap<K, V> {
     private TreeMap<K, V> indexesAndValues;
 

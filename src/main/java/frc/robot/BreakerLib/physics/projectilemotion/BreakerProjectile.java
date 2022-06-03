@@ -47,7 +47,7 @@ public class BreakerProjectile {
         return termanalVelMetersPerSec;
     }
 
-    public double getTermanalVelSq() {
+    public double getTerminalVelSq() {
         return termanalVelSq;
     }
 }

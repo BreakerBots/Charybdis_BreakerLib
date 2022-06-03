@@ -10,13 +10,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Tracer;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /**
  * represents a point with 2 axial vectors of ajustable magnatudes (one paralell
  * with the point's X, and Y axis)
  */
-public class BreakerVector2 implements BreakerInterpolateable<BreakerVector2> {
+public class BreakerVector2 implements BreakerInterpolable<BreakerVector2> {
     private Rotation2d forceRotation;
     private double force;
     private double forceX;

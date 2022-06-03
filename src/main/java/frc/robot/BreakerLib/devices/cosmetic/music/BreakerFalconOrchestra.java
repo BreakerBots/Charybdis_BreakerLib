@@ -38,8 +38,7 @@ public class BreakerFalconOrchestra extends SubsystemBase {
         orchestra = new Orchestra(instruments);
     }
 
-    public void setOrchestraMotors(WPI_TalonFX... motors) {
-        orchestra.clearInstruments();
+    public void addOrchestraMotors(WPI_TalonFX... motors) {
         for (WPI_TalonFX motor : motors) {
             orchestra.addInstrument(motor);
         }
