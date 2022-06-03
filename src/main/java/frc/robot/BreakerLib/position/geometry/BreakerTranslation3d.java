@@ -6,10 +6,10 @@ package frc.robot.BreakerLib.position.geometry;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
+import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /** Represents an objects position in the X, Y, and Z axies */
-public class BreakerTranslation3d implements BreakerInterpolateable<BreakerTranslation3d> {
+public class BreakerTranslation3d implements BreakerInterpolable<BreakerTranslation3d> {
 
     // Position values in meters
     private double metersX;
