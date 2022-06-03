@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 
+/** Interface for all BreakerLib classes capable of generteing odometry data */
 public interface BreakerGenericOdometer {
   public abstract void setOdometryPosition(Pose2d newPose);
 
