@@ -21,6 +21,4 @@ public interface BreakerGenericOdometer {
   public abstract ChassisSpeeds getRobotRelativeChassisSpeeds();
     
   public abstract ChassisSpeeds getFieldRelativeChassisSpeeds();
-
-  public abstract ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer);
 }

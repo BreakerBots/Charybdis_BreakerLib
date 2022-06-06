@@ -85,7 +85,7 @@ public class BreakerProjectileTrajectory {
         return new BreakerVector3(x, y, z);
     }
 
-    /** Creates a corrected 2D pose for the target based on chassis movement. */
+    /** Creates a corrected 2D pose for the target (I.E. where you should aim) based on chassis movement. */
     public Translation2d getMovingLaunchCorrectionAsNewTargetLocation(ChassisSpeeds fieldRelativeSpeeds,
             Translation2d targetLocation) {
         BreakerProjectileTrajectory trajectory = new BreakerProjectileTrajectory(projectile,
@@ -97,7 +97,7 @@ public class BreakerProjectileTrajectory {
         return targetLocation.plus(correctedLocation);
     }
 
-    /** Creates a corrected 3D vector for the projectile based on movement of chassis. */
+    /** Creates a corrected 3D vector for the projectile (I.E. corrected launch forces) based on movement of chassis. */
     public BreakerVector3 getMovingLaunchCorrectionAsNewLaunchForces(ChassisSpeeds fieldRelativeSpeeds,
             Translation2d targetLocation) {
         BreakerProjectileTrajectory trajectory = new BreakerProjectileTrajectory(projectile,
