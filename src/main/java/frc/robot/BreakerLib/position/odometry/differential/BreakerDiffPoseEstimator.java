@@ -12,16 +12,23 @@ import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 
 /** Add your docs here. */
 public class BreakerDiffPoseEstimator implements BreakerGenericOdometer {
     private BreakerPigeon2 pigeon2;
     private DifferentialDrivePoseEstimator poseEstimator;
     private Pose2d currentPose;
+    private double lastUpdateTimestamp = Timer.getFPGATimestamp();
+    private Pose2d prevPose = getOdometryPoseMeters();
+    private ChassisSpeeds fieldRelativeChassisSpeeds = new ChassisSpeeds();
+    private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
+    private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
     public BreakerDiffPoseEstimator(BreakerPigeon2 pigeon2, Pose2d initialPose, double[] stateModelStanderdDeveation, double[] encoderAndGyroStandardDeveation, double[] visionStanderdDeveation) {
         currentPose = initialPose;
         this.pigeon2 = pigeon2;
@@ -32,7 +39,10 @@ public class BreakerDiffPoseEstimator implements BreakerGenericOdometer {
     }
 
     public Pose2d update(BreakerDiffDriveState currentDriveState) {
+        prevPose = getOdometryPoseMeters();
         currentPose = poseEstimator.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), currentDriveState.getWheelSpeeds(), currentDriveState.getLeftDriveDistanceMeters(), currentDriveState.getRightDriveDistanceMeters());
+        updateChassisSpeeds();
+        lastUpdateTimestamp = Timer.getFPGATimestamp();
         return currentPose;
     }
 
@@ -75,25 +85,30 @@ public class BreakerDiffPoseEstimator implements BreakerGenericOdometer {
 
     @Override
     public BreakerMovementState2d getMovementState() {
-        // TODO Auto-generated method stub
-        return null;
+        return curMovementState;
     }
 
     @Override
     public ChassisSpeeds getRobotRelativeChassisSpeeds() {
-        // TODO Auto-generated method stub
-        return null;
+        return ChassisSpeeds.fromFieldRelativeSpeeds(
+            fieldRelativeChassisSpeeds.vxMetersPerSecond, 
+            fieldRelativeChassisSpeeds.vyMetersPerSecond, 
+            fieldRelativeChassisSpeeds.omegaRadiansPerSecond, 
+            getOdometryPoseMeters().getRotation());
     }
 
     @Override
     public ChassisSpeeds getFieldRelativeChassisSpeeds() {
-        // TODO Auto-generated method stub
-        return null;
+        return fieldRelativeChassisSpeeds;
     }
 
-    @Override
-    public ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer) {
-        // TODO Auto-generated method stub
-        return null;
+    private void updateChassisSpeeds() {
+        double timeDiff = Timer.getFPGATimestamp() - lastUpdateTimestamp;
+        double xSpeed = (getOdometryPoseMeters().getX() - prevPose.getX()) * timeDiff;
+        double ySpeed = (getOdometryPoseMeters().getY() - prevPose.getY()) * timeDiff;
+        double thetaSpeed = (getOdometryPoseMeters().getRotation().getRadians() - prevPose.getRotation().getRadians()) * timeDiff;
+        fieldRelativeChassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
+        curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), fieldRelativeChassisSpeeds, timeDiff, prevMovementState);
     }
+
 }
