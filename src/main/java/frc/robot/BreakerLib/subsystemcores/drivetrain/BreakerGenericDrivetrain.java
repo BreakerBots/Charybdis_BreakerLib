@@ -21,4 +21,6 @@ public interface BreakerGenericDrivetrain extends BreakerGenericOdometer, Breake
 
     public abstract boolean isInSlowMode();
 
+    public abstract ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer);
+
 }
