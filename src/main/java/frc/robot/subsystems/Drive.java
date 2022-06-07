@@ -49,15 +49,20 @@ public class Drive extends SubsystemBase {
 
     leftMotors = BreakerCTREUtil.createMotorArray(left1, left2, left3);
     rightMotors = BreakerCTREUtil.createMotorArray(right1, right2, right3);
-    
-    leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+
+    leftSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI,
+        Constants.DRIVE_RS_PID_KD);
     leftSideRamsetePID.setTolerance(0.02, 0.05);
-    rightSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI, Constants.DRIVE_RS_PID_KD);
+    rightSideRamsetePID = new PIDController(Constants.DRIVE_RS_PID_KP, Constants.DRIVE_RS_PID_KI,
+        Constants.DRIVE_RS_PID_KD);
     rightSideRamsetePID.setTolerance(0.02, 0.05);
 
-    driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO, Constants.DRIVE_COLSON_DIAMETER, 
-      Constants.DRIVE_FF_KS, Constants.DRIVE_FF_KV, Constants.DRIVE_FF_KA, Constants.DRIVE_TRACK_WIDTH, leftSideRamsetePID, rightSideRamsetePID);
-    driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER, Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
+    driveConfig = new BreakerDiffDriveConfig(Constants.TALON_FX_TICKS, Constants.DRIVE_GEAR_RATIO,
+        Constants.DRIVE_COLSON_DIAMETER,
+        Constants.DRIVE_FF_KS, Constants.DRIVE_FF_KV, Constants.DRIVE_FF_KA, Constants.DRIVE_TRACK_WIDTH,
+        leftSideRamsetePID, rightSideRamsetePID);
+    driveConfig.setSlowModeMultipliers(Constants.DRIVE_SLOW_MODE_FWD_MULTIPLIER,
+        Constants.DRIVE_SLOW_MODE_TURN_MULTIPLIER);
 
     drivetrain = new BreakerDiffDrive(leftMotors, rightMotors, false, true, pigeon2, driveConfig);
 
@@ -71,6 +76,7 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     drivetrain.updateOdometry();
-    System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks() + " Ticks L: " + drivetrain.getLeftDriveTicks());
+    System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks()
+        + " Ticks L: " + drivetrain.getLeftDriveTicks());
   }
 }

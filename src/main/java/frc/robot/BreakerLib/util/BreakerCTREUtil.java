@@ -26,7 +26,7 @@ public class BreakerCTREUtil {
   /**
    * 
    * @param isEnabled True for brake mode, false for coast mode.
-   * @param motors Talon FX motors.
+   * @param motors    Talon FX motors.
    */
   public static void setBrakeMode(boolean isEnabled, WPI_TalonFX... motors) {
     for (WPI_TalonFX motor : motors) {
@@ -34,7 +34,7 @@ public class BreakerCTREUtil {
     }
   }
 
-  public static WPI_TalonFX[] createMotorArray(WPI_TalonFX... controllers) {
+  public static <T extends BaseMotorController> T[] createMotorArray(T... controllers) {
     return controllers;
   }
 
@@ -110,14 +110,20 @@ public class BreakerCTREUtil {
     map.put(9, " hardware_failure ");
     return getDeviceFaultsAsString(faults.toBitfield(), map);
   }
-  
-  public static String getDeviceFaultsAsString(long faultBitField, HashMap<Integer, String> fieldPlacesAndFaultMessages) {
+
+  public static String getDeviceFaultsAsString(long faultBitField,
+      HashMap<Integer, String> fieldPlacesAndFaultMessages) {
     StringBuilder work = new StringBuilder();
     if (faultBitField != 0) {
       long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesAndFaultMessages.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
-            work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for
+                                                                                                         // 1s in
+                                                                                                         // bitfield
+                                                                                                         // that
+                                                                                                         // signifies
+                                                                                                         // error
+          work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
         }
         fieldMask <<= 1; // Scrolls to next bit.
       }
