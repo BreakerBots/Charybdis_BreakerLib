@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** LED controller */
@@ -171,5 +174,42 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
     @Override
     public void setDeviceName(String newName) {
         diviceName = newName;
+    }
+
+    @Override
+    public boolean isUnderAutomaticControl() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void returnToAutomaticControl() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
+            double remainingRobotBatteryPrecent) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setPowerMode(DevicePowerMode currentPowerMode) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void overrideAutomaticPowerManagement() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public DevicePowerMode getPowerMode() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

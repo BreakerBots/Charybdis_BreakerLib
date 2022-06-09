@@ -24,6 +24,9 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.Break
 import frc.robot.BreakerLib.util.BreakerRoboRIO;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
@@ -267,6 +270,43 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
   /** returns the angle all field relative movement is offset by (default is 0) */
   public Rotation2d getFieldRelativeMovementAngleOffset() {
       return fieldRelativeMovementAngleOffset;
+  }
+
+  @Override
+  public boolean isUnderAutomaticControl() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public void returnToAutomaticControl() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
+      double remainingRobotBatteryPrecent) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setPowerMode(DevicePowerMode currentPowerMode) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void overrideAutomaticPowerManagement() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public DevicePowerMode getPowerMode() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

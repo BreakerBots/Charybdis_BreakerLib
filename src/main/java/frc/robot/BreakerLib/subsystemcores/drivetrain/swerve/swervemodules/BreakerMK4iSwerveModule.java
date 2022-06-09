@@ -25,6 +25,9 @@ import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Add your docs here. */
@@ -248,5 +251,42 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
     @Override
     public void setDeviceName(String newName) {
         deviceName = newName;
+    }
+
+    @Override
+    public boolean isUnderAutomaticControl() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void returnToAutomaticControl() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
+            double remainingRobotBatteryPrecent) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setPowerMode(DevicePowerMode currentPowerMode) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void overrideAutomaticPowerManagement() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public DevicePowerMode getPowerMode() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

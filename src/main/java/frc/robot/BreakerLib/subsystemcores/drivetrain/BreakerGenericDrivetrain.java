@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
+import frc.robot.BreakerLib.util.selftest.BreakerSelfTestable;
 
 /** Contianer class for methods common to all drivetrain types */
 public interface BreakerGenericDrivetrain extends BreakerGenericOdometer, BreakerGenericDevice {

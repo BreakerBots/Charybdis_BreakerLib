@@ -19,9 +19,9 @@ import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 
 /** a higher level object for use in user susystems that makes BreakerLib's self test clases easier to implament for subsystem-scale classes */
-public class SystemDiagnostics implements BreakerGenericDevice {
+public class SystemDiagnostics implements BreakerSelfTestable {
     private List<BaseMotorController> motorControllers;
-    private List<BreakerGenericDevice> devices;
+    private List<BreakerSelfTestable> devices;
     private Supplier<DeviceHealth> deviceHealthSupplier;
     private Supplier<String> faultStringSupplier;
     private boolean usesSuppliers = false;
@@ -42,12 +42,12 @@ public class SystemDiagnostics implements BreakerGenericDevice {
         usesSuppliers = true;
     }
 
-    public void addBreakerDevice(BreakerGenericDevice deviceToAdd) {
+    public void addBreakerDevice(BreakerSelfTestable deviceToAdd) {
         devices.add(deviceToAdd);
     }
 
-    public void addBreakerDevices(BreakerGenericDevice... devicesToAdd) {
-        for (BreakerGenericDevice div: devicesToAdd) {
+    public void addBreakerDevices(BreakerSelfTestable... devicesToAdd) {
+        for (BreakerSelfTestable div: devicesToAdd) {
             devices.add(div);
         }
     }
@@ -66,7 +66,7 @@ public class SystemDiagnostics implements BreakerGenericDevice {
     public void runSelfTest() {
         faults = null;
         if (!devices.isEmpty()) {
-            for (BreakerGenericDevice div: devices) {
+            for (BreakerSelfTestable div: devices) {
                 div.runSelfTest();
                 if (div.hasFault()) {
                     faults += " / " + div.getDeviceName() + ": " + div.getFaults();

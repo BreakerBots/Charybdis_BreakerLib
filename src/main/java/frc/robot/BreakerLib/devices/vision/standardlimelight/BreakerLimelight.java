@@ -6,6 +6,9 @@ package frc.robot.BreakerLib.devices.vision.standardlimelight;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 public class BreakerLimelight implements BreakerGenericDevice {
@@ -149,5 +152,42 @@ public class BreakerLimelight implements BreakerGenericDevice {
   @Override
   /** Does nouthing, exsits to satisfy BreakerGenaricDevice class */
   public void setDeviceName(String newName) {
+  }
+
+  @Override
+  public boolean isUnderAutomaticControl() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public void returnToAutomaticControl() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
+      double remainingRobotBatteryPrecent) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setPowerMode(DevicePowerMode currentPowerMode) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void overrideAutomaticPowerManagement() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public DevicePowerMode getPowerMode() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

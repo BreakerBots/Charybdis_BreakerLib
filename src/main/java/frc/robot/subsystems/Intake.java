@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
 import frc.robot.BreakerLib.util.BreakerLog;
-import frc.robot.BreakerLib.util.selftest.BreakerSystemDiagnostics;
+import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
+
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 public class Intake extends SubsystemBase {
@@ -25,7 +26,7 @@ public class Intake extends SubsystemBase {
   private WPI_TalonSRX rightIndexerMotor;
   private WPI_TalonSRX primaryIntakeMotor;
   private Boolean hopperFeedEnabled = false;
-  private BreakerSystemDiagnostics diagnostics;
+  private SystemDiagnostics diagnostics;
 
   public Intake() {
     intakeSol = new BreakerDoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKESOL_FWD,
@@ -34,7 +35,7 @@ public class Intake extends SubsystemBase {
     rightIndexerMotor = new WPI_TalonSRX(Constants.RIGHT_INDEXER_ID);
     leftIndexerMotor.setInverted(true);
     primaryIntakeMotor = new WPI_TalonSRX(Constants.PRIM_INTAKE_ID);
-    diagnostics = new BreakerSystemDiagnostics(" Intake ");
+    diagnostics = new SystemDiagnostics(" Intake ");
     diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor, primaryIntakeMotor);
   }
 

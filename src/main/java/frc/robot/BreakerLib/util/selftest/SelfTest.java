@@ -19,7 +19,7 @@ public class SelfTest extends SubsystemBase {
   /** Creates a new SelfTest. */
   private int cycleCount;
   private static String lastSystemCheck;
-  private static List<BreakerGenericDevice> devices = new ArrayList<BreakerGenericDevice>();
+  private static List<BreakerSelfTestable> devices = new ArrayList<BreakerSelfTestable>();
   private static int cyclesbetweenPerSelfCecks = 250;
   private static boolean lastCheckPassed = true;
   private static BreakerFalconOrchestra orchestra;
@@ -41,12 +41,12 @@ public class SelfTest extends SubsystemBase {
     }
   }
 
-  public static void addDevice(BreakerGenericDevice device) {
+  public static void addDevice(BreakerSelfTestable device) {
     devices.add(device);
   }
 
-  public static void addDevices(BreakerGenericDevice... devicesToAdd) {
-    for (BreakerGenericDevice div: devicesToAdd) {
+  public static void addDevices(BreakerSelfTestable... devicesToAdd) {
+    for (BreakerSelfTestable div: devicesToAdd) {
       devices.add(div);
     }
   }
@@ -61,8 +61,8 @@ public class SelfTest extends SubsystemBase {
 
   public static void runSelfCheck() {
     StringBuilder work = new StringBuilder("\n RUNNING SELF CHECK: \n");
-    List<BreakerGenericDevice> faultDevices = new ArrayList<BreakerGenericDevice>();
-    for (BreakerGenericDevice device: devices) {
+    List<BreakerSelfTestable> faultDevices = new ArrayList<BreakerSelfTestable>();
+    for (BreakerSelfTestable device: devices) {
       device.runSelfTest();
       if (device.hasFault()) {
         faultDevices.add(device);
@@ -71,7 +71,7 @@ public class SelfTest extends SubsystemBase {
     if (faultDevices.size() > 0) {
       work.append(" SELF CHECK FAILED - FAULTS FOUND: \n");
       lastCheckPassed = false;
-      for (BreakerGenericDevice faultDiv: faultDevices) {
+      for (BreakerSelfTestable faultDiv: faultDevices) {
         work.append(" | " + faultDiv.getDeviceName() + "-" + faultDiv.getFaults() + " | ");
       }
       runAlarm();
