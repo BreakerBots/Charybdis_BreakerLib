@@ -45,7 +45,11 @@ public class BreakerPowerManager {
         return fullBatteryCapacityJoules;
     }
 
-    // returns the battersys remaing energey as a perentage 0 to 1
+    public static BreakerPowerChannel getChannel(int channelNum) {
+        return channelList.get(channelNum);
+    }
+
+    // returns the battery's remaing energy as a fractional perentage 0 to 1
     public static double getRemainingBatteryPercentage() {
         double invPercent = distributor.getTotalEnergy() / fullBatteryCapacityJoules;
         return 1d - invPercent;
