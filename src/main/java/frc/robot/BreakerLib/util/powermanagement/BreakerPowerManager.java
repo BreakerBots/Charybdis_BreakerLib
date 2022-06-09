@@ -25,6 +25,7 @@ public class BreakerPowerManager extends SubsystemBase {
     private static final double fullBatteryCapacityJoules = 2592000;
     private static List<BreakerPowerChannel> channelList = BreakerPowerUtil.getNewPowerChannelList(distributor.getType());
     private static TreeMap<BreakerPowerManageable, BreakerPowerManagementConfig> devicesAndConfigs = new TreeMap<>();
+    private static boolean activePowerManagementIsEnabled;
     private BreakerPowerManager manager = new BreakerPowerManager();
 
     private BreakerPowerManager() {}
@@ -32,6 +33,14 @@ public class BreakerPowerManager extends SubsystemBase {
     public static void setDistribuionModule(int moduleID, ModuleType moduleType ) {
         distributor = new PowerDistribution(moduleID, moduleType);
         channelList = BreakerPowerUtil.getNewPowerChannelList(moduleType);
+    }
+
+    public static void toggleActivePowerManagement(boolean isEnabled) {
+        activePowerManagementIsEnabled = isEnabled;
+    }
+
+    public static boolean getActitvePowerManagementIsEnabled() {
+        return activePowerManagementIsEnabled;
     }
 
     public static void register(BreakerPowerManageable powerManageableDevice, BreakerPowerManagementConfig config) {
@@ -71,7 +80,7 @@ public class BreakerPowerManager extends SubsystemBase {
     private void managePower() {
         for (Entry<BreakerPowerManageable, BreakerPowerManagementConfig> entry: devicesAndConfigs.entrySet()) {
            DevicePowerMode powerMode = entry.getKey().calculatePowerMode(entry.getValue(), getRemainingBatteryPercentage());
-           entry.getKey().setPowerMode(entry.getKey().isUnderAutomaticControl() ? powerMode : entry.getKey().getPowerMode());
+           entry.getKey().setPowerMode(entry.getKey().isUnderAutomaticControl() || !activePowerManagementIsEnabled ? powerMode : (entry.getKey().isUnderAutomaticControl() ? DevicePowerMode.FULL_POWER_MODE : entry.getKey().getPowerMode()));
         }
     }
 
