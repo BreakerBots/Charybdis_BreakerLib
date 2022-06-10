@@ -4,6 +4,8 @@
 
 package frc.robot.BreakerLib.util.selftest;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -20,14 +22,14 @@ import frc.robot.BreakerLib.util.BreakerCTREUtil;
 
 /** a higher level object for use in user susystems that makes BreakerLib's self test clases easier to implament for subsystem-scale classes */
 public class SystemDiagnostics implements BreakerSelfTestable {
-    private List<BaseMotorController> motorControllers;
-    private List<BreakerSelfTestable> devices;
+    private List<BaseMotorController> motorControllers = new ArrayList<>();
+    private List<BreakerSelfTestable> devices = new ArrayList<>();
     private Supplier<DeviceHealth> deviceHealthSupplier;
     private Supplier<String> faultStringSupplier;
     private boolean usesSuppliers = false;
     private String faults;
     private String systemName;
-    private DeviceHealth health;
+    private DeviceHealth health = DeviceHealth.NOMINAL;
     public SystemDiagnostics(String systemName) {
         SelfTest.addDevice(this);
         this.systemName = systemName;
@@ -65,6 +67,7 @@ public class SystemDiagnostics implements BreakerSelfTestable {
     @Override
     public void runSelfTest() {
         faults = null;
+        health = DeviceHealth.NOMINAL;
         if (!devices.isEmpty()) {
             for (BreakerSelfTestable div: devices) {
                 div.runSelfTest();
