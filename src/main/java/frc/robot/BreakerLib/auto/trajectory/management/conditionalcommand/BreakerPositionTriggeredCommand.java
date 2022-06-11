@@ -20,7 +20,7 @@ public class BreakerPositionTriggeredCommand implements BreakerConditionalComman
         this.currentPoseSupplier = currentPoseSupplier;
         this.commandToRun = commandToRun;
         this.triggerPose = triggerPose;
-        triggerPoseTolerences = tolerences;
+        tolerences = triggerPoseTolerences;
     }
 
     @Override

@@ -260,12 +260,6 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
     }
 
     @Override
-    public void returnToAutomaticControl() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
             double remainingRobotBatteryPrecent) {
         // TODO Auto-generated method stub
@@ -279,14 +273,14 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
     }
 
     @Override
-    public void overrideAutomaticPowerManagement() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public DevicePowerMode getPowerMode() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void overrideAutomaticPowerManagement(boolean isEnabled) {
+        // TODO Auto-generated method stub
+        
     }
 }
