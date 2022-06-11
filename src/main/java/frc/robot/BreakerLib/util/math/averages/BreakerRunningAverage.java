@@ -7,10 +7,10 @@ package frc.robot.BreakerLib.util.math.averages;
 import java.util.LinkedList;
 
 /** Add your docs here. */
-public class BreakerMovingAverage implements BreakerGenericAverageingList<Double>{
+public class BreakerRunningAverage implements BreakerGenericAverageingList<Double>{
     private LinkedList<Double> list;
     private int movingAvrageWindow;
-    public BreakerMovingAverage(int movingAvrageWindow) {
+    public BreakerRunningAverage(int movingAvrageWindow) {
          list = new LinkedList<>();
          this.movingAvrageWindow = movingAvrageWindow;
     }

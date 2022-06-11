@@ -24,7 +24,7 @@ public class BreakerPowerChannel extends SubsystemBase {
     }
 
     public double getPercentageOfBatteryUsed() {
-        return getTotalEnergyUsed() / BreakerPowerManager.getFullbatterycapacityJoules();
+        return getTotalEnergyUsed() / BreakerPowerManager.getFullBatteryCapacityJoules();
     }
 
     public double getPercentageOfTotalEnergeyUsed() {

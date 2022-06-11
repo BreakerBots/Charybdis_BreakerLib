@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.util.math.averages.BreakerRunningAverage;
 
 /** Add your docs here. */
 public class BreakerPowerManager extends SubsystemBase {
@@ -23,9 +24,12 @@ public class BreakerPowerManager extends SubsystemBase {
     private static double batteryJoulesExpended;
     private static double batteryJoulesRemaining;
     private static final double fullBatteryCapacityJoules = 2592000;
+    private static final double fullBattetyNominalVoltage = 12.7;
     private static List<BreakerPowerChannel> channelList = BreakerPowerUtil.getNewPowerChannelList(distributor.getType());
     private static TreeMap<BreakerPowerManageable, BreakerPowerManagementConfig> devicesAndConfigs = new TreeMap<>();
     private static boolean activePowerManagementIsEnabled;
+    private static BreakerRunningAverage runningVoltAverage = new BreakerRunningAverage(250);
+    protected static BreakerRunningAverage runningPrecentageAverage = new BreakerRunningAverage(250);
     private BreakerPowerManager manager = new BreakerPowerManager();
 
     private BreakerPowerManager() {}
@@ -63,18 +67,33 @@ public class BreakerPowerManager extends SubsystemBase {
         distributor.resetTotalEnergy();
     }
 
-    public static double getFullbatterycapacityJoules() {
+    public static double getFullBatteryCapacityJoules() {
         return fullBatteryCapacityJoules;
+    }
+
+    public static double getFullBattetyNominalvoltage() {
+        return fullBattetyNominalVoltage;
     }
 
     public static BreakerPowerChannel getChannel(int channelNum) {
         return channelList.get(channelNum);
     }
 
-    // returns the battery's remaing energy as a fractional perentage 0 to 1
-    public static double getRemainingBatteryPercentage() {
+    private static double getRemainingBatteryPercentageJoulesEst() {
         double invPercent = distributor.getTotalEnergy() / fullBatteryCapacityJoules;
         return 1d - invPercent;
+    }
+
+    private static double getRemainingBatteryPercentageVoltageEst() {
+        runningVoltAverage.addValue(distributor.getVoltage());
+        return runningVoltAverage.getAverage() / fullBattetyNominalVoltage;
+    }
+
+    // returns the battery's remaing energy as a fractional perentage 0 to 1
+    public static double getRemainingBatteryPercentage() {
+        double cycleAvg = (getRemainingBatteryPercentageJoulesEst() + getRemainingBatteryPercentageVoltageEst()) / 2;
+        runningPrecentageAverage.addValue(cycleAvg);
+        return runningPrecentageAverage.getAverage();
     }
 
     private void managePower() {
