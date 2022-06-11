@@ -111,6 +111,7 @@ public class BreakerFalconOrchestra extends SubsystemBase {
                 orchestra.play();
                 nextPlaylistSong++;
             } catch (Exception e) { // Stops music playback if an exception occurs.
+                e.printStackTrace();
                 nextPlaylistSong = 0;
                 orchestra.stop();
             }

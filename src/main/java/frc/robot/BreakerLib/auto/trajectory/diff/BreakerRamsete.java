@@ -30,8 +30,6 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
-    private TrajectoryConfig config;
-    private DifferentialDriveVoltageConstraint voltageConstraints;
     private double currentTimeCycles = 0;
     private double totalTimeSeconds = 0;
     private boolean stopAtEnd;
@@ -46,26 +44,16 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
      * @param subsystemRequirements Self-explanatory.
      * @param ramseteB Proportional constant for ramsete.
      * @param ramseteZeta Damping constant for ramsete.
-     * @param maxVel In m/s
-     * @param maxAccel In m/s^2
-     * @param maxVoltage Max amount of volts that can be applied
      * @param stopAtEnd Whether the robot stops on completion.
      */
     public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
-            Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
-            double maxVoltage, boolean stopAtEnd) {
+            Subsystem subsystemRequirements, double ramseteB,
+            double ramseteZeta, boolean stopAtEnd) {
         this.drivetrain = drivetrain;
         trajectoryToFollow = trajectoryPath.getBaseTrajectory();
 
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
                 + trajectoryToFollow.getTotalTimeSeconds());
-
-        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
-                drivetrain.getKinematics(), maxVoltage);
-
-        config = new TrajectoryConfig(maxVel, maxAccel);
-        config.setKinematics(drivetrain.getKinematics());
-        config.addConstraint(voltageConstraints);
 
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
         ramsete = new RamseteCommand(trajectoryToFollow, drivetrain::getOdometryPoseMeters, ramseteController,
@@ -85,19 +73,12 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     }
 
     public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
-            Supplier<Pose2d> currentPoseSupplyer,
-            Subsystem subsystemRequirements, double ramseteB, double ramseteZeta, double maxVel, double maxAccel,
-            double maxVoltage, boolean stopAtEnd) {
+            Supplier<Pose2d> currentPoseSupplyer, Subsystem subsystemRequirements, 
+            double ramseteB, double ramseteZeta,  boolean stopAtEnd) {
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
                 + trajectoryToFollow.getTotalTimeSeconds());
         this.drivetrain = drivetrain;
         this.trajectoryToFollow = trajectoryPath.getBaseTrajectory();
-        voltageConstraints = new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(),
-                drivetrain.getKinematics(), maxVoltage);
-
-        config = new TrajectoryConfig(maxVel, maxAccel);
-        config.setKinematics(drivetrain.getKinematics());
-        config.addConstraint(voltageConstraints);
 
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
         ramsete = new RamseteCommand(trajectoryToFollow, currentPoseSupplyer, ramseteController,
