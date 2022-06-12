@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 
 /** Class containing file locations of BreakerLib's bundled music and sounds */
 public class BreakerSounds {
-    private static Path deployDir = Filesystem.getDeployDirectory().toPath();
+    private static final Path deployDir = Filesystem.getDeployDirectory().toPath();
     public static final String GeneralAlarmSound = deployDir.resolve("Breaker_General_Alarm.chrp").toString();
     public static final String startupSound = deployDir.resolve("Breaker_Startup.chrp").toString();
     public static final String enableSound = deployDir.resolve("Breaker_Enable.chrp").toString();
