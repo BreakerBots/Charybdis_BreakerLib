@@ -22,10 +22,10 @@ public class BreakerMath {
      * 
      * @param deg Angle value in degrees.
      * 
-     * @return Angle value within -360 to +360 degrees.
+     * @return Angle value within -180 to +180 degrees.
      */
     public static final double angleModulus(double deg) {
-        return angleModulus(deg, 360);
+        return angleModulus(deg, 180);
     }
 
     /**

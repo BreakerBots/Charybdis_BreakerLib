@@ -6,7 +6,8 @@ package frc.robot.BreakerLib.util.math.averages;
 
 /** Add your docs here. */
 public interface BreakerGenericAverageingList<T> {
-    public abstract void addValue(T valueToAdd);
+    /** adds a new value to the list and returns the new average */
+    public abstract T addValue(T valueToAdd);
     public abstract T getAverage();
     public abstract T getAverageBetweenGivenIndexes(int startIndex, int stopIndex);
     public abstract T[] getAsArray();

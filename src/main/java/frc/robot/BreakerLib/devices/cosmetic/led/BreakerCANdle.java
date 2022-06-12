@@ -18,6 +18,7 @@ import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerState;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -183,13 +184,6 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
     }
 
     @Override
-    public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
-            double remainingRobotBatteryPrecent) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void setPowerMode(DevicePowerMode currentPowerMode) {
         // TODO Auto-generated method stub
         
@@ -205,5 +199,12 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
     public void overrideAutomaticPowerManagement(boolean isEnabled) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
+            BreakerPowerState currentPowerState) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

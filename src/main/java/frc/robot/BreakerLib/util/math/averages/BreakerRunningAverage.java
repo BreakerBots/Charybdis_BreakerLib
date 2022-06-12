@@ -16,11 +16,12 @@ public class BreakerRunningAverage implements BreakerGenericAverageingList<Doubl
     }
 
     @Override
-    public void addValue(Double valueToAdd) {
+    public Double addValue(Double valueToAdd) {
         list.add(valueToAdd);
         if (list.size() > movingAvrageWindow) {
             list.remove();
         }
+        return getAverage();
     }
 
     @Override

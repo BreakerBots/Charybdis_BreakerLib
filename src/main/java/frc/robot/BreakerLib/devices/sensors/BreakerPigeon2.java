@@ -12,6 +12,7 @@ import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerState;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -29,17 +30,17 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
     imuInvert = isInverted ? -1 : 1;
   }
 
-  /** Returns pitch angle within +- 360 degrees */
+  /** Returns pitch angle within +- 180 degrees */
   public double getPitch() {
     return BreakerMath.angleModulus(pigeon.getPitch());
   }
 
-  /** Returns yaw angle within +- 360 degrees */
+  /** Returns yaw angle within +- 180 degrees */
   public double getYaw() {
     return BreakerMath.angleModulus(pigeon.getYaw()) * imuInvert;
   }
 
-  /** Returns roll angle within +- 360 degrees */
+  /** Returns roll angle within +- 180 degrees */
   public double getRoll() {
     return BreakerMath.angleModulus(pigeon.getRoll());
   }
@@ -188,13 +189,6 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
   }
 
   @Override
-  public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
-      double remainingRobotBatteryPrecent) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   public void setPowerMode(DevicePowerMode currentPowerMode) {
     // TODO Auto-generated method stub
     
@@ -210,5 +204,12 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
   public void overrideAutomaticPowerManagement(boolean isEnabled) {
     // TODO Auto-generated method stub
     
+  }
+
+  @Override
+  public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
+      BreakerPowerState currentPowerState) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

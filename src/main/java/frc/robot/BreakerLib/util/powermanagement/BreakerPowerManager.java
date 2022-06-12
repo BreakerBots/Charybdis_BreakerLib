@@ -92,13 +92,12 @@ public class BreakerPowerManager extends SubsystemBase {
     // returns the battery's remaing energy as a fractional perentage 0 to 1
     public static double getRemainingBatteryPercentage() {
         double cycleAvg = (getRemainingBatteryPercentageJoulesEst() + getRemainingBatteryPercentageVoltageEst()) / 2;
-        runningPrecentageAverage.addValue(cycleAvg);
-        return runningPrecentageAverage.getAverage();
+        return runningPrecentageAverage.addValue(cycleAvg);
     }
 
     private void managePower() {
         for (Entry<BreakerPowerManageable, BreakerPowerManagementConfig> entry: devicesAndConfigs.entrySet()) {
-           DevicePowerMode powerMode = entry.getKey().calculatePowerMode(entry.getValue(), getRemainingBatteryPercentage());
+           DevicePowerMode powerMode = entry.getKey().calculatePowerMode(entry.getValue(), new BreakerPowerState(getRemainingBatteryPercentage(), runningVoltAverage.getAverage()));
            entry.getKey().setPowerMode(entry.getKey().isUnderAutomaticControl() || !activePowerManagementIsEnabled ? powerMode : (entry.getKey().isUnderAutomaticControl() ? DevicePowerMode.FULL_POWER_MODE : entry.getKey().getPowerMode()));
         }
     }
