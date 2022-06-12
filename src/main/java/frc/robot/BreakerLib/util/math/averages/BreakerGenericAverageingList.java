@@ -11,4 +11,7 @@ public interface BreakerGenericAverageingList<T> {
     public abstract T getAverage();
     public abstract T getAverageBetweenGivenIndexes(int startIndex, int stopIndex);
     public abstract T[] getAsArray();
+    public abstract void clear();
+    public abstract void removeValueAtGivenIndex(int index);
+    public abstract boolean removeGivenValue(Object value);
 }

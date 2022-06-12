@@ -46,4 +46,19 @@ public class BreakerRunningAverage implements BreakerGenericAverageingList<Doubl
     public Double[] getAsArray() {
         return list.toArray(new Double[list.size()]);
     }
+
+    @Override
+    public void clear() {
+        list.clear();
+    }
+
+    @Override
+    public void removeValueAtGivenIndex(int index) {
+        list.remove(index);
+    }
+
+    @Override
+    public boolean removeGivenValue(Object value) {
+        return list.remove(value);
+    }
 }
