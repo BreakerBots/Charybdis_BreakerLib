@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import javax.swing.text.html.parser.Entity;
+
 import edu.wpi.first.hal.simulation.PowerDistributionDataJNI;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -97,8 +99,9 @@ public class BreakerPowerManager extends SubsystemBase {
 
     private void managePower() {
         for (Entry<BreakerPowerManageable, BreakerPowerManagementConfig> entry: devicesAndConfigs.entrySet()) {
-           DevicePowerMode powerMode = entry.getKey().calculatePowerMode(entry.getValue(), new BreakerPowerState(getRemainingBatteryPercentage(), runningVoltAverage.getAverage()));
-           entry.getKey().setPowerMode(entry.getKey().isUnderAutomaticControl() || !activePowerManagementIsEnabled ? powerMode : (entry.getKey().isUnderAutomaticControl() ? DevicePowerMode.FULL_POWER_MODE : entry.getKey().getPowerMode()));
+            if (entry.getKey().isUnderAutomaticControl() && activePowerManagementIsEnabled) {
+                entry.getKey().managePower(entry.getValue());
+            }
         }
     }
 

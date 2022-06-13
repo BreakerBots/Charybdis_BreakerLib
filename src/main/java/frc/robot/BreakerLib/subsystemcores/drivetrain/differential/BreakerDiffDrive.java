@@ -35,7 +35,6 @@ import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerState;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -64,6 +63,9 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   private boolean isInSlowMode;
   private boolean invertL;
   private boolean invertR;
+
+  private boolean isAutoPowerManaged = true;
+  private DevicePowerMode powerMode = DevicePowerMode.FULL_POWER_MODE;
   
   /** Creates a new West Coast Drive. */
   public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR, BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
@@ -315,32 +317,28 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
   @Override
   public boolean isUnderAutomaticControl() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public void setPowerMode(DevicePowerMode currentPowerMode) {
-    // TODO Auto-generated method stub
-    
+    return isAutoPowerManaged;
   }
 
   @Override
   public DevicePowerMode getPowerMode() {
-    // TODO Auto-generated method stub
+    return powerMode;
+  }
+
+  @Override
+  public DevicePowerMode managePower(BreakerPowerManagementConfig managementConfig) {
+      
     return null;
   }
 
   @Override
-  public void overrideAutomaticPowerManagement(boolean isEnabled) {
-    // TODO Auto-generated method stub
+  public void overrideAutomaticPowerManagement(DevicePowerMode manualPowerMode) {
+    isAutoPowerManaged = false;
     
   }
 
   @Override
-  public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
-      BreakerPowerState currentPowerState) {
-    // TODO Auto-generated method stub
-    return null;
+  public void returnToAutomaticPowerManagement() {
+    isAutoPowerManaged = true;
   }
 }

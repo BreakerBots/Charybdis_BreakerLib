@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerState;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
@@ -94,28 +93,27 @@ public class BreakerColorSensor implements BreakerGenericDevice {
   }
 
   @Override
-  public void setPowerMode(DevicePowerMode currentPowerMode) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
   public DevicePowerMode getPowerMode() {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public void overrideAutomaticPowerManagement(boolean isEnabled) {
+  public DevicePowerMode managePower(BreakerPowerManagementConfig managementConfig) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void overrideAutomaticPowerManagement(DevicePowerMode manualPowerMode) {
     // TODO Auto-generated method stub
     
   }
 
   @Override
-  public DevicePowerMode calculatePowerMode(BreakerPowerManagementConfig managementConfig,
-      BreakerPowerState currentPowerState) {
+  public void returnToAutomaticPowerManagement() {
     // TODO Auto-generated method stub
-    return null;
+    
   }
 
   

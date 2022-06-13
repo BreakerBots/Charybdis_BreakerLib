@@ -19,6 +19,7 @@ import edu.wpi.first.hal.CANData;
 import edu.wpi.first.hal.can.CANJNI;
 import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.wpilibj.CAN;
+import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Util class for CTRE motors. */
 public class BreakerCTREUtil {
@@ -117,12 +118,7 @@ public class BreakerCTREUtil {
     if (faultBitField != 0) {
       long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesAndFaultMessages.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for
-                                                                                                         // 1s in
-                                                                                                         // bitfield
-                                                                                                         // that
-                                                                                                         // signifies
-                                                                                                         // error
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
           work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
         }
         fieldMask <<= 1; // Scrolls to next bit.
@@ -131,5 +127,19 @@ public class BreakerCTREUtil {
       work.append(" none ");
     }
     return work.toString();
+  }
+
+  public static DeviceHealth getDeviceFaultsAsHealth(long faultBitField, HashMap<Integer, DeviceHealth> fieldPlacesAndHealthEffects) {
+    DeviceHealth health = DeviceHealth.NOMINAL;
+    if (faultBitField != 0) {
+      long fieldMask = 1; // masks all but selected bit
+      for (int fieldPlace = 0; fieldPlace < fieldPlacesAndHealthEffects.size(); fieldPlace++) {
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndHealthEffects.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+          health = health != DeviceHealth.INOPERABLE ? fieldPlacesAndHealthEffects.get(fieldPlace) : health;
+        }
+        fieldMask <<= 1; // Scrolls to next bit.
+      }
+    } 
+    return null;
   }
 }

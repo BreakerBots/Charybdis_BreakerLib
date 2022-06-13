@@ -9,6 +9,6 @@ public enum PowerManagementPriority {
     LOW_PRIORITY,
     MEDIUM_PRIORITY,
     HIGH_PRIORITY,
-    /** For robot systems or devices that are aboslotely nessicery for the robot's opperation */
+    /** For robot systems or devices that are aboslotely nessicery for the robot's opperation, will never be fully deactivated and rairly ever throttled */
     CRITICAL
 }
