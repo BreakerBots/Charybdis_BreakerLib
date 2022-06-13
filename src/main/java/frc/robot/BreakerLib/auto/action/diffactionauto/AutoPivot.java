@@ -41,7 +41,7 @@ public class AutoPivot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double curAngle = imu.getYaw();
+      double curAngle = -imu.getYawDegrees();
       if (Math.abs(curAngle - lastAngle)>90)
         curAngle *= -1;
       lastAngle = curAngle;

@@ -25,7 +25,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class RobotContainer {
   private final BreakerXboxController controllerSys = new BreakerXboxController(0);
-  private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID, Constants.IMU_INVERT);
+  private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID);
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
   private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();

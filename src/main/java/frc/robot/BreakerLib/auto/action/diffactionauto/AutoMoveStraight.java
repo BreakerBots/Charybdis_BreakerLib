@@ -56,7 +56,7 @@ public class AutoMoveStraight extends CommandBase {
     double motorSpeed = auto.calculateMoveStraightPID(curDist, targetDistance);
     motorSpeed = MathUtil.clamp(motorSpeed, -speedClamp, speedClamp);
     motorSpeed += (motorSpeed > 0) ? auto.getMoveStraightFeedForward() : -auto.getMoveStraightFeedForward();
-    double turnSpeed = imu.getYaw() * -0.04;
+    double turnSpeed = -imu.getYawDegrees() * -0.04;
     driveTrain.arcadeDrive(motorSpeed, turnSpeed);
     // 1D movement back and forth
 

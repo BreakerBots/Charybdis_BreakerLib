@@ -24,24 +24,39 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
   private String deviceName = "Pigeon2_IMU";
 
   /** Creates a new PigeonIMU object. */
-  public BreakerPigeon2(int deviceID, boolean isInverted) {
+  public BreakerPigeon2(int deviceID) {
     pigeon = new WPI_Pigeon2(deviceID);
-    imuInvert = isInverted ? -1 : 1;
   }
 
   /** Returns pitch angle within +- 180 degrees */
-  public double getPitch() {
+  public double getPitchDegrees() {
     return BreakerMath.angleModulus(pigeon.getPitch());
   }
 
   /** Returns yaw angle within +- 180 degrees */
-  public double getYaw() {
-    return BreakerMath.angleModulus(pigeon.getYaw()) * imuInvert;
+  public double getYawDegrees() {
+    return BreakerMath.angleModulus(pigeon.getYaw());
   }
 
   /** Returns roll angle within +- 180 degrees */
-  public double getRoll() {
+  public double getRollDegrees() {
     return BreakerMath.angleModulus(pigeon.getRoll());
+  }
+
+  public Rotation2d getPitch() {
+    return Rotation2d.fromDegrees(getPitchDegrees());
+  }
+
+  public Rotation2d getYaw() {
+    return Rotation2d.fromDegrees(getYawDegrees());
+  }
+
+  public Rotation2d getRoll() {
+    return Rotation2d.fromDegrees(getRollDegrees());
+  }
+
+  public BreakerRotation3d getRotation3d() {
+    return new BreakerRotation3d(getPitch(), getYaw(), getRoll());
   }
 
   /**
@@ -118,7 +133,7 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
     return pigeon.getUpTime();
   }
 
-  public BreakerRotation3d getRotation3d() {
+  public BreakerRotation3d getRawRotation3d() {
     return new BreakerRotation3d(Rotation2d.fromDegrees(getRawAngles()[1]), Rotation2d.fromDegrees(getRawAngles()[0]),
         Rotation2d.fromDegrees(getRawAngles()[2]));
   }
