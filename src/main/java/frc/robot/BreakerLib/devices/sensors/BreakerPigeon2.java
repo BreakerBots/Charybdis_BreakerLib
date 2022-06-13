@@ -9,6 +9,7 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
+import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
@@ -26,6 +27,7 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
   /** Creates a new PigeonIMU object. */
   public BreakerPigeon2(int deviceID) {
     pigeon = new WPI_Pigeon2(deviceID);
+    BreakerCANManager.regesterDevice(deviceID);
   }
 
   /** Returns pitch angle within +- 180 degrees */

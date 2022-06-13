@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.util;
+package frc.robot.BreakerLib.util.CTRE;
 
 import java.util.HashMap;
 
@@ -19,6 +19,7 @@ import edu.wpi.first.hal.CANData;
 import edu.wpi.first.hal.can.CANJNI;
 import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.wpilibj.CAN;
+import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Util class for CTRE motors. */

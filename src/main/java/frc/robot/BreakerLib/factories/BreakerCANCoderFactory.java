@@ -8,7 +8,8 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
-import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
+import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
 
 /** Add your docs here. */
 public class BreakerCANCoderFactory {
@@ -18,7 +19,8 @@ public class BreakerCANCoderFactory {
             config.absoluteSensorRange = absoluteSensorRange;
             config.magnetOffsetDegrees = absoluteOffsetDegress;
             config.sensorDirection = invertEncoder;
-        BreakerCTREUtil.checkError(encoder.configAllSettings(config, 0), " CANCoder factory config fail "); ;
+        BreakerCTREUtil.checkError(encoder.configAllSettings(config, 0), " CANCoder factory config fail ");
+        BreakerCANManager.regesterDevice(deviceID);
         return encoder;
     }
 }

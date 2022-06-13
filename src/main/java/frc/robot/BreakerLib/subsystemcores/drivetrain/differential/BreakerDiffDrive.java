@@ -30,7 +30,8 @@ import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
+import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
@@ -87,6 +88,13 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
     this.driveConfig = driveConfig;
     this.pigeon2 = pigeon2;
+
+    for (WPI_TalonFX mot: leftMotors) {
+      BreakerCANManager.regesterDevice(mot.getDeviceID());
+    }
+    for (WPI_TalonFX mot: rightMotors) {
+      BreakerCANManager.regesterDevice(mot.getDeviceID());
+    }
   }
 
   /** Standard drive command, is affected by slow mode */

@@ -18,7 +18,8 @@ import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
 import edu.wpi.first.cscore.CameraServerCvJNI.Helper;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
-import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
+import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
 
 /** a higher level object for use in user susystems that makes BreakerLib's self test clases easier to implament for subsystem-scale classes */
 public class SystemDiagnostics implements BreakerSelfTestable {
@@ -56,11 +57,12 @@ public class SystemDiagnostics implements BreakerSelfTestable {
 
     public void addMotorController(BaseMotorController motorControllerToAdd) {
         motorControllers.add(motorControllerToAdd);
+        BreakerCANManager.regesterDevice(motorControllerToAdd.getDeviceID());
     }
 
     public void addMotorControllers(BaseMotorController... motorControllersToAdd) {
         for (BaseMotorController con: motorControllersToAdd) {
-            motorControllers.add(con);
+            addMotorController(con);
         }
     }
 
