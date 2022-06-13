@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -24,9 +25,9 @@ import frc.robot.BreakerLib.util.BreakerJsonUtil;
 /** Add your docs here. */
 public class BreakerCANManager extends SubsystemBase {
     private BreakerCANManager manager = new BreakerCANManager();
-    private static List<Integer> regesteredDeviceIDs = new ArrayList<>();
+    private static Map<Integer, Boolean> regesteredDevices = new HashMap<>();
     private static Map<Integer, Pair<String, String>> retrivedDevices = new HashMap<>();
-    private static List<Integer> missingDevices = new ArrayList<>();
+    private static Map<Integer, Boolean> missingDevices = new HashMap<>();
     private BreakerCANManager() {}
 
     private JsonNode retriveDeviceList() {
@@ -37,9 +38,9 @@ public class BreakerCANManager extends SubsystemBase {
         }     
     }
 
-    public static void regesterDevice(int deviceID) {
-        if (!regesteredDeviceIDs.contains(deviceID)) {
-            regesteredDeviceIDs.add(deviceID);
+    public static void regesterDevice(int deviceID, boolean isAttachedToSystem) {
+        if (!regesteredDevices.containsKey(deviceID)) {
+            regesteredDevices.put(deviceID, isAttachedToSystem);
         }
     }
 
@@ -55,7 +56,7 @@ public class BreakerCANManager extends SubsystemBase {
             String divName = divNode.get("Name").asText();
             retrivedDevices.put(id, new Pair<>(divType, divName));
         }
-        for (int id: regesteredDeviceIDs) {
+        for (int id: regesteredDevices.keySet()) {
             boolean found = false;
             for (Entry<Integer, Pair<String, String>> ent: retrivedDevices.entrySet()) {
                 if (ent.getKey() == id) {
@@ -64,17 +65,21 @@ public class BreakerCANManager extends SubsystemBase {
                 }
             }
             if (!found) {
-                missingDevices.add(id);
+                missingDevices.put(id, regesteredDevices.get(id));
             }
         }
     }
 
-    public static List<Integer> getMissingDeviceIDs() {
+    public static Map<Integer, Boolean> getMissingDevices() {
         return missingDevices;
     }
 
+    public static Set<Integer> getMissingDeviceIDs() {
+        return missingDevices.keySet();
+    }
+
     public static boolean checkDeviceIsFound(int idToCheck) {
-        return missingDevices.contains(idToCheck);
+        return missingDevices.containsKey(idToCheck);
     }
 
     public static Pair<String, String> getDeviceModelAndName(int deviceID) {
@@ -84,6 +89,10 @@ public class BreakerCANManager extends SubsystemBase {
     public static String getFormatedFullDeviceName(int deviceID) {
         Pair<String, String> pair = getDeviceModelAndName(deviceID);
         return " (" + pair.getFirst() + "/ ID: " + deviceID + ") " + pair.getSecond() + " ";
+    }
+
+    public static boolean hasMissingDevices() {
+        return !missingDevices.isEmpty();
     }
  
     @Override

@@ -90,10 +90,10 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
     this.pigeon2 = pigeon2;
 
     for (WPI_TalonFX mot: leftMotors) {
-      BreakerCANManager.regesterDevice(mot.getDeviceID());
+      BreakerCANManager.regesterDevice(mot.getDeviceID(), true);
     }
     for (WPI_TalonFX mot: rightMotors) {
-      BreakerCANManager.regesterDevice(mot.getDeviceID());
+      BreakerCANManager.regesterDevice(mot.getDeviceID(), true);
     }
   }
 

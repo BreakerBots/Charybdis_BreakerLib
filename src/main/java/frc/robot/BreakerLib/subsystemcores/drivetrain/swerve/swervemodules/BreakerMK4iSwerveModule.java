@@ -62,7 +62,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         BreakerCTREUtil.checkError(turnEncoder.configAllSettings(encoderConfig), " Failed to config swerve module turn encoder "); 
-        BreakerCANManager.regesterDevice(turnEncoder.getDeviceID());
+        BreakerCANManager.regesterDevice(turnEncoder.getDeviceID(), true);
 
         TalonFXConfiguration turnConfig = new TalonFXConfiguration();
         turnConfig.remoteFilter0.remoteSensorDeviceID = turnEncoder.getDeviceID();
@@ -73,7 +73,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         turnConfig.slot0.kD = config.getModuleAngleKd();
         BreakerCTREUtil.checkError(turnMotor.configAllSettings(turnConfig)," Failed to config swerve module turn motor "); 
         turnMotor.selectProfileSlot(0, 0);
-        BreakerCANManager.regesterDevice(turnMotor.getDeviceID());
+        BreakerCANManager.regesterDevice(turnMotor.getDeviceID(), true);
 
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
@@ -83,7 +83,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         driveConfig.slot0.kF = config.getModuleVelKf();
         BreakerCTREUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
         driveMotor.selectProfileSlot(0, 0);
-        BreakerCANManager.regesterDevice(driveMotor.getDeviceID());
+        BreakerCANManager.regesterDevice(driveMotor.getDeviceID(), true);
 
     }
  

@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.util.selftest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotController;
@@ -14,6 +15,7 @@ import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerSounds;
 import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
 
 public class SelfTest extends SubsystemBase {
   /** Creates a new SelfTest. */
@@ -68,11 +70,16 @@ public class SelfTest extends SubsystemBase {
         faultDevices.add(device);
       }
     }
-    if (faultDevices.size() > 0) {
+    if (faultDevices.size() > 0 || BreakerCANManager.hasMissingDevices()) {
       work.append(" SELF CHECK FAILED - FAULTS FOUND: \n");
       lastCheckPassed = false;
       for (BreakerSelfTestable faultDiv: faultDevices) {
         work.append(" | " + faultDiv.getDeviceName() + "-" + faultDiv.getFaults() + " | ");
+      }
+      for (Entry<Integer, Boolean> ent: BreakerCANManager.getMissingDevices().entrySet()) {
+        if (!ent.getValue()) {
+          work.append(" | CAN device (ID: " + ent.getKey() + ") - NOT_FOUND_ON_BUS | ");
+        }
       }
       runAlarm();
     } else {

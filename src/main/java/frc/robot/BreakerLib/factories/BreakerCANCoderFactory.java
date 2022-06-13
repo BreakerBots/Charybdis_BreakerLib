@@ -20,7 +20,7 @@ public class BreakerCANCoderFactory {
             config.magnetOffsetDegrees = absoluteOffsetDegress;
             config.sensorDirection = invertEncoder;
         BreakerCTREUtil.checkError(encoder.configAllSettings(config, 0), " CANCoder factory config fail ");
-        BreakerCANManager.regesterDevice(deviceID);
+        BreakerCANManager.regesterDevice(deviceID, true);
         return encoder;
     }
 }

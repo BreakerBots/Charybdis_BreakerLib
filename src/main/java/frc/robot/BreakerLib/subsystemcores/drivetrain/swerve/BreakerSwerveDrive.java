@@ -51,7 +51,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
   private String deviceName = "Swerve_Drivetrain";
   private String faults = null;
   /** Constructs a new swerve based drivetrain
-   * @param config - the confiuration values for the drivetrain's charicotristics and behavor, passed in as a "BreakerSwerveDriveConfig" object
+   * @param config - the confiuration values for the drivetrain's charicteristics and behavor, passed in as a "BreakerSwerveDriveConfig" object
    * @param swerveModules - The four swerve drive modules that make up the drivetrain, must be passed in the same order shown below
    */
   public BreakerSwerveDrive(BreakerSwerveDriveConfig config, BreakerPigeon2 pigeon2, BreakerGenericSwerveModule... swerveModules) {

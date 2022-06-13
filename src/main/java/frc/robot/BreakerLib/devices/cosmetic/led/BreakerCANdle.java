@@ -53,7 +53,7 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
         candle.setLEDs(255, 255, 255);
         enabledStatus = new RainbowAnimation(1, 0.5, numberOfLEDs);
         errorStatus = new StrobeAnimation(255, 0, 0, 0, 0.5, numberOfLEDs);
-        BreakerCANManager.regesterDevice(canID);
+        BreakerCANManager.regesterDevice(canID, true);
     }
 
     public void setLedAnimation(Animation animation) {
