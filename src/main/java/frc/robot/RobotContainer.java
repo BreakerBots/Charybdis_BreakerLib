@@ -30,7 +30,7 @@ public class RobotContainer {
   private final Intake intakeSys = new Intake();
   private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
   private final Hopper hopperSys = new Hopper(intakeSys);
-  private final SelfTest testSys = new SelfTest(5, orchestraSys);
+  private final SelfTest testSys = new SelfTest(5, "172.22.11.2", orchestraSys);
 
   private BreakerAutoManager autoManager;
 

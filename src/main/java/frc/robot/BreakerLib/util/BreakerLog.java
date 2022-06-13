@@ -69,6 +69,9 @@ public class BreakerLog {
   public static void logError(String error) {
     DataLogManager.log(" ERROR: " + error);
   }
+  public static void logError(Exception e) {
+    DataLogManager.log(" ERROR: " + e.toString() + " : " + e.getStackTrace().toString());
+  }
 
   /** Logs superstructure(?) events. */
   public static void logSuperstructureEvent(String event) {

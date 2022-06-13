@@ -15,8 +15,7 @@ import com.ctre.phoenix.led.StrobeAnimation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
-import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
-import frc.robot.BreakerLib.util.CTRE.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
@@ -53,7 +52,6 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
         candle.setLEDs(255, 255, 255);
         enabledStatus = new RainbowAnimation(1, 0.5, numberOfLEDs);
         errorStatus = new StrobeAnimation(255, 0, 0, 0, 0.5, numberOfLEDs);
-        BreakerCANManager.regesterDevice(canID, true);
     }
 
     public void setLedAnimation(Animation animation) {

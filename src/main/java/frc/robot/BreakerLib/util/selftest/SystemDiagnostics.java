@@ -57,7 +57,6 @@ public class SystemDiagnostics implements BreakerSelfTestable {
 
     public void addMotorController(BaseMotorController motorControllerToAdd) {
         motorControllers.add(motorControllerToAdd);
-        BreakerCANManager.regesterDevice(motorControllerToAdd.getDeviceID(), true);
     }
 
     public void addMotorControllers(BaseMotorController... motorControllersToAdd) {
