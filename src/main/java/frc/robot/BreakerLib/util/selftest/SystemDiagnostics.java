@@ -98,7 +98,7 @@ public class SystemDiagnostics implements BreakerSelfTestable {
                 con.getFaults(motorFaults);
                 if (motorFaults.hasAnyFault()) {
                     BreakerTriplet<DeviceHealth, String, Boolean> motorState = BreakerCTREUtil.getMotorHealthFaultsAndConnectionStatus(motorFaults, con.getDeviceID());
-                    faults += " / Motor ID (" + con.getBaseID() + "): " + BreakerCTREUtil.getMotorFaultsAsString(motorFaults);
+                    faults += " / Motor ID (" + con.getBaseID() + "): " + motorState.getMiddle();
                     health = health == DeviceHealth.INOPERABLE ? motorState.getLeft() : health;
                 }
             }
