@@ -87,11 +87,6 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
     this.driveConfig = driveConfig;
     this.pigeon2 = pigeon2;
-
-    for (WPI_TalonFX mot: leftMotors) {
-    }
-    for (WPI_TalonFX mot: rightMotors) {
-    }
   }
 
   /** Standard drive command, is affected by slow mode */

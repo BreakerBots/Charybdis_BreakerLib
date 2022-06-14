@@ -22,7 +22,6 @@ import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerSounds;
 import frc.robot.BreakerLib.util.BreakerJsonUtil;
 import frc.robot.BreakerLib.util.BreakerLog;
-import frc.robot.BreakerLib.util.CTRE.BreakerCANManager;
 
 public class SelfTest extends SubsystemBase {
   /** Creates a new SelfTest. */
@@ -101,7 +100,7 @@ public class SelfTest extends SubsystemBase {
     return lastCheckPassed;
   }
 
-  public static boolean isMissingID(int deviceID) {
+  public static boolean isMissingCanID(int deviceID) {
     return retrivedDevicesCAN.contains(deviceID);
   }
 
@@ -116,7 +115,7 @@ public class SelfTest extends SubsystemBase {
     }
     if (!independentlyRegesteredMissingIDs.isEmpty()) {
       for (int id: independentlyRegesteredDevicesCAN) {
-        if (isMissingID(id)) {
+        if (isMissingCanID(id)) {
           independentlyRegesteredMissingIDs.add(id);
         }
       }

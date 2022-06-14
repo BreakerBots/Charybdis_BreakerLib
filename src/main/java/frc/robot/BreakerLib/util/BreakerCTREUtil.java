@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.util.CTRE;
+package frc.robot.BreakerLib.util;
 
 import java.util.HashMap;
 
@@ -18,9 +18,10 @@ import edu.wpi.first.hal.CANAPIJNI;
 import edu.wpi.first.hal.CANData;
 import edu.wpi.first.hal.can.CANJNI;
 import edu.wpi.first.hal.can.CANStatus;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.CAN;
-import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Util class for CTRE motors. */
 public class BreakerCTREUtil {
@@ -51,56 +52,60 @@ public class BreakerCTREUtil {
    * @return All motor fault messages separated by spaces in a string.
    */
   public static String getMotorFaultsAsString(Faults motorFaults) {
-    StringBuilder work = new StringBuilder();
-    if (motorFaults.hasAnyFault()) {
-      int field = motorFaults.toBitfield(); // Field for examining errors
-      int fieldMask = 1; // masks all but selected bit
+    HashMap<Integer, String> map = new HashMap<Integer, String>();
+    map.put(0, " device_under_6.5v ");
+    map.put(1, " device_limit_switch_hit ");
+    map.put(2, " device_limit_switch_hit ");
+    map.put(3, " device_limit_switch_hit ");
+    map.put(4, " device_limit_switch_hit ");
+    map.put(5, " hardware_failure ");
+    map.put(6, " device_activated_or_reset_while_robot_on ");
+    map.put(9, " device_activated_or_reset_while_robot_on ");
+    map.put(7, " sensor_overflow ");
+    map.put(8, " sensor_out_of_phase ");
+    map.put(10, " remote_sensor_not_detected ");
+    map.put(11, " API_or_firmware_error ");
+    map.put(12, " supply_voltage_above_rated_max ");
+    map.put(13, " unstable_supply_voltage ");
+    return getDeviceFaultsAsString(motorFaults.toBitfield(), map);
+  }
 
-      for (int fieldPlace = 0; fieldPlace <= 13; fieldPlace++) {
-        if ((field & fieldMask) != 0) { // Checks for 1s in bitfield that signifies error
-          switch (fieldPlace) { // Finds type of error based on bit location
-            case 0:
-              work.append(" device_under_6.5v ");
-              break;
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-              work.append(" device_limit_switch_hit ");
-              break;
-            case 5:
-              work.append(" hardware_failure ");
-              break;
-            case 6:
-            case 9:
-              work.append(" device_activated_or_reset_while_robot_on ");
-              break;
-            case 7:
-              work.append(" sensor_overflow ");
-              break;
-            case 8:
-              work.append(" sensor_out_of_phase ");
-              break;
-            case 10:
-              work.append(" remote_sensor_not_detected ");
-              break;
-            case 11:
-              work.append(" API_or_firmware_error ");
-              break;
-            case 12:
-              work.append(" supply_voltage_above_rated_max ");
-              break;
-            case 13:
-              work.append(" unstable_supply_voltage ");
-              break;
-          }
-        }
-        fieldMask <<= 1; // Scrolls to next bit.
-      }
-    } else {
-      work.append(" none ");
-    }
-    return work.toString();
+  public static Pair<DeviceHealth, String> getMotorHealthAndFaults(Faults motorFaults) {
+    HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
+    map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_under_6.5v "));
+    map.put(1, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(2, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(3, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(4, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(5, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " hardware_failure "));
+    map.put(6, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_activated_or_reset_while_robot_on "));
+    map.put(9, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_activated_or_reset_while_robot_on "));
+    map.put(7, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " sensor_overflow "));
+    map.put(8, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " sensor_out_of_phase "));
+    map.put(10, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " remote_sensor_not_detected "));
+    map.put(11, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " API_or_firmware_error "));
+    map.put(12, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " supply_voltage_above_rated_max "));
+    map.put(13, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " unstable_supply_voltage "));
+    return getDeviceHealthAndFaults(motorFaults.toBitfield(), map);
+  }
+
+  public static BreakerTriplet<DeviceHealth, String, Boolean> getMotorHealthFaultsAndConnectionStatus(Faults motorFaults, int deviceID) {
+    HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
+    map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_under_6.5v "));
+    map.put(1, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(2, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(3, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(4, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
+    map.put(5, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " hardware_failure "));
+    map.put(6, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_activated_or_reset_while_robot_on "));
+    map.put(9, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_activated_or_reset_while_robot_on "));
+    map.put(7, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " sensor_overflow "));
+    map.put(8, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " sensor_out_of_phase "));
+    map.put(10, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " remote_sensor_not_detected "));
+    map.put(11, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " API_or_firmware_error "));
+    map.put(12, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " supply_voltage_above_rated_max "));
+    map.put(13, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " unstable_supply_voltage "));
+    return GetDeviceHealthFaultsAndConnectionStatus(motorFaults.toBitfield(), deviceID, map);
   }
 
   public static String getCANdleFaultsAsString(CANdleFaults faults) {
@@ -141,6 +146,36 @@ public class BreakerCTREUtil {
         fieldMask <<= 1; // Scrolls to next bit.
       }
     } 
-    return null;
+    return health;
+  }
+
+  public static Pair<DeviceHealth, String> getDeviceHealthAndFaults(long faultBitField, HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
+    StringBuilder work = new StringBuilder();
+    if (faultBitField != 0) {
+      long fieldMask = 1; // masks all but selected bit
+      for (int fieldPlace = 0; fieldPlace < fieldPlacesHealthEffectsAndFaultMessages.size(); fieldPlace++) {
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesHealthEffectsAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+          work.append(fieldPlacesHealthEffectsAndFaultMessages.get(fieldPlace).getSecond());
+        }
+        fieldMask <<= 1; // Scrolls to next bit.
+      }
+    }
+    DeviceHealth health = DeviceHealth.NOMINAL;
+    if (faultBitField != 0) {
+      long fieldMask = 1; // masks all but selected bit
+      for (int fieldPlace = 0; fieldPlace < fieldPlacesHealthEffectsAndFaultMessages.size(); fieldPlace++) {
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesHealthEffectsAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+          health = health != DeviceHealth.INOPERABLE ? fieldPlacesHealthEffectsAndFaultMessages.get(fieldPlace).getFirst() : health;
+        }
+        fieldMask <<= 1; // Scrolls to next bit.
+      }
+    } 
+    return new Pair<DeviceHealth, String>(health, work.toString());
+  }
+
+  public static BreakerTriplet<DeviceHealth, String, Boolean> GetDeviceHealthFaultsAndConnectionStatus(long faultBitField, int deviceID, HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
+    Pair<DeviceHealth, String> healthAndMsgs = getDeviceHealthAndFaults(faultBitField, fieldPlacesHealthEffectsAndFaultMessages);
+    boolean isMissing = SelfTest.isMissingCanID(deviceID);
+    return new BreakerTriplet<DeviceHealth, String, Boolean>(isMissing ? DeviceHealth.INOPERABLE : healthAndMsgs.getFirst(), healthAndMsgs.getSecond(), isMissing);
   }
 }
