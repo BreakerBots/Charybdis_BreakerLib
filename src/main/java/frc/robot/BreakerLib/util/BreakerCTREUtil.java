@@ -175,7 +175,8 @@ public class BreakerCTREUtil {
 
   public static BreakerTriplet<DeviceHealth, String, Boolean> GetDeviceHealthFaultsAndConnectionStatus(long faultBitField, int deviceID, HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
     Pair<DeviceHealth, String> healthAndMsgs = getDeviceHealthAndFaults(faultBitField, fieldPlacesHealthEffectsAndFaultMessages);
-    boolean isMissing = SelfTest.isMissingCanID(deviceID);
-    return new BreakerTriplet<DeviceHealth, String, Boolean>(isMissing ? DeviceHealth.INOPERABLE : healthAndMsgs.getFirst(), healthAndMsgs.getSecond(), isMissing);
+    boolean isMissing = SelfTest.checkIsMissingCanID(deviceID);
+    String messages = isMissing ? healthAndMsgs.getSecond() + " device_not_found_on_bus " : healthAndMsgs.getSecond();
+    return new BreakerTriplet<DeviceHealth, String, Boolean>(isMissing ? DeviceHealth.INOPERABLE : healthAndMsgs.getFirst(), messages, isMissing);
   }
 }

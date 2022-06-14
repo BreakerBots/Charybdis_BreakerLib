@@ -100,7 +100,7 @@ public class SelfTest extends SubsystemBase {
     return lastCheckPassed;
   }
 
-  public static boolean isMissingCanID(int deviceID) {
+  public static boolean checkIsMissingCanID(int deviceID) {
     return retrivedDevicesCAN.contains(deviceID);
   }
 
@@ -115,7 +115,7 @@ public class SelfTest extends SubsystemBase {
     }
     if (!independentlyRegesteredMissingIDs.isEmpty()) {
       for (int id: independentlyRegesteredDevicesCAN) {
-        if (isMissingCanID(id)) {
+        if (checkIsMissingCanID(id)) {
           independentlyRegesteredMissingIDs.add(id);
         }
       }

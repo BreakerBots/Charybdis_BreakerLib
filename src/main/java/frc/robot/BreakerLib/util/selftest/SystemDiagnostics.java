@@ -18,12 +18,15 @@ import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
 import edu.wpi.first.cscore.CameraServerCvJNI.Helper;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.cosmetic.led.BreakerCANdle.BreakerCANdleLedMode;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.BreakerTriplet;
 
 /** a higher level object for use in user susystems that makes BreakerLib's self test clases easier to implament for subsystem-scale classes */
 public class SystemDiagnostics implements BreakerSelfTestable {
     private List<BaseMotorController> motorControllers = new ArrayList<>();
     private List<BreakerSelfTestable> devices = new ArrayList<>();
+    private List<Integer> outherIdsCAN;
     private Supplier<DeviceHealth> deviceHealthSupplier;
     private Supplier<String> faultStringSupplier;
     private boolean usesSuppliers = false;
@@ -64,6 +67,18 @@ public class SystemDiagnostics implements BreakerSelfTestable {
         }
     }
 
+    public void addOutherGenericCANDevice(int deviceID) {
+        outherIdsCAN.add(deviceID);
+    }
+
+    public void addOutherGenericCANDevices(int... deviceIDs) {
+        for (int id: deviceIDs) {
+            outherIdsCAN.add(id);
+        }
+    }
+
+    
+
     @Override
     public void runSelfTest() {
         faults = null;
@@ -73,7 +88,7 @@ public class SystemDiagnostics implements BreakerSelfTestable {
                 div.runSelfTest();
                 if (div.hasFault()) {
                     faults += " / " + div.getDeviceName() + ": " + div.getFaults();
-                    health = DeviceHealth.INOPERABLE;
+                    health = health == DeviceHealth.INOPERABLE ? div.getHealth() : health;
                 }
             }
         }
@@ -82,7 +97,16 @@ public class SystemDiagnostics implements BreakerSelfTestable {
                 Faults motorFaults = new Faults();
                 con.getFaults(motorFaults);
                 if (motorFaults.hasAnyFault()) {
+                    BreakerTriplet<DeviceHealth, String, Boolean> motorState = BreakerCTREUtil.getMotorHealthFaultsAndConnectionStatus(motorFaults, con.getDeviceID());
                     faults += " / Motor ID (" + con.getBaseID() + "): " + BreakerCTREUtil.getMotorFaultsAsString(motorFaults);
+                    health = health == DeviceHealth.INOPERABLE ? motorState.getLeft() : health;
+                }
+            }
+        }
+        if (!outherIdsCAN.isEmpty()) {
+            for (int id: outherIdsCAN) {
+                if (SelfTest.checkIsMissingCanID(id)) {
+                    faults += " / Generic CAN device (ID: " + id + "): not_found_on_buss ";
                     health = DeviceHealth.INOPERABLE;
                 }
             }
