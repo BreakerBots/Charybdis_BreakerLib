@@ -69,6 +69,6 @@ public class BreakerSwerveRotationSupplier {
         for (BreakerRotationPoint point: outher.getRotationPoints()) {
            rotationPointList.add(new BreakerRotationPoint(point.getRotation(), point.getTimeOfRotation() + rotationPoints[rotationPoints.length - 1].getTimeOfRotation()));
         }
-        return new BreakerSwerveRotationSupplier(rotationPointList)
+        return new BreakerSwerveRotationSupplier(rotationPointList);
     }
 }
