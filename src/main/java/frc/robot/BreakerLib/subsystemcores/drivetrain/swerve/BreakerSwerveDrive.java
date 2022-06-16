@@ -28,6 +28,7 @@ import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
   private BreakerSwerveDriveConfig config;
@@ -59,6 +60,7 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
     this.config = config;
     this.swerveModules = swerveModules;
     this.pigeon2 = pigeon2;
+    SelfTest.autoRegesterDevice(this);
   }
 
   /** sets each module to match a target module state in the order they were passed in

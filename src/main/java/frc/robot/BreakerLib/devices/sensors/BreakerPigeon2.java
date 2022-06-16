@@ -27,6 +27,7 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
   /** Creates a new PigeonIMU object. */
   public BreakerPigeon2(int deviceID) {
     pigeon = new WPI_Pigeon2(deviceID);
+    SelfTest.autoRegesterDevice(this);
   }
 
   /** Returns pitch angle within +- 180 degrees */

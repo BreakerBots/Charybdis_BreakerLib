@@ -13,6 +13,7 @@ import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 public class BreakerColorSensor implements BreakerGenericDevice {
 
@@ -23,6 +24,7 @@ public class BreakerColorSensor implements BreakerGenericDevice {
 
   public BreakerColorSensor(Port i2cPort) {
     colorSensor = new ColorSensorV3(i2cPort);
+    SelfTest.autoRegesterDevice(this);
   }
 
   public Color getColor() {

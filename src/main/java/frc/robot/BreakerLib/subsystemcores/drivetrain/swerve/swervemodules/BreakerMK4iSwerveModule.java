@@ -29,6 +29,7 @@ import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Add your docs here. */
 public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
@@ -80,7 +81,6 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         driveConfig.slot0.kF = config.getModuleVelKf();
         BreakerCTREUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
         driveMotor.selectProfileSlot(0, 0);
-
     }
  
     @Override

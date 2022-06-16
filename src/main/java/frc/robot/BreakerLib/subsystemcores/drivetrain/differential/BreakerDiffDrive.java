@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -37,6 +38,7 @@ import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   private WPI_TalonFX leftLead;
@@ -87,6 +89,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
     this.driveConfig = driveConfig;
     this.pigeon2 = pigeon2;
+    SelfTest.autoRegesterDevice(this);
   }
 
   /** Standard drive command, is affected by slow mode */

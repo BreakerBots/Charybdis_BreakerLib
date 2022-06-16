@@ -10,6 +10,7 @@ import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 public class BreakerLimelight implements BreakerGenericDevice {
   private double mountingAngle;
@@ -26,6 +27,7 @@ public class BreakerLimelight implements BreakerGenericDevice {
    */
   public BreakerLimelight(String limelightName) {
     limelightName = this.limelightName;
+    SelfTest.autoRegesterDevice(this);
   }
 
   /**

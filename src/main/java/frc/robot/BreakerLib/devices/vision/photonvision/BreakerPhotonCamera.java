@@ -52,7 +52,7 @@ public class BreakerPhotonCamera implements BreakerGenericDevice {
                 .metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
         this.verticalFOV = verticalFOV;
         this.horizontalFOV = horizontalFOV;
-
+        SelfTest.autoRegesterDevice(this);
     }
 
     /** Overall raw result from photon camera. */

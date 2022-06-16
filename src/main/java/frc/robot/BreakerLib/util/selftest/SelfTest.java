@@ -36,10 +36,19 @@ public class SelfTest extends SubsystemBase {
   private static List<Integer> retrivedDevicesCAN = new ArrayList<>();
   private static List<Integer> independentlyRegesteredDevicesCAN = new ArrayList<>();
   private static List<Integer> independentlyRegesteredMissingIDs = new ArrayList<>();
+  private static boolean autoRegesterDevices = true;
   public SelfTest(double secondsBetweenPeriodicSelfChecks, String robotHostAddressDNS) {
     SelfTest.cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
     SelfTest.usesOrchestra = false;
     SelfTest.robotHostAddressDNS = robotHostAddressDNS;
+    SelfTest.autoRegesterDevices = true;
+  }
+
+  public SelfTest(double secondsBetweenPeriodicSelfChecks, String robotHostAddressDNS, boolean autoRegesterDevices) {
+    SelfTest.cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
+    SelfTest.usesOrchestra = false;
+    SelfTest.robotHostAddressDNS = robotHostAddressDNS;
+    SelfTest.autoRegesterDevices = autoRegesterDevices;
   }
 
   public SelfTest(double secondsBetweenPeriodicSelfChecks,  String robotHostAddressDNS, BreakerFalconOrchestra orchestra) {
@@ -47,6 +56,14 @@ public class SelfTest extends SubsystemBase {
     SelfTest.orchestra = orchestra;
     SelfTest.usesOrchestra = true;
     SelfTest.robotHostAddressDNS = robotHostAddressDNS;
+  }
+
+  public SelfTest(double secondsBetweenPeriodicSelfChecks,  String robotHostAddressDNS, BreakerFalconOrchestra orchestra, boolean autoRegesterDevices) {
+    SelfTest.cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
+    SelfTest.orchestra = orchestra;
+    SelfTest.usesOrchestra = true;
+    SelfTest.robotHostAddressDNS = robotHostAddressDNS;
+    SelfTest.autoRegesterDevices = autoRegesterDevices;
   }
 
   private static void retriveDeviceListCAN() {
@@ -63,6 +80,19 @@ public class SelfTest extends SubsystemBase {
     }
     
   }
+
+  public static void autoRegesterDevice(BreakerSelfTestable device) {
+    if (autoRegesterDevices) {
+      devices.add(device);
+    }
+  }
+
+  public static void autoRegesterDevices(BreakerSelfTestable... devices) {
+    if (autoRegesterDevices) {
+      addDevices(devices);
+    }
+  }
+
 
   private static void runAlarm() {
     if (usesOrchestra) {
@@ -102,6 +132,10 @@ public class SelfTest extends SubsystemBase {
 
   public static boolean checkIsMissingCanID(int deviceID) {
     return retrivedDevicesCAN.contains(deviceID);
+  }
+
+  public static boolean getAutoRegesterDevicesIsEnabled() {
+    return autoRegesterDevices;
   }
 
   public static void runSelfCheck() {
