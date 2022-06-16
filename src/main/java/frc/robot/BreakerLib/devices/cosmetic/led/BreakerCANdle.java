@@ -16,10 +16,12 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** LED controller */
 public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice {
@@ -45,6 +47,7 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
     private DeviceHealth health = DeviceHealth.NOMINAL;
     private String faults;
     private String diviceName = " CANdle_LED_Controller ";
+    private int canID;
 
     public BreakerCANdle(int canID, int numberOfLEDs, BreakerCANdleConfig config) {
         candle = new CANdle(canID);
@@ -52,6 +55,7 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
         candle.setLEDs(255, 255, 255);
         enabledStatus = new RainbowAnimation(1, 0.5, numberOfLEDs);
         errorStatus = new StrobeAnimation(255, 0, 0, 0, 0.5, numberOfLEDs);
+        this.canID = canID;
     }
 
     public void setLedAnimation(Animation animation) {
@@ -142,9 +146,10 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
         faults = null;
         CANdleFaults faultsC = new CANdleFaults();
         candle.getFaults(faultsC);
-        if (faultsC.hasAnyFault()) {
-            faults = BreakerCTREUtil.getCANdleFaultsAsString(faultsC);
-            health = DeviceHealth.INOPERABLE;
+        if (faultsC.hasAnyFault() || SelfTest.checkIsMissingCanID(canID)) {
+            BreakerTriplet<DeviceHealth, String, Boolean> faultData = BreakerCTREUtil.getCANdelHealthFaultsAndConnectionStatus(faultsC, canID);
+            faults = faultData.getMiddle();
+            health = faultData.getLeft();
         } else {
             health = DeviceHealth.NOMINAL;
         }

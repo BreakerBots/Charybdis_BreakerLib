@@ -7,6 +7,7 @@ package frc.robot.BreakerLib.util;
 import java.util.HashMap;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleFaults;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -106,6 +107,26 @@ public class BreakerCTREUtil {
     map.put(12, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " supply_voltage_above_rated_max "));
     map.put(13, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " unstable_supply_voltage "));
     return GetDeviceHealthFaultsAndConnectionStatus(motorFaults.toBitfield(), deviceID, map);
+  }
+
+  public static Pair<DeviceHealth, String> getCANdleFaultsAndHealthEffects(CANdleFaults faults) {
+    HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
+    map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " short_circut "));
+    map.put(1, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " thermal_fault "));
+    map.put(2, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " software_fuse "));
+    map.put(8, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " API_error "));
+    map.put(9, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " hardware_failure "));
+    return getDeviceHealthAndFaults(faults.toBitfield(), map);
+  }
+
+  public static BreakerTriplet<DeviceHealth, String, Boolean> getCANdelHealthFaultsAndConnectionStatus(CANdleFaults faults, int deviceID) {
+    HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
+    map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " short_circut "));
+    map.put(1, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " thermal_fault "));
+    map.put(2, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " software_fuse "));
+    map.put(8, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " API_error "));
+    map.put(9, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " hardware_failure "));
+    return GetDeviceHealthFaultsAndConnectionStatus(faults.toBitfield(), deviceID, map);
   }
 
   public static String getCANdleFaultsAsString(CANdleFaults faults) {
