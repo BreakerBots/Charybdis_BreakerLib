@@ -4,12 +4,13 @@
 
 package frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** Add your docs here. */
 public interface BreakerConditionalCommand {
-    public abstract boolean checkCondition();
+    public abstract boolean checkCondition(double currentTimeSeconds, Pose2d currentPose);
     public abstract Command getBaseCommand();
     public abstract void startRunning();
-    public abstract boolean updateAutoRun();
+    public abstract boolean updateAutoRun(double currentTimeSeconds, Pose2d currentPose);
 }

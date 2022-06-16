@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -30,7 +31,9 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
-    private double currentTimeCycles = 0;
+    private double currentTimestamp = Timer.getFPGATimestamp();
+    private final double startTimestamp = Timer.getFPGATimestamp();
+    private double currentTimeSeconds = 0.0;
     private double totalTimeSeconds = 0;
     private boolean stopAtEnd;
     private Trajectory trajectoryToFollow;
@@ -99,7 +102,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
     @Override
     public void execute() {
-        currentTimeCycles++;
+        calculateTime();
         checkAttachedCommands();
     }
 
@@ -135,7 +138,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
     @Override
     public double getCurrentPathTimeSeconds() {
-        return (currentTimeCycles / 50);
+        return currentTimeSeconds;
     }
 
     @Override
@@ -163,12 +166,15 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private void checkAttachedCommands() {
         try {
             for (BreakerConditionalCommand com: attachedCondtionalCommands) {
-                com.updateAutoRun();
+                com.updateAutoRun(currentTimeSeconds, drivetrain.getOdometryPoseMeters());
             }
-        } catch (Exception e) {
-         //   BreakerLog.logError(e.toString());
-        }
+        } catch (Exception e) {}
         
+    }
+
+    private void calculateTime() {
+        currentTimestamp = Timer.getFPGATimestamp();
+        currentTimeSeconds = startTimestamp - currentTimestamp;
     }
 
 }

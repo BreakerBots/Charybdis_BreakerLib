@@ -16,19 +16,20 @@ public class BreakerPositionTriggeredCommand implements BreakerConditionalComman
     private Pose2d triggerPose;
     private Pose2d tolerences;
     private Command commandToRun;
+    private boolean usesSupplier;
+    public BreakerPositionTriggeredCommand(Pose2d triggerPose, Pose2d triggerPoseTolerences, Command commandToRun) {
+        this.commandToRun = commandToRun;
+        this.triggerPose = triggerPose;
+        tolerences = triggerPoseTolerences;
+        usesSupplier = false;
+    }
+
     public BreakerPositionTriggeredCommand(Pose2d triggerPose, Supplier<Pose2d> currentPoseSupplier, Pose2d triggerPoseTolerences, Command commandToRun) {
         this.currentPoseSupplier = currentPoseSupplier;
         this.commandToRun = commandToRun;
         this.triggerPose = triggerPose;
         tolerences = triggerPoseTolerences;
-    }
-
-    @Override
-    public boolean checkCondition() {
-        boolean satX = BreakerMath.isRoughlyEqualTo(triggerPose.getX(), currentPoseSupplier.get().getX(), Math.abs(tolerences.getX()));
-        boolean satY = BreakerMath.isRoughlyEqualTo(triggerPose.getY(), currentPoseSupplier.get().getY(), Math.abs(tolerences.getY()));
-        boolean satRot = BreakerMath.isRoughlyEqualTo(triggerPose.getRotation().getDegrees(), currentPoseSupplier.get().getRotation().getDegrees(), Math.abs(tolerences.getRotation().getDegrees()));
-        return satX && satY && satRot;
+        usesSupplier = true;
     }
 
     @Override
@@ -41,8 +42,17 @@ public class BreakerPositionTriggeredCommand implements BreakerConditionalComman
     }
 
     @Override
-    public boolean updateAutoRun() {
-        if (checkCondition()) {
+    public boolean checkCondition(double currentTimeSeconds, Pose2d currentPose) {
+        Pose2d curPose = usesSupplier ? currentPoseSupplier.get() : currentPose;
+        boolean satX = BreakerMath.isRoughlyEqualTo(triggerPose.getX(), curPose.getX(), Math.abs(tolerences.getX()));
+        boolean satY = BreakerMath.isRoughlyEqualTo(triggerPose.getY(), curPose.getY(), Math.abs(tolerences.getY()));
+        boolean satRot = BreakerMath.isRoughlyEqualTo(triggerPose.getRotation().getDegrees(), curPose.getRotation().getDegrees(), Math.abs(tolerences.getRotation().getDegrees()));
+        return satX && satY && satRot;
+    }
+
+    @Override
+    public boolean updateAutoRun(double currentTimeSeconds, Pose2d currentPose) {
+        if (checkCondition(currentTimeSeconds, currentPose)) {
             startRunning();
             return true;
         }

@@ -11,12 +11,14 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
+import frc.robot.BreakerLib.auto.trajectory.swerve.rotation.BreakerSwerveRotationSupplier;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
@@ -33,9 +35,11 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     private double totalTimeSeconds = 0;
     private boolean commandIsFinished = false;
     private boolean stopAtEnd = false;
-    private double currentTimeCycles = 0;
+    private final double startTimestamp = Timer.getFPGATimestamp();
+    private double currentTimestamp = Timer.getFPGATimestamp();
+    private double currentTimeSeconds = 0.0;
     private List<BreakerConditionalCommand> attachedCondtionalCommands;
-    private Supplier<Rotation2d> rotationSupplier;
+    private BreakerSwerveRotationSupplier rotationSupplier;
     private boolean usesSupplyedRotation = false;
 
     BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, boolean stopAtEnd,
@@ -59,7 +63,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         trajectoriesToFollow = arr;
     }
    
-    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, Supplier<Rotation2d> rotationSupplier, boolean stopAtEnd,
+    BreakerFollowSwerveTrajectory(BreakerFollowSwerveTrajectoryConfig config, BreakerSwerveRotationSupplier rotationSupplier, boolean stopAtEnd,
             Subsystem requiredSubsystem, BreakerTrajectoryPath... trajectoryPaths) {
         usesSupplyedRotation = true;
         drivetrain = config.getDrivetrain();
@@ -95,7 +99,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     @Override
     public void execute() {
-        currentTimeCycles++;
+        calculateTime();
         checkAttachedCommands();
         if (currentTrajectory != prevTrajectory) {
             try {
@@ -103,7 +107,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
                     controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
                         drivetrain::getOdometryPoseMeters,
                         drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
-                        config.getThetaAngPID(), rotationSupplier, drivetrain::setRawModuleStates, requiredSubsystem);
+                        config.getThetaAngPID(), rotationSupplier::getRotation, drivetrain::setRawModuleStates, requiredSubsystem);
                 } else {
                     controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
                         drivetrain::getOdometryPoseMeters,
@@ -125,12 +129,12 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         }
     }
 
-    public double getTotalTimeSeconds() {
-        return totalTimeSeconds;
-    }
-
-    public double getCurrentTimeSeconds() {
-        return (currentTimeCycles / 50);
+    private void calculateTime() {
+        currentTimestamp = Timer.getFPGATimestamp();
+        currentTimeSeconds = currentTimestamp - startTimestamp;
+        if (usesSupplyedRotation) {
+            rotationSupplier.setCurrentTime(currentTimeSeconds);
+        }
     }
 
     @Override
@@ -163,7 +167,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     @Override
     public double getCurrentPathTimeSeconds() {
-        return (currentTimeCycles / 50);
+        return currentTimeSeconds;
     }
 
     @Override
@@ -205,7 +209,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     private void checkAttachedCommands() {
         try {
             for (BreakerConditionalCommand com: attachedCondtionalCommands) {
-                com.updateAutoRun();
+                com.updateAutoRun(currentTimeSeconds, drivetrain.getOdometryPoseMeters());
             }
         } catch (Exception e) {
             BreakerLog.logError(e.toString());

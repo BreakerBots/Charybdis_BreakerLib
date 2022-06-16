@@ -12,21 +12,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 
 /** Add your docs here. */
-public class BreakerTimeTriggeredCommand implements BreakerConditionalCommand{
+public class BreakerTimeTriggeredCommand implements BreakerConditionalCommand {
     private DoubleSupplier currentTimeSupplier;
     private double triggerTime;
     private double tolerences;
     private Command commandToRun;
+    private boolean usesSupplier;
+
+    public BreakerTimeTriggeredCommand(double triggerTime, double triggerTimeTolerences, Command commandToRun) {
+        this.commandToRun = commandToRun;
+        this.triggerTime = triggerTime;
+        triggerTimeTolerences = tolerences;
+        usesSupplier = false;
+    }
     public BreakerTimeTriggeredCommand(double triggerTime, DoubleSupplier currentTimeSupplier, double triggerTimeTolerences, Command commandToRun) {
         this.currentTimeSupplier = currentTimeSupplier;
         this.commandToRun = commandToRun;
         this.triggerTime = triggerTime;
         triggerTimeTolerences = tolerences;
-    }
-
-    @Override
-    public boolean checkCondition() {
-        return BreakerMath.isRoughlyEqualTo(triggerTime, currentTimeSupplier.getAsDouble(), tolerences);
+        usesSupplier = true;
     }
 
     @Override
@@ -39,8 +43,13 @@ public class BreakerTimeTriggeredCommand implements BreakerConditionalCommand{
     }
 
     @Override
-    public boolean updateAutoRun() {
-        if (checkCondition()) {
+    public boolean checkCondition(double currentTimeSeconds, Pose2d currentPose) {
+        return BreakerMath.isRoughlyEqualTo(triggerTime, usesSupplier ? currentTimeSupplier.getAsDouble() : currentTimeSeconds, tolerences);
+    }
+
+    @Override
+    public boolean updateAutoRun(double currentTimeSeconds, Pose2d currentPose) {
+        if (checkCondition(currentTimeSeconds, currentPose)) {
             startRunning();
             return true;
         }

@@ -75,9 +75,7 @@ public class SystemDiagnostics implements BreakerSelfTestable {
         for (int id: deviceIDs) {
             outherIdsCAN.add(id);
         }
-    }
-
-    
+    }    
 
     @Override
     public void runSelfTest() {
