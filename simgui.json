@@ -2,6 +2,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/BreakerFalconOrchestra": "Subsystem",
       "/LiveWindow/BreakerRoboRio": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/Hopper": "Subsystem",
@@ -17,7 +18,8 @@
       "/LiveWindow/Ungrouped/Talon SRX [21]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [22]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [23]": "Motor Controller",
-      "/LiveWindow/Ungrouped/Talon SRX [31]": "Motor Controller"
+      "/LiveWindow/Ungrouped/Talon SRX [31]": "Motor Controller",
+      "/Shuffleboard/Setup/AUTOPATH SELECTOR": "String Chooser"
     }
   }
 }
