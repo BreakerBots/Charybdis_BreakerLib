@@ -33,9 +33,6 @@ public class attachedCommandsDemoTrajectory extends SequentialCommandGroup {
    TrajectoryConfig config;
    Pose2d startingPose;
    Pose2d endPose;
-   Translation2d WP1;
-   Translation2d WP2;
-   List<Translation2d> waypoints;
 
    public attachedCommandsDemoTrajectory(Drive drivetrain, BreakerPigeon2 pigeon2, Intake intake) {
  
