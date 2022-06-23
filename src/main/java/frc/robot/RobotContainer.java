@@ -11,6 +11,9 @@ import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
 import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.robotmanager.BreakerRobotConfig;
+import frc.robot.BreakerLib.util.robotmanager.BreakerRobotManager;
+import frc.robot.BreakerLib.util.robotmanager.BreakerRobotStartConfig;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 import frc.robot.commands.drive.DriveInTeleop;
 import frc.robot.commands.drive.ToggleSlowMode;
@@ -30,22 +33,19 @@ public class RobotContainer {
   private final Intake intakeSys = new Intake();
   private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
   private final Hopper hopperSys = new Hopper(intakeSys);
-  private final SelfTest testSys = new SelfTest(5, "172.22.11.2", orchestraSys);
-
-  private BreakerAutoManager autoManager;
 
   public RobotContainer() {
-    SelfTest.addDevices(imuSys, drivetrainSys.getBaseDrivetrain());
     orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
     orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
-    BreakerLog.startLog(false, orchestraSys);
+
+    BreakerRobotManager.setup(new BreakerRobotConfig(
+      new BreakerRobotStartConfig(5104, "BreakerBots", "Charybdis", 2022, "V3.2", "Roman Abrahamson, and Yousif Alkhalaf"), 
+      orchestraSys, 
+      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
+      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
+      new BreakerAutoPath("S-attaced com demo", new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
+
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
-
-    autoManager = new BreakerAutoManager(
-        new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
-        new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
-        new BreakerAutoPath("S-attaced com demo", new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys)));
-
     configureButtonBindings();
   }
 
@@ -65,6 +65,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoManager.getSelectedBaseCommandGroup();
+    return BreakerRobotManager.getSelectedAutoPath();
   }
 }

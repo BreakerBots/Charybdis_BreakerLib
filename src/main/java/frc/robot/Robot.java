@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    BreakerLog.logRobotStarted(5104, "BreakerBots", "Charybdis", 2022, "V3.2", "Roman Abrahamson, and Yousif Alkhalaf");
   }
 
   /**
