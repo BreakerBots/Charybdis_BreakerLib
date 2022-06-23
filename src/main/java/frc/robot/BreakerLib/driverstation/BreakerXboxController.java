@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.driverstation;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -70,6 +71,34 @@ public class BreakerXboxController {
         dPadDown = new POVButton(controller, DPAD_DOWN_ANG);
         dPadLeft = new POVButton(controller, DPAD_LEFT_ANG);
         dPadRight = new POVButton(controller, DPAD_RIGHT_ANG);
+    }
+
+    public void setRumble(BreakerControllerRumbleType rumbleType, double rumblePrecent) {
+        switch(rumbleType) {
+            case COARSE:
+                controller.setRumble(RumbleType.kLeftRumble, rumblePrecent);
+                break;
+            case FINE:
+                controller.setRumble(RumbleType.kRightRumble, rumblePrecent);
+                break;
+            case MIXED:
+                controller.setRumble(RumbleType.kLeftRumble, rumblePrecent);
+                controller.setRumble(RumbleType.kRightRumble, rumblePrecent);
+                break;
+            default:
+                controller.setRumble(RumbleType.kLeftRumble, rumblePrecent);
+                controller.setRumble(RumbleType.kRightRumble, rumblePrecent);
+                break;
+        }
+    }
+
+    public void setMixedRumble(double leftRumble, double rightRumble) {
+        controller.setRumble(RumbleType.kLeftRumble, leftRumble);
+        controller.setRumble(RumbleType.kRightRumble, leftRumble);
+    }
+
+    public void clearRumble() {
+        setMixedRumble(0, 0);
     }
 
     public JoystickButton getBackButton() {

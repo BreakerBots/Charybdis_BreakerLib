@@ -214,7 +214,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   @Override
   public void updateOdometry() {
     driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(), getRightDriveMeters());
-    calculateMovementState((Timer.getFPGATimestamp() - prevOdometryUpdateTimestamp) * 1000);
+    //calculateMovementState((Timer.getFPGATimestamp() - prevOdometryUpdateTimestamp) * 1000);
     prevOdometryUpdateTimestamp = Timer.getFPGATimestamp();
   }
 
