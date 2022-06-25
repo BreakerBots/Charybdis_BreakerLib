@@ -119,7 +119,7 @@ public class BreakerRobotConfig {
         this.autoRegesterDevices = true;
         this.orchestra = new BreakerFalconOrchestra();
         this.autoPaths = new BreakerAutoPath[0];
-        this.startConfig = new BreakerRobotStartConfig(0000, "FRC Team", "Robot", 9999, "V0.0", "People");
+        this.startConfig = new BreakerRobotStartConfig();
         usesOrchestra = false;
         usesPaths = false;
     }

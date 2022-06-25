@@ -15,9 +15,7 @@
 // import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 // import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
 // import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
-// import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateable;
-// import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolateingTreeMap;
-// import frc.robot.subsystems.devices.Vision;
+// import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolateingTreeMap;
 
 // public class Shooter extends SubsystemBase {
 //   public enum ShooterAimMode {
@@ -29,13 +27,13 @@
 //   private BreakerFlywheel flywheel;
 //   private WPI_TalonFX leftFlywheelMotor;
 //   private WPI_TalonFX rightFlywheelMotor;
-//   private Vision vision;
+//   //private Vision vision;
 //   private BreakerInterpolateingTreeMap<Double, BreakerVector2> interpolateingShotPerameterMap;
 //   private BreakerDiffDrive drivetrain;
 //   private ShooterAimMode aimMode = ShooterAimMode.AUTO_AIM;
 //   private BreakerProjectile ball;
-//   public Shooter(Vision vision, Drive drive) {
-//     this.vision = vision;
+//   public Shooter(/**Vision vision,*/ Drive drive) {
+//     //this.vision = vision;
 //     drivetrain = drive.getBaseDrivetrain();
 //     leftFlywheelMotor = new WPI_TalonFX(Constants.LEFT_FLYWHEEL_MOTOR_ID);
 //     rightFlywheelMotor = new WPI_TalonFX(Constants.RIGHT_FLYWHEEL_MOTOR_ID);
@@ -43,21 +41,23 @@
 //     leftFlywheelMotor.setInverted(true);
 //     rightFlywheelMotor.setInverted(false);
 
-//     config = new BreakerFlywheelConfig(flywheelKp, flywheelKi, flywheelKd, flywheelPosTol, flywheelVelTol, flywheelGearing, flywheelMomentOfInertiaJulesKgMetersSquared, modelKalmanTrust, encoderKalmanTrust, lqrVelocityErrorTolerance, lqrControlEffort);
+//     config = new BreakerFlywheelConfig(flywheelKp, flywheelKi, flywheelKd, flywheelPosTol,
+//      flywheelVelTol, flywheelGearing, flywheelMomentOfInertiaJulesKgMetersSquared, modelKalmanTrust, 
+//      encoderKalmanTrust, lqrVelocityErrorTolerance, lqrControlEffort);
 //     flywheel = new BreakerFlywheel(config, leftFlywheelMotor, rightFlywheelMotor);
 
-//     ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
+//     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
 
 //     TreeMap<Double, BreakerVector2> shotPerameterMap = new TreeMap<Double, BreakerVector2>();
-//       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
-//       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
+//       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(0, force));
+//       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(, force));
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 //       shotPerameterMap.put(arg0, BreakerVector2.fromForceAndRotation(forceRotation, force));
 
-//     interpolateingShotPerameterMap = new BreakerInterpolateingTreeMap<>(shotPerameterMap);
+//     interpolateingShotPerameterMap = new frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolateingTreeMap<>(shotPerameterMap);
 //   }
 
 //   public void setShooterAimMode(ShooterAimMode newAimMode) {

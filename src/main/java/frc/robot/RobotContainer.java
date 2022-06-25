@@ -65,6 +65,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return BreakerRobotManager.getSelectedAutoPath();
+    return new DemoTrajectoryS(drivetrainSys); //new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys); //BreakerRobotManager.getSelectedAutoPath();
   }
 }

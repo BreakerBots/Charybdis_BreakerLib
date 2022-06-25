@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.auto.trajectory.swerve;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -50,6 +51,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         this.config = config;
         this.stopAtEnd = stopAtEnd;
         this.requiredSubsystem = requiredSubsystem;
+        attachedCondtionalCommands = new ArrayList<>();
         try {
             for (BreakerTrajectoryPath path: trajectoryPaths) {
                 attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
@@ -72,6 +74,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
         this.stopAtEnd = stopAtEnd;
         this.requiredSubsystem = requiredSubsystem;
         this.rotationSupplier = rotationSupplier;
+        attachedCondtionalCommands = new ArrayList<>();
         try {
             for (BreakerTrajectoryPath path: trajectoryPaths) {
                 attachedCondtionalCommands.addAll(path.getAttachedConditionalCommands());
@@ -106,12 +109,12 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
             try {
                 if (usesSupplyedRotation) {
                     controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
-                        drivetrain::getOdometryPoseMeters,
+                    config.getOdometer()::getOdometryPoseMeters,
                         drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
                         config.getThetaAngPID(), rotationSupplier::getRotation, drivetrain::setRawModuleStates, requiredSubsystem);
                 } else {
                     controller = new SwerveControllerCommand(trajectoriesToFollow[currentTrajectory],
-                        drivetrain::getOdometryPoseMeters,
+                        config.getOdometer()::getOdometryPoseMeters,
                         drivetrain.getConfig().getKinematics(), config.getxPosPID(), config.getyPosPID(),
                         config.getThetaAngPID(), drivetrain::setRawModuleStates, requiredSubsystem);
                 }
@@ -209,12 +212,15 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
 
     private void checkAttachedCommands() {
         try {
-            for (BreakerConditionalCommand com: attachedCondtionalCommands) {
-                com.updateAutoRun(currentTimeSeconds, drivetrain.getOdometryPoseMeters());
+            Iterator<BreakerConditionalCommand> iterator = attachedCondtionalCommands.iterator();
+            while (iterator.hasNext()) {
+                BreakerConditionalCommand com = iterator.next();
+                if (com.checkCondition(currentTimeSeconds, config.getOdometer().getOdometryPoseMeters())) {
+                    com.startRunning();
+                    iterator.remove();
+                }
             }
-        } catch (Exception e) {
-            BreakerLog.logError(e.toString());
-        }
+        } catch (Exception e) {}
         
     }
 }

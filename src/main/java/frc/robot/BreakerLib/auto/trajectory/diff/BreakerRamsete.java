@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.auto.trajectory.diff;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
@@ -31,6 +33,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
+    private BreakerGenericOdometer odometer;
     private double currentTimestamp = Timer.getFPGATimestamp();
     private final double startTimestamp = Timer.getFPGATimestamp();
     private double currentTimeSeconds = 0.0;
@@ -53,13 +56,14 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
             Subsystem subsystemRequirements, double ramseteB,
             double ramseteZeta, boolean stopAtEnd) {
         this.drivetrain = drivetrain;
+        this.odometer = drivetrain;
         trajectoryToFollow = trajectoryPath.getBaseTrajectory();
 
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
                 + trajectoryToFollow.getTotalTimeSeconds());
 
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
-        ramsete = new RamseteCommand(trajectoryToFollow, drivetrain::getOdometryPoseMeters, ramseteController,
+        ramsete = new RamseteCommand(trajectoryToFollow, odometer::getOdometryPoseMeters, ramseteController,
                 drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), drivetrain::getWheelSpeeds, drivetrain.getLeftPIDController(),
                 drivetrain.getRightPIDController(), drivetrain::tankMoveVoltage, subsystemRequirements);
@@ -67,6 +71,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
+        attachedCondtionalCommands = new ArrayList<>();
 
         try {
             attachedCondtionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
@@ -75,16 +80,18 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
         }
     }
 
-    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
-            Supplier<Pose2d> currentPoseSupplyer, Subsystem subsystemRequirements, 
-            double ramseteB, double ramseteZeta,  boolean stopAtEnd) {
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain, BreakerGenericOdometer odometer,
+            Subsystem subsystemRequirements, double ramseteB,
+            double ramseteZeta, boolean stopAtEnd) {
+        this.drivetrain = drivetrain;
+        this.odometer = odometer;
+        trajectoryToFollow = trajectoryPath.getBaseTrajectory();
+
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
                 + trajectoryToFollow.getTotalTimeSeconds());
-        this.drivetrain = drivetrain;
-        this.trajectoryToFollow = trajectoryPath.getBaseTrajectory();
 
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
-        ramsete = new RamseteCommand(trajectoryToFollow, currentPoseSupplyer, ramseteController,
+        ramsete = new RamseteCommand(trajectoryToFollow, odometer::getOdometryPoseMeters, ramseteController,
                 drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), drivetrain::getWheelSpeeds, drivetrain.getLeftPIDController(),
                 drivetrain.getRightPIDController(), drivetrain::tankMoveVoltage, subsystemRequirements);
@@ -92,6 +99,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
+        attachedCondtionalCommands = new ArrayList<>();
 
         try {
             attachedCondtionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
@@ -165,11 +173,15 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTrajeco
 
     private void checkAttachedCommands() {
         try {
-            for (BreakerConditionalCommand com: attachedCondtionalCommands) {
-                com.updateAutoRun(currentTimeSeconds, drivetrain.getOdometryPoseMeters());
+            Iterator<BreakerConditionalCommand> iterator = attachedCondtionalCommands.iterator();
+            while (iterator.hasNext()) {
+                BreakerConditionalCommand com = iterator.next();
+                if (com.checkCondition(currentTimeSeconds, odometer.getOdometryPoseMeters())) {
+                    com.startRunning();
+                    iterator.remove();
+                }
             }
         } catch (Exception e) {}
-        
     }
 
     private void calculateTime() {

@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.BreakerTrajectoryUtil;
 import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
@@ -37,25 +38,37 @@ public class attachedCommandsDemoTrajectory extends SequentialCommandGroup {
    public attachedCommandsDemoTrajectory(Drive drivetrain, BreakerPigeon2 pigeon2, Intake intake) {
  
      startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
-     endPose = new Pose2d(4, 0, Rotation2d.fromDegrees(0));
+     endPose = new Pose2d(0, 0, Rotation2d.fromDegrees(-22));
      config = new TrajectoryConfig(0.5, 0.5);
      // creates first trajecotry to follow
      partOne = new BreakerTrajectoryPath(
       TrajectoryGenerator.generateTrajectory(startingPose, 
         BreakerTrajectoryUtil.toTranslationWaypointList(
           new Translation2d(1, 1),
-          new Translation2d(2, 0), 
-          new Translation2d(3, -1)), endPose, config),
+          new Translation2d(2, 0),
+          new Translation2d(1, -1)),
+           endPose, config),
        new BreakerPositionTriggeredCommand(
-         new Pose2d(2, 0, Rotation2d.fromDegrees(-45)), 
+         new Pose2d(1, 1, Rotation2d.fromDegrees(0)), 
          drivetrain.getBaseDrivetrain()::getOdometryPoseMeters, 
          new Pose2d(0.25, 0.25, Rotation2d.fromDegrees(180)), 
-         new ToggleIntake(intake))
+         new InstantCommand(intake::startIntake)),
+      new BreakerPositionTriggeredCommand(
+          new Pose2d(2, 0, Rotation2d.fromDegrees(45)), 
+          drivetrain.getBaseDrivetrain()::getOdometryPoseMeters, 
+          new Pose2d(0.25, 0.25, Rotation2d.fromDegrees(360)), 
+          new InstantCommand(intake::stopIntake)),
+      new BreakerPositionTriggeredCommand(
+          new Pose2d(1, -1, Rotation2d.fromDegrees(45)), 
+          drivetrain.getBaseDrivetrain()::getOdometryPoseMeters, 
+          new Pose2d(0.25, 0.25, Rotation2d.fromDegrees(360)), 
+          new InstantCommand(intake::startIntake))
         );
  
      addCommands(
        new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
-       new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, true)
+       new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, true),
+       new InstantCommand(intake::stopIntake)
      );
   }
 }

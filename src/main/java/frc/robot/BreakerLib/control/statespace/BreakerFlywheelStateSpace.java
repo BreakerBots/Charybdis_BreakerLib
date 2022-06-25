@@ -60,6 +60,10 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
     targetSpeedRadPerSec = targetSpeed;
   }
 
+  public void setSpeedRawSensorUnits(double targetSpeed) {
+    targetSpeedRadPerSec = BreakerUnits.falconVelRsuToRadPerSec(targetSpeed);
+  }
+
   /** Sets the loop's target speed to zero */
   public void stop() {
     targetSpeedRadPerSec = 0;

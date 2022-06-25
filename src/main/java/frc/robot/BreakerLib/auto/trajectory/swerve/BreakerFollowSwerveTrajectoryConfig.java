@@ -7,6 +7,7 @@ package frc.robot.BreakerLib.auto.trajectory.swerve;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 
 /** Add your docs here. */
@@ -17,6 +18,7 @@ public class BreakerFollowSwerveTrajectoryConfig {
     private ProfiledPIDController tAngPID;
     private BreakerSwerveDrive drivetrain;
     private Constraints constraints;
+    private BreakerGenericOdometer odometer;
 
     public BreakerFollowSwerveTrajectoryConfig(BreakerSwerveDrive drivetrain, PIDController xPositionPID, PIDController yPositionPID,
             double thetaAngleKp, double thetaAngleKi, double thetaAngleKd, double maxAllowedThetaVel,
@@ -26,6 +28,18 @@ public class BreakerFollowSwerveTrajectoryConfig {
         constraints = new Constraints(maxAllowedThetaVel, maxAllowedThetaAccel);
         tAngPID = new ProfiledPIDController(thetaAngleKp, thetaAngleKi, thetaAngleKd, constraints);
         this.drivetrain = drivetrain;
+        this.odometer = drivetrain;
+    }
+
+    public BreakerFollowSwerveTrajectoryConfig(BreakerSwerveDrive drivetrain, BreakerGenericOdometer odometer, PIDController xPositionPID, PIDController yPositionPID,
+            double thetaAngleKp, double thetaAngleKi, double thetaAngleKd, double maxAllowedThetaVel,
+            double maxAllowedThetaAccel) {
+        xPosPID = xPositionPID;
+        yPosPID = yPositionPID;
+        constraints = new Constraints(maxAllowedThetaVel, maxAllowedThetaAccel);
+        tAngPID = new ProfiledPIDController(thetaAngleKp, thetaAngleKi, thetaAngleKd, constraints);
+        this.drivetrain = drivetrain;
+        this.odometer = odometer;
     }
 
     public void setPidTolerences(double[] tolernces) {
@@ -48,5 +62,9 @@ public class BreakerFollowSwerveTrajectoryConfig {
 
     public BreakerSwerveDrive getDrivetrain() {
         return drivetrain;
+    }
+
+    public BreakerGenericOdometer getOdometer() {
+        return odometer;
     }
 }
