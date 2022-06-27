@@ -42,6 +42,10 @@ public class BreakerFlywheel extends SubsystemBase {
         return lFlyMotor.getSelectedSensorVelocity();
     }
 
+    public double getFlywheelRPM() {
+        return BreakerUnits.falconRSUtoRPM(getFlywheelVelRSU());
+    }
+
     public double getFlywheelTargetVelRSU() {
         return flywheelTargetRSU;
     }
