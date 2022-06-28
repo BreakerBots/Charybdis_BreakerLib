@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 
 /** Add your docs here. */
-public class BreakerDIO implements BreakerGenericIO {
+public class BreakerDIO {
 
     public enum DIOState {
         DIGITAL_IN,
@@ -59,11 +59,8 @@ public class BreakerDIO implements BreakerGenericIO {
         return output;
     }
 
-    @Override
-    public BreakerIOEntryCollection getEntryCollection() {
-        return null;
+    public int getChannel() {
+        return channel;
     }
-
-
 
 }
