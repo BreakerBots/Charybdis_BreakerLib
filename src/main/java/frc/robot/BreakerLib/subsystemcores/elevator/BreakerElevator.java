@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.subsystemcores.elevator;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -35,10 +36,14 @@ public class BreakerElevator extends SubsystemBase {
 
     private boolean limitsEnabled = false;
 
-    private DigitalInput fLimit;
+    private BooleanSupplier fLimit;
+    private DigitalInput fLimitDIO;
+    private boolean invertLimitF = false;
     private boolean hasLimitF = false;
 
-    private DigitalInput rLimit;
+    private BooleanSupplier rLimit;
+    private DigitalInput rLimitDIO;
+    private boolean invertLimitR = false;
     private boolean hasLimitR = false;
 
     /** Uses integrated motor encoder */
@@ -80,12 +85,54 @@ public class BreakerElevator extends SubsystemBase {
     }
 
     public void addForwardLimitSwitch(int dioChannel) {
-        fLimit = new DigitalInput(dioChannel);
+        fLimitDIO = new DigitalInput(dioChannel);
+        fLimit = fLimitDIO :: get;
+        invertLimitF = false;
+        hasLimitF = true;
+    }
+
+    public void addForwardLimitSwitch(int dioChannel, boolean invertInput) {
+        fLimitDIO = new DigitalInput(dioChannel);
+        fLimit = fLimitDIO :: get;
+        invertLimitF = invertInput;
         hasLimitF = true;
     }
 
     public void addReverceLimitSwitch(int dioChannel) {
-        fLimit = new DigitalInput(dioChannel);
+        rLimitDIO = new DigitalInput(dioChannel);
+        rLimit = rLimitDIO :: get;
+        invertLimitR = false;
+        hasLimitR = true;
+    }
+
+    public void addReverceLimitSwitch(int dioChannel, boolean invertInput) {
+        rLimitDIO = new DigitalInput(dioChannel);
+        rLimit = rLimitDIO :: get;
+        invertLimitR = invertInput;
+        hasLimitR = true;
+    }
+
+    public void addForwardLimitSwitch(BooleanSupplier switchSupplier) {
+        fLimit = switchSupplier;
+        invertLimitF = false;
+        hasLimitF = true;
+    }
+
+    public void addForwardLimitSwitch(BooleanSupplier switchSupplier, boolean invertInput) {
+        fLimit = switchSupplier;
+        invertLimitF = false;
+        hasLimitF = true;
+    }
+
+    public void addReverceLimitSwitch(BooleanSupplier switchSupplier) {
+        rLimit = switchSupplier;
+        invertLimitR = false;
+        hasLimitR = true;
+    }
+
+    public void addReverceLimitSwitch(BooleanSupplier switchSupplier, boolean invertInput) {
+        rLimit = switchSupplier;
+        invertLimitR = false;
         hasLimitR = true;
     }
 
@@ -98,12 +145,20 @@ public class BreakerElevator extends SubsystemBase {
         rightGroup.set(precentSpeed);
     }
 
+    public double getElevatorHightMeters() {
+        return currentHightMeters;
+    }
+
+    public double getCurrentSetHightMeters() {
+        return setHightMeters;
+    }
+
     private boolean checkLimits() {
         if (limitsEnabled) {
             if (hasLimitF) {
-                return fLimit.get();
+                return invertLimitF ? !fLimit.getAsBoolean() : fLimit.getAsBoolean();
             } else if (hasLimitR) {
-                return rLimit.get();
+                return invertLimitR ? !rLimit.getAsBoolean() : rLimit.getAsBoolean();
             }
         }
         return false;
