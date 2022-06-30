@@ -87,8 +87,10 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     if (flywheelEnabled) {
+      System.out.println("---------- FLYWHEEL ENABLED ----------");
         flywheelLogic();
     } else {
+      System.out.println("---------- FLYWHEEL DISABLED ----------");
         flywheel.setFlywheelSpeed(0.0);
     }
     

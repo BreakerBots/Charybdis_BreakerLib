@@ -77,7 +77,7 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     drivetrain.updateOdometry();
-    System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks()
-        + " Ticks L: " + drivetrain.getLeftDriveTicks());
+    // System.out.println(drivetrain.getOdometryPoseMeters().toString() + " Ticks R: " + drivetrain.getRightDriveTicks()
+    //     + " Ticks L: " + drivetrain.getLeftDriveTicks());
   }
 }

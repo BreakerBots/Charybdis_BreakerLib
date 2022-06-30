@@ -15,10 +15,10 @@ import frc.robot.BreakerLib.util.robotmanager.BreakerRobotConfig;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotManager;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotStartConfig;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
-import frc.robot.commands.ToggleShooter;
 import frc.robot.commands.drive.DriveInTeleop;
 import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
+import frc.robot.commands.shooter.ToggleShooter;
 import frc.robot.commands.trajectorypaths.DemoTrajectoryS;
 import frc.robot.commands.trajectorypaths.attachedCommandsDemoTrajectory;
 import frc.robot.commands.trajectorypaths.circleDemoTrajectory;
@@ -36,7 +36,7 @@ public class RobotContainer {
   private final Intake intakeSys = new Intake();
   private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
   private final Hopper hopperSys = new Hopper(intakeSys);
- // private final Shooter shooterSys = new Shooter(drivetrainSys);
+ private final Shooter shooterSys = new Shooter(drivetrainSys);
 
   public RobotContainer() {
     orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
@@ -58,7 +58,7 @@ public class RobotContainer {
 
     controllerSys.getdPadRight().whenPressed(new ToggleSlowMode(drivetrainSys.getBaseDrivetrain()));
 
-    //controllerSys.getButtonB().whenPressed(new ToggleShooter(shooterSys));
+    controllerSys.getButtonB().whenPressed(new ToggleShooter(shooterSys));
   }
 
   public void setDriveBreakMode(Boolean isEnebled) {
