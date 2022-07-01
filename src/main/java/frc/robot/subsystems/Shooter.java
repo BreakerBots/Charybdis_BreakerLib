@@ -45,8 +45,8 @@ public class Shooter extends SubsystemBase {
     leftFlywheelMotor.setInverted(true);
     rightFlywheelMotor.setInverted(false);
 
-    config = new BreakerFlywheelConfig(0.0004, 0.0, 0.000015, 10,
-     10, 1.0, 0.003, 0.0, 0, 3, 12);
+    config = new BreakerFlywheelConfig(0.0, 0.0, 0.0, 10.0,
+     10.0, 1.0, 0.0003, 1.0, 1.0, 3.0, 12.0); //0.003
     flywheel = new BreakerFlywheel(config, leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
@@ -76,7 +76,10 @@ public class Shooter extends SubsystemBase {
 
   private void flywheelLogic() {
     //if (aimMode == ShooterAimMode.AUTO_AIM) {
-      flywheel.setFlywheelSpeed(getIntepolatedVector(getDistanceToTarget()).getForce());
+      double speed = getIntepolatedVector(getDistanceToTarget()).getForce();
+      flywheel.setFlywheelSpeed(speed);
+      System.out.println("Commanded SPEED: " + speed );
+
     //}
   }
 
@@ -87,13 +90,11 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     if (flywheelEnabled) {
-      System.out.println("---------- FLYWHEEL ENABLED ----------");
-        flywheelLogic();
+      flywheelLogic();
+      System.out.println("RPM: " + flywheel.getFlywheelRPM());
     } else {
-      System.out.println("---------- FLYWHEEL DISABLED ----------");
         flywheel.setFlywheelSpeed(0.0);
     }
     
-    System.out.println("RPM: " + flywheel.getFlywheelRPM());
   }
 }

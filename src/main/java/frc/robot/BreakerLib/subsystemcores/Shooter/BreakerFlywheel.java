@@ -17,7 +17,6 @@ import frc.robot.BreakerLib.util.math.BreakerUnits;
 /** A class representing a robot's shooter flywheel and its assocated controle loop */
 public class BreakerFlywheel extends SubsystemBase {
     private PIDController flyPID;
-    private boolean runFlywheel = false;
     private double flywheelTargetRSU = 0;
     private MotorControllerGroup flywheel;
     private WPI_TalonFX lFlyMotor;
@@ -51,24 +50,21 @@ public class BreakerFlywheel extends SubsystemBase {
     }
 
     public void stopFlywheel() {
-        runFlywheel = false;
         flySS.killLoop();
         flywheel.set(0);
         BreakerLog.logSuperstructureEvent("flywheel stoped");
     }
 
     public void startFlywheel() {
-        runFlywheel = true;
         flySS.restartLoop();
         BreakerLog.logSuperstructureEvent("flywheel started charging");
     }
 
     private void runFlywheel() {
-        if (runFlywheel) {
-            flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
-            double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed();
-            flywheel.set(flySetSpd);
-        }
+        flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
+        double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed();
+        System.out.println("Fly Set Spd: " + flySetSpd + "| target spd: " + flywheelTargetRSU + " | Cur spd RPM: " + getFlywheelRPM());
+        flywheel.set(flySetSpd);
     }
 
     public boolean flywheelIsAtTargetVel() {
