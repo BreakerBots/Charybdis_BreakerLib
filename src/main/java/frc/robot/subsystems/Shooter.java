@@ -45,8 +45,8 @@ public class Shooter extends SubsystemBase {
     leftFlywheelMotor.setInverted(true);
     rightFlywheelMotor.setInverted(false);
 
-    config = new BreakerFlywheelConfig(0.0, 0.0, 0.0, 10.0,
-     10.0, 1.0, 0.0003, 1.0, 1.0, 3.0, 12.0); //0.003
+    config = new BreakerFlywheelConfig(0.0, 0.0, 0.0, 10.0, 10.0, 
+    1.0, 0.0006, 3.0, 0.01, 10.0, 3.0); //0.003
     flywheel = new BreakerFlywheel(config, leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
@@ -76,7 +76,7 @@ public class Shooter extends SubsystemBase {
 
   private void flywheelLogic() {
     //if (aimMode == ShooterAimMode.AUTO_AIM) {
-      double speed = getIntepolatedVector(getDistanceToTarget()).getForce();
+      double speed = 2000;//getIntepolatedVector(getDistanceToTarget()).getForce();
       flywheel.setFlywheelSpeed(speed);
       System.out.println("Commanded SPEED: " + speed );
 

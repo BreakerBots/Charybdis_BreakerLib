@@ -102,6 +102,10 @@ public class BreakerFlywheelStateSpace extends SubsystemBase {
     return (nextVoltage / leadFlywheelMotor.getBusVoltage());
   }
 
+  public KalmanFilter<N1, N1, N1> getKalmanFilter() {
+    return kalmanFilter;
+  }
+
   @Override
   public void periodic() {
     runLoop();

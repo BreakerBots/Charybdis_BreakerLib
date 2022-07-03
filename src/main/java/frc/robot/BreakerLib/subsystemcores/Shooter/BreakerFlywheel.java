@@ -63,7 +63,7 @@ public class BreakerFlywheel extends SubsystemBase {
     private void runFlywheel() {
         flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
         double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed();
-        System.out.println("Fly Set Spd: " + flySetSpd + "| target spd: " + flywheelTargetRSU + " | Cur spd RPM: " + getFlywheelRPM());
+        System.out.println("Fly Set Spd: " + flySetSpd + "| target spd: " + flywheelTargetRSU + " | Cur spd RPM: " + getFlywheelRPM() + " | Kalman: " + flySS.getKalmanFilter().getK(0, 0));
         flywheel.set(flySetSpd);
     }
 
