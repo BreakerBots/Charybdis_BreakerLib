@@ -11,14 +11,14 @@ public class BreakerFlywheelConfig {
     private double flywheelKd;
     private double flywheelPosTol;
     private double flywheelVelTol;
-    private double flywheelGearing;
-    private double flywheelMomentOfInertiaJulesKgMetersSquared;
+    private double flywheelKv;
+    private double flywheelKs;
     private double modelKalmanTrust;
     private double encoderKalmanTrust;
     private double lqrVelocityErrorTolerance;
     private double lqrControlEffort;
     public BreakerFlywheelConfig(double flywheelKp, double flywheelKi, double flywheelKd, double flywheelPosTol, 
-    double flywheelVelTol, double flywheelGearing, double flywheelMomentOfInertiaJulesKgMetersSquared, double modelKalmanDeviation, 
+    double flywheelVelTol, double flywheelKv, double flywheelKs, double modelKalmanDeviation, 
     double encoderKalmanDeveation, double lqrVelocityErrorTolerance, double lqrControlEffort) {
 
         this.flywheelKp = flywheelKp;
@@ -26,20 +26,24 @@ public class BreakerFlywheelConfig {
         this.flywheelKd = flywheelKd;
         this.flywheelPosTol = flywheelPosTol;
         this.flywheelVelTol = flywheelVelTol;
-        this.flywheelGearing = flywheelGearing;
-        this.flywheelMomentOfInertiaJulesKgMetersSquared = flywheelMomentOfInertiaJulesKgMetersSquared;
+        this.flywheelKv = flywheelKv;
+        this.flywheelKs = flywheelKs;
         this.modelKalmanTrust = modelKalmanDeviation;
         this.encoderKalmanTrust = encoderKalmanDeveation;
         this.lqrVelocityErrorTolerance = lqrVelocityErrorTolerance;
         this.lqrControlEffort = lqrControlEffort;
     }
 
-    public double getEncoderKalmanTrust() {
-        return encoderKalmanTrust;
+    public double getFlywheelKs() {
+        return flywheelKs;
     }
 
-    public double getFlywheelGearing() {
-        return flywheelGearing;
+    public double getFlywheelKv() {
+        return flywheelKv;
+    }
+
+    public double getEncoderKalmanTrust() {
+        return encoderKalmanTrust;
     }
 
     public double getFlywheelKd() {
@@ -52,10 +56,6 @@ public class BreakerFlywheelConfig {
 
     public double getFlywheelKp() {
         return flywheelKp;
-    }
-
-    public double getFlywheelMomentOfInertiaJulesKgMetersSquared() {
-        return flywheelMomentOfInertiaJulesKgMetersSquared;
     }
 
     public double getFlywheelPosTol() {
