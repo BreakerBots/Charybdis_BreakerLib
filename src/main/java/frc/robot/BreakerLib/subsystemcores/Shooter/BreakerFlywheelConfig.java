@@ -9,7 +9,7 @@ public class BreakerFlywheelConfig {
     private double flywheelKp;
     private double flywheelKi;
     private double flywheelKd;
-    private double flywheelPosTol;
+    private double flywheelAccelTol;
     private double flywheelVelTol;
     private double flywheelKv;
     private double flywheelKs;
@@ -17,14 +17,14 @@ public class BreakerFlywheelConfig {
     private double encoderKalmanTrust;
     private double lqrVelocityErrorTolerance;
     private double lqrControlEffort;
-    public BreakerFlywheelConfig(double flywheelKp, double flywheelKi, double flywheelKd, double flywheelPosTol, 
-    double flywheelVelTol, double flywheelKv, double flywheelKs, double modelKalmanDeviation, 
+    public BreakerFlywheelConfig(double flywheelKp, double flywheelKi, double flywheelKd, double flywheelVelTol, 
+    double flywheelAccelTol, double flywheelKv, double flywheelKs, double modelKalmanDeviation, 
     double encoderKalmanDeveation, double lqrVelocityErrorTolerance, double lqrControlEffort) {
 
         this.flywheelKp = flywheelKp;
         this.flywheelKi = flywheelKi;
         this.flywheelKd = flywheelKd;
-        this.flywheelPosTol = flywheelPosTol;
+        this.flywheelAccelTol = flywheelAccelTol;
         this.flywheelVelTol = flywheelVelTol;
         this.flywheelKv = flywheelKv;
         this.flywheelKs = flywheelKs;
@@ -58,8 +58,8 @@ public class BreakerFlywheelConfig {
         return flywheelKp;
     }
 
-    public double getFlywheelPosTol() {
-        return flywheelPosTol;
+    public double getFlywheelAccelTol() {
+        return flywheelAccelTol;
     }
 
     public double getFlywheelVelTol() {

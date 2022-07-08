@@ -26,7 +26,7 @@ public class BreakerFlywheel extends SubsystemBase {
 
     public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
         flyPID = new PIDController(config.getFlywheelKp(), config.getFlywheelKi(), config.getFlywheelKd());
-        flyPID.setTolerance(config.getFlywheelPosTol(), config.getFlywheelVelTol());
+        flyPID.setTolerance(config.getFlywheelVelTol(), config.getFlywheelAccelTol());
         flySS = new BreakerFlywheelStateSpace(config.getFlywheelKv(),
                 config.getFlywheelKs(), config.getModelKalmanTrust(),
                 config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(),

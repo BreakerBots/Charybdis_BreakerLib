@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.util.math.averages;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /** Add your docs here. */
 public class BreakerRunningAverage implements BreakerGenericAverageingList<Double>{
@@ -60,5 +61,10 @@ public class BreakerRunningAverage implements BreakerGenericAverageingList<Doubl
     @Override
     public boolean removeGivenValue(Object value) {
         return list.remove(value);
+    }
+
+    @Override
+    public List<Double> getBaseList() {
+        return list;
     }
 }

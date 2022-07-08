@@ -4,6 +4,8 @@
 
 package frc.robot.BreakerLib.util.math.averages;
 
+import java.util.List;
+
 /** Add your docs here. */
 public interface BreakerGenericAverageingList<T> {
     /** adds a new value to the list and returns the new average */
@@ -11,6 +13,7 @@ public interface BreakerGenericAverageingList<T> {
     public abstract T getAverage();
     public abstract T getAverageBetweenGivenIndexes(int startIndex, int stopIndex);
     public abstract T[] getAsArray();
+    public abstract List<T> getBaseList();
     public abstract void clear();
     public abstract void removeValueAtGivenIndex(int index);
     public abstract boolean removeGivenValue(Object value);

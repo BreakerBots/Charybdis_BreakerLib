@@ -58,4 +58,9 @@ public class BreakerAverage implements BreakerGenericAverageingList<Double> {
         return list.remove(value);
     }
 
+    @Override
+    public List<Double> getBaseList() {
+        return list;
+    }
+
 }
