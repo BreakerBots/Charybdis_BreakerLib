@@ -4,6 +4,8 @@
 
 package frc.robot.BreakerLib.subsystemcores.shooter;
 
+import java.util.EnumMap;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;

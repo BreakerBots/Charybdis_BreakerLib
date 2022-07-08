@@ -26,18 +26,12 @@ public class Drive extends SubsystemBase {
   private BreakerDiffDrive drivetrain;
   private BreakerDiffDriveConfig driveConfig;
 
-  private WPI_TalonFX left1;
-  private WPI_TalonFX left2;
-  private WPI_TalonFX left3;
-  private WPI_TalonFX right1;
-  private WPI_TalonFX right2;
-  private WPI_TalonFX right3;
+  private WPI_TalonFX left1, left2, left3;
+  private WPI_TalonFX right1, right2, right3;
 
-  private WPI_TalonFX[] leftMotors;
-  private WPI_TalonFX[] rightMotors;
+  private WPI_TalonFX[] leftMotors, rightMotors;
 
-  private PIDController leftSideRamsetePID;
-  private PIDController rightSideRamsetePID;
+  private PIDController leftSideRamsetePID, rightSideRamsetePID;
 
   public Drive(BreakerPigeon2 pigeon2) {
 

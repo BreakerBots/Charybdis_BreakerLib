@@ -22,29 +22,16 @@
 //     private BreakerSwerveDriveConfig config;
 //     private BreakerSwerveDrive drivetrain;
 
-//     private WPI_TalonFX driveFL;
-//     private WPI_TalonFX turnFL;
-//     private WPI_TalonFX driveFR;
-//     private WPI_TalonFX turnFR;
-//     private WPI_TalonFX driveBL;
-//     private WPI_TalonFX turnBL;
-//     private WPI_TalonFX driveBR;
-//     private WPI_TalonFX turnBR;
+//     private WPI_TalonFX driveFL, turnFL;
+//     private WPI_TalonFX driveFR, turnFR;
+//     private WPI_TalonFX driveBL, turnBL;
+//     private WPI_TalonFX driveBR, turnBR;
 
-//     private WPI_CANCoder encoderFL;
-//     private WPI_CANCoder encoderFR;
-//     private WPI_CANCoder encoderBL;
-//     private WPI_CANCoder encoderBR;
+//     private WPI_CANCoder encoderFL, encoderFR, encoderBL, encoderBR;
 
-//     private Translation2d transFL;
-//     private Translation2d transFR;
-//     private Translation2d transBL;
-//     private Translation2d transBR;
+//     private Translation2d transFL, transFR, transBL, transBR;
 
-//     private BreakerMK4iSwerveModule frontLeftModule;
-//     private BreakerMK4iSwerveModule frontRightModule;
-//     private BreakerMK4iSwerveModule backLeftModule;
-//     private BreakerMK4iSwerveModule backRightModule;
+//     private BreakerMK4iSwerveModule frontLeftModule, frontRightModule, backLeftModule, backRightModule;
 
 //     private BreakerPigeon2 pigeon2;
     
@@ -78,7 +65,7 @@
 //             frontLeftModule.setDeviceName(" Front_Left_Module ");
 //         frontRightModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
 //             frontRightModule.setDeviceName(" Front_Right_Module ");
-//         backLeftModule = new BreakerMK4iSwerveModule(driveFR, turnFR, encoderFR, config);
+//         backLeftModule = new BreakerMK4iSwerveModule(driveBL, turnBL, encoderBL, config);
 //             backLeftModule.setDeviceName(" Back_Left_Module ");
 //         backRightModule = new BreakerMK4iSwerveModule(driveBR, turnBR, encoderBR, config);
 //             backRightModule.setDeviceName(" Back_Right_Module ");
