@@ -67,7 +67,7 @@ public class BreakerTimedFlywheelSpinUpTest extends BreakerTestBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    logEnd();
+    logEnd(getResults().toString());
   }
 
   // Returns true when the command should end.
@@ -120,6 +120,14 @@ public class BreakerTimedFlywheelSpinUpTest extends BreakerTestBase {
 
     public double getAverageDeveation() {
       return targetRPM - averageSpeeds.getAverage();
+    }
+
+    @Override
+    public String toString() {
+        return "Target RPM: " + targetRPM + " | Average RPM: " + averageSpeeds.getAverage() +
+          "\n | Avg Deveation RPM: " + getAverageDeveation() + " | Peak Deveation RPM: " + peakDeveationRPM +
+          "\n | Total Test Seconds: " + testTimeSeconds + " | Time To Stablity: " + timeToStabilitySec +
+          "\n | Prec Of Time Stable: " + precentOfTimeStable;
     }
   }
 }

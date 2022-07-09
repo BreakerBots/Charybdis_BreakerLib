@@ -25,12 +25,17 @@ public class BreakerTestBase extends CommandBase {
         BreakerLog.logEvent(startString);
     }
 
-    public void logEnd() {
+    public void logEnd(String results) {
         BreakerLog.logEvent("TEST ( " + testName + " ) ENDED AT: (T+) " + Timer.getFPGATimestamp());
+        if (logType != BreakerTestSuiteDataLogType.NONE) {
+            BreakerLog.log("RESULTS FOR ( " + testName + " ): " + results);
+        }
     }
 
-    public void logResults(String results) {
-        BreakerLog.log("RESULTS FOR ( " + testName + " ): " + results);
+    public void periodicLog(String message) {
+        if (logType == BreakerTestSuiteDataLogType.LIVE_AUTOLOG) {
+            BreakerLog.log(message);
+        }
     }
 
     public BreakerTestSuiteDataLogType getLogType() {

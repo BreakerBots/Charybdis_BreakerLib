@@ -15,14 +15,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.control.statespace.BreakerFlywheelStateSpace;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
+import frc.robot.BreakerLib.util.testsuites.BreakerGenericTestSuiteImplamentation;
+import frc.robot.BreakerLib.util.testsuites.flywheelSuite.BreakerFlywheelTestSuite;
 
 /** A class representing a robot's shooter flywheel and its assocated controle loop */
-public class BreakerFlywheel extends SubsystemBase {
+public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTestSuiteImplamentation<BreakerFlywheelTestSuite> {
     private PIDController flyPID;
     private double flywheelTargetRSU = 0;
     private MotorControllerGroup flywheel;
     private WPI_TalonFX lFlyMotor;
     private BreakerFlywheelStateSpace flySS;
+    private BreakerFlywheelTestSuite testSuite;
 
     public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
         flyPID = new PIDController(config.getFlywheelKp(), config.getFlywheelKi(), config.getFlywheelKd());
@@ -33,6 +36,8 @@ public class BreakerFlywheel extends SubsystemBase {
                 flywheelMotors);
         flywheel = new MotorControllerGroup(flywheelMotors);
         lFlyMotor = flywheelMotors[0];
+
+        testSuite = new BreakerFlywheelTestSuite(this);
     }
 
     public void setFlywheelSpeed(double flywheelTargetSpeedRPM) {
@@ -76,5 +81,10 @@ public class BreakerFlywheel extends SubsystemBase {
     @Override
     public void periodic() {
         runFlywheel();
+    }
+
+    @Override
+    public BreakerFlywheelTestSuite getTestSuite() {
+        return testSuite;
     }
 }
