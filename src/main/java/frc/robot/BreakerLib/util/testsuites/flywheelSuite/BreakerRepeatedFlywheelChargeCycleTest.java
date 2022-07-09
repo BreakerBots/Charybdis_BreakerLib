@@ -13,14 +13,14 @@ import frc.robot.BreakerLib.util.math.averages.BreakerAverage;
 import frc.robot.BreakerLib.util.testsuites.BreakerTestBase;
 import frc.robot.BreakerLib.util.testsuites.BreakerTestSuiteDataLogType;
 
-public class RepeatedFlywheelChargeCycleTest extends BreakerTestBase {
+public class BreakerRepeatedFlywheelChargeCycleTest extends BreakerTestBase {
   /** Creates a new RepeatedFlywheelSpinUpTest. */
   private int numberOfCycles, curPhase;
   private double targetRPM, phaseStartTime;
   private BreakerFlywheel baseFlywheel;
   private boolean isSpinUp;
   private BreakerAverage avgChargeUp, avgSpinDown;
-  public RepeatedFlywheelChargeCycleTest(int numberOfCycles, double targetRPM, BreakerFlywheel baseFlywheel, BreakerTestSuiteDataLogType logType) {
+  public BreakerRepeatedFlywheelChargeCycleTest(int numberOfCycles, double targetRPM, BreakerFlywheel baseFlywheel, BreakerTestSuiteDataLogType logType) {
     super(logType, "Repeated_Flywheel_Charge_Cycle_Test", "Cycles: " + numberOfCycles);
     this.numberOfCycles = numberOfCycles;
     this.targetRPM = targetRPM;
