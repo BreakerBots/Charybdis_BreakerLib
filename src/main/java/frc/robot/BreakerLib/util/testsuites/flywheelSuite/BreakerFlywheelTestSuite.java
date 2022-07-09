@@ -13,7 +13,7 @@ import frc.robot.BreakerLib.util.testsuites.BreakerTestSuiteDataLogType;
 public class BreakerFlywheelTestSuite {
     private BreakerFlywheel baseFlywheel;
     private BreakerTestSuiteDataLogType logType;
-    private BreakerFlywheelTestSuite(BreakerFlywheel baseFlywheel) {
+    public BreakerFlywheelTestSuite(BreakerFlywheel baseFlywheel) {
         this.baseFlywheel = baseFlywheel;
     }
 
@@ -21,8 +21,14 @@ public class BreakerFlywheelTestSuite {
         logType = newLogType;
     }
 
-    public BreakerTimedFlywheelSpinUpTest TimedSpinUpTest(double testTimeSeconds, double targetRPM) {
+    public BreakerTimedFlywheelSpinUpTest timedSpinUpTest(double testTimeSeconds, double targetRPM) {
         BreakerTimedFlywheelSpinUpTest test = new BreakerTimedFlywheelSpinUpTest(testTimeSeconds, targetRPM, baseFlywheel, logType);
+        test.schedule();
+        return test;
+    }
+
+    public BreakerRepeatedFlywheelChargeCycleTest repeatedChargeCycleTest(int numberOfCycles, double targetRPM) {
+        BreakerRepeatedFlywheelChargeCycleTest test = new BreakerRepeatedFlywheelChargeCycleTest(numberOfCycles, targetRPM, baseFlywheel, logType);
         test.schedule();
         return test;
     }

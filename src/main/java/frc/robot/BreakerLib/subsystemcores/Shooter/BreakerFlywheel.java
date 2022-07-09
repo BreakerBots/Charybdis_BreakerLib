@@ -56,15 +56,21 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
         return flywheelTargetRSU;
     }
 
+    /** sets flywheel speed to 0 RPM, controll loops remain enabled */
     public void stopFlywheel() {
+        setFlywheelSpeed(0);
+    }
+
+    /** Stops flywheel and kills all assocated controll loops */
+    public void killFlywheel() {
         flySS.killLoop();
         flywheel.set(0);
-        BreakerLog.logSuperstructureEvent("flywheel stoped");
+        BreakerLog.logSuperstructureEvent("flywheel controll loops disabled");
     }
 
     public void startFlywheel() {
         flySS.restartLoop();
-        BreakerLog.logSuperstructureEvent("flywheel started charging");
+        BreakerLog.logSuperstructureEvent("flywheel controll loops enabled");
     }
 
     private void runFlywheel() {
