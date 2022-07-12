@@ -34,18 +34,11 @@ import frc.robot.BreakerLib.util.selftest.SelfTest;
 /** Add your docs here. */
 public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
     private BreakerSwerveDriveConfig config;
-    private String deviceName = "Swerve_Module_(SDS_MK4I)";
-    private PIDController drivePID;
-    private PIDController anglePID;
-    // private SimpleMotorFeedforward driveFF;
-    private WPI_TalonFX turnMotor;
-    private WPI_TalonFX driveMotor;
-    private DeviceHealth turnMotorHealth = DeviceHealth.NOMINAL;
-    private DeviceHealth driveMotorHealth = DeviceHealth.NOMINAL;
-    private DeviceHealth overallHealth = DeviceHealth.NOMINAL;
-    private DeviceHealth encoderHealth = DeviceHealth.NOMINAL;
-    private String faults = null;
+    private String faults = null, deviceName = "Swerve_Module_(SDS_MK4I)";
+    private PIDController drivePID, anglePID;
+    private WPI_TalonFX turnMotor, driveMotor;
     private WPI_CANCoder turnEncoder;
+    private DeviceHealth turnMotorHealth = DeviceHealth.NOMINAL, driveMotorHealth = DeviceHealth.NOMINAL, overallHealth = DeviceHealth.NOMINAL, encoderHealth = DeviceHealth.NOMINAL;
     /** constructs a new Swerve Drive Spetialties MK4I (inverted) swerve drive module, implaments the BreakerSwerveModule Interface
      * @param driveMotor - The TalonFX motor that moves the module's wheel linearly
      * @param turnMotor - The TalonFX motor that actuates module's wheel angle and changes the direction it is faceing
