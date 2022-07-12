@@ -5,6 +5,7 @@
 package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.util.WPILibVersion;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerSounds;
 import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
@@ -13,7 +14,6 @@ import frc.robot.BreakerLib.util.robotmanager.BreakerRobotStartConfig;
 /** Add your docs here. */
 public class BreakerLog {
 
-  public static final String breakerLibVersion = "V1.4";
   private static boolean usesOrchestra = false;
   private static BreakerFalconOrchestra orchestra;
 
@@ -37,7 +37,7 @@ public class BreakerLog {
     StringBuilder work = new StringBuilder(" | ---------------- ROBOT STARTED ---------------- |\n\n");
     work.append(" TEAM: " + startConfig.getTeamNum() + " - " + startConfig.getTeamName() + "\n");
     work.append(" ROBOT: " + startConfig.getRobotName() + " - " + startConfig.getRobotYear() + "\n");
-    work.append(" BREAKERLIB: " + breakerLibVersion + " | " + "ROBOT SOFTWARE: " + startConfig.getRobotSoftwareVersion() + "\n");
+    work.append(" BREAKERLIB: " + BreakerLibVersion.Version + " | " + "ROBOT SOFTWARE: " + startConfig.getRobotSoftwareVersion() + "\n");
     work.append(" AUTHORS: " + startConfig.getAuthorNames() + "\n\n");
     work.append(" | ---------------------------------------------- | \n\n\n");
     BreakerLog.log(work.toString());
