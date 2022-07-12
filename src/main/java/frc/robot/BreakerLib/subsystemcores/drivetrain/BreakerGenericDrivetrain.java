@@ -14,26 +14,26 @@ import frc.robot.BreakerLib.util.selftest.BreakerSelfTestable;
 /** Contianer class for methods common to all drivetrain types */
 public interface BreakerGenericDrivetrain extends BreakerGenericOdometer, BreakerGenericDevice {
 
-    public class automaticBreakModeConfig {
+    public class BreakerAutomaticBreakModeConfig {
         private boolean breakInAuto;
         private boolean breakInTeleop;
         private boolean breakInTest;
         private boolean breakInDisabled;
-        public automaticBreakModeConfig(boolean breakInTeleop, boolean breakInAuto, boolean breakInTest, boolean breakInDisabled) {
+        public BreakerAutomaticBreakModeConfig(boolean breakInTeleop, boolean breakInAuto, boolean breakInTest, boolean breakInDisabled) {
             this.breakInAuto = breakInAuto;
             this.breakInDisabled = breakInDisabled;
             this.breakInTeleop = breakInTeleop;
             this.breakInTest = breakInTest;
         }
 
-        public automaticBreakModeConfig(boolean breakForAll) {
+        public BreakerAutomaticBreakModeConfig(boolean breakForAll) {
             breakInAuto = breakForAll;
             breakInDisabled = breakForAll;
             breakInTeleop = breakForAll;
             breakInTest = breakForAll;
         }
 
-        public automaticBreakModeConfig() {
+        public BreakerAutomaticBreakModeConfig() {
             breakInAuto = true;
             breakInDisabled = false;
             breakInTeleop = true;
