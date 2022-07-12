@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 // I SUGGEST USING OBLOG
 
-package frc.robot.BreakerLib.driverstation;
+package frc.robot.BreakerLib.driverstation.dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
