@@ -38,12 +38,10 @@ public class SystemDiagnostics implements BreakerSelfTestable {
         this.systemName = systemName;
         usesSuppliers = false;
     }
-
-    public SystemDiagnostics(String systemName, Supplier<DeviceHealth> deviceHealthSupplier, Supplier<String> faultStringSupplier) {
-        SelfTest.addDevice(this);
+ 
+    public void addSuppliers(Supplier<DeviceHealth> deviceHealthSupplier, Supplier<String> faultStringSupplier) {
         this.deviceHealthSupplier = deviceHealthSupplier;
         this.faultStringSupplier = faultStringSupplier;
-        this.systemName = systemName;
         usesSuppliers = true;
     }
 

@@ -215,7 +215,7 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
             encoderHealth = DeviceHealth.INOPERABLE;
         }
         if (curEncoderFaults.MagnetTooWeak) {
-            faults += " ABSOLUET_ENCODER_WEAK_MAG ";
+            faults += " ABSOLUTE_ENCODER_WEAK_MAG ";
             encoderHealth = (encoderHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : encoderHealth;
             overallHealth = (overallHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : overallHealth;
         }

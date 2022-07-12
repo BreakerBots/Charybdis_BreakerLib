@@ -35,7 +35,7 @@ public class BreakerRoboRIO extends SubsystemBase {
     private int brownoutNum = 0;
 
     // Static RoboRIO object.
-    private static BreakerRoboRIO roboRIO = new BreakerRoboRIO();
+    private static final BreakerRoboRIO roboRIO = new BreakerRoboRIO();
 
     // RoboRIO object methods.
 

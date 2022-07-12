@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.util.robotmanager;
 
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain.BreakerAutomaticBreakModeConfig;
 
 /** Add your docs here. */
 public class BreakerRobotConfig {
@@ -18,6 +19,20 @@ public class BreakerRobotConfig {
     private BreakerAutoPath[] autoPaths;
     private boolean usesPaths;
     private BreakerRobotStartConfig startConfig;
+    private BreakerAutomaticBreakModeConfig breakModeConfig;
+
+    public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autoRegesterDevices, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra, BreakerAutomaticBreakModeConfig breakModeConfig, BreakerAutoPath... autoPaths) {
+        this.secondsBetweenSelfChecks = secondsBetweenSelfChecks;
+        this.autologNetworkTables = autologNetworkTables;
+        this.selftestServerAddress = selftestServerAddress;
+        this.orchestra = orchestra;
+        this.autoPaths = autoPaths;
+        this.autoRegesterDevices = autoRegesterDevices;
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = true;
+        usesPaths = true;
+    }
 
     public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autoRegesterDevices, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra, BreakerAutoPath... autoPaths) {
         this.secondsBetweenSelfChecks = secondsBetweenSelfChecks;
@@ -27,8 +42,21 @@ public class BreakerRobotConfig {
         this.autoPaths = autoPaths;
         this.autoRegesterDevices = autoRegesterDevices;
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = true;
         usesPaths = true;
+    }
+
+    public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra, BreakerAutomaticBreakModeConfig breakModeConfig) {
+        this.secondsBetweenSelfChecks = secondsBetweenSelfChecks;
+        this.autologNetworkTables = autologNetworkTables;
+        this.selftestServerAddress = selftestServerAddress;
+        this.orchestra = orchestra;
+        this.autoPaths = new BreakerAutoPath[0];
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = true;
+        usesPaths = false;
     }
 
     public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra) {
@@ -38,8 +66,21 @@ public class BreakerRobotConfig {
         this.orchestra = orchestra;
         this.autoPaths = new BreakerAutoPath[0];
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = true;
         usesPaths = false;
+    }
+
+    public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerAutomaticBreakModeConfig breakModeConfig, BreakerAutoPath... autoPaths) {
+        this.secondsBetweenSelfChecks = secondsBetweenSelfChecks;
+        this.autologNetworkTables = autologNetworkTables;
+        this.selftestServerAddress = selftestServerAddress;
+        this.orchestra = new BreakerFalconOrchestra();
+        this.autoPaths = autoPaths;
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = false;
+        usesPaths = true;
     }
 
     public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerAutoPath... autoPaths) {
@@ -49,8 +90,21 @@ public class BreakerRobotConfig {
         this.orchestra = new BreakerFalconOrchestra();
         this.autoPaths = autoPaths;
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = false;
         usesPaths = true;
+    }
+
+    public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerAutomaticBreakModeConfig breakModeConfig) {
+        this.secondsBetweenSelfChecks = secondsBetweenSelfChecks;
+        this.autologNetworkTables = autologNetworkTables;
+        this.selftestServerAddress = selftestServerAddress;
+        this.orchestra = new BreakerFalconOrchestra();
+        this.autoPaths = new BreakerAutoPath[0];
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = false;
+        usesPaths = false;
     }
 
     public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autologNetworkTables, BreakerRobotStartConfig startConfig) {
@@ -60,8 +114,22 @@ public class BreakerRobotConfig {
         this.orchestra = new BreakerFalconOrchestra();
         this.autoPaths = new BreakerAutoPath[0];
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = false;
         usesPaths = false;
+    }
+
+    public BreakerRobotConfig(BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra, BreakerAutomaticBreakModeConfig breakModeConfig, BreakerAutoPath... autoPaths) {
+        this.secondsBetweenSelfChecks = 5;
+        this.autologNetworkTables = false;
+        this.selftestServerAddress = "172.22.11.2";
+        this.autoRegesterDevices = true;
+        this.orchestra = orchestra;
+        this.autoPaths = autoPaths;
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = true;
+        usesPaths = true;
     }
 
     public BreakerRobotConfig(BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra, BreakerAutoPath... autoPaths) {
@@ -72,8 +140,22 @@ public class BreakerRobotConfig {
         this.orchestra = orchestra;
         this.autoPaths = autoPaths;
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = true;
         usesPaths = true;
+    }
+
+    public BreakerRobotConfig(BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra, BreakerAutomaticBreakModeConfig breakModeConfig) {
+        this.secondsBetweenSelfChecks = 5;
+        this.autologNetworkTables = false;
+        this.selftestServerAddress = "172.22.11.2";
+        this.autoRegesterDevices = true;
+        this.orchestra = orchestra;
+        this.autoPaths = new BreakerAutoPath[0];
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = true;
+        usesPaths = false;
     }
 
     public BreakerRobotConfig(BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra) {
@@ -84,8 +166,22 @@ public class BreakerRobotConfig {
         this.orchestra = orchestra;
         this.autoPaths = new BreakerAutoPath[0];
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = true;
         usesPaths = false;
+    }
+
+    public BreakerRobotConfig(BreakerRobotStartConfig startConfig,  BreakerAutomaticBreakModeConfig breakModeConfig, BreakerAutoPath... autoPaths) {
+        this.secondsBetweenSelfChecks = 5;
+        this.autologNetworkTables = false;
+        this.selftestServerAddress = "172.22.11.2";
+        this.autoRegesterDevices = true;
+        this.orchestra = new BreakerFalconOrchestra();
+        this.autoPaths = autoPaths;
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = false;
+        usesPaths = true;
     }
 
     public BreakerRobotConfig(BreakerRobotStartConfig startConfig, BreakerAutoPath... autoPaths) {
@@ -96,8 +192,35 @@ public class BreakerRobotConfig {
         this.orchestra = new BreakerFalconOrchestra();
         this.autoPaths = autoPaths;
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = false;
         usesPaths = true;
+    }
+
+    public BreakerRobotConfig(BreakerRobotStartConfig startConfig, BreakerAutomaticBreakModeConfig breakModeConfig) {
+        this.secondsBetweenSelfChecks = 5;
+        this.autologNetworkTables = false;
+        this.selftestServerAddress = "172.22.11.2";
+        this.autoRegesterDevices = true;
+        this.orchestra = new BreakerFalconOrchestra();
+        this.autoPaths = new BreakerAutoPath[0];
+        this.startConfig = startConfig;
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = false;
+        usesPaths = false;
+    }
+
+    public BreakerRobotConfig(BreakerAutomaticBreakModeConfig breakModeConfig) {
+        this.secondsBetweenSelfChecks = 5;
+        this.autologNetworkTables = false;
+        this.selftestServerAddress = "172.22.11.2";
+        this.autoRegesterDevices = true;
+        this.orchestra = new BreakerFalconOrchestra();
+        this.autoPaths = new BreakerAutoPath[0];
+        this.startConfig = new BreakerRobotStartConfig();
+        this.breakModeConfig = breakModeConfig;
+        usesOrchestra = false;
+        usesPaths = false;
     }
 
     public BreakerRobotConfig(BreakerRobotStartConfig startConfig) {
@@ -108,6 +231,7 @@ public class BreakerRobotConfig {
         this.orchestra = new BreakerFalconOrchestra();
         this.autoPaths = new BreakerAutoPath[0];
         this.startConfig = startConfig;
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = false;
         usesPaths = false;
     }
@@ -120,6 +244,7 @@ public class BreakerRobotConfig {
         this.orchestra = new BreakerFalconOrchestra();
         this.autoPaths = new BreakerAutoPath[0];
         this.startConfig = new BreakerRobotStartConfig();
+        breakModeConfig = new BreakerAutomaticBreakModeConfig();
         usesOrchestra = false;
         usesPaths = false;
     }
@@ -158,6 +283,10 @@ public class BreakerRobotConfig {
 
     public BreakerRobotStartConfig getStartConfig() {
         return startConfig;
+    }
+
+    public BreakerAutomaticBreakModeConfig getBreakModeConfig() {
+        return breakModeConfig;
     }
 
 }

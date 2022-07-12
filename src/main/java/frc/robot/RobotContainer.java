@@ -42,12 +42,14 @@ public class RobotContainer {
     orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
     orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
 
-    BreakerRobotManager.setup(new BreakerRobotConfig(
-      new BreakerRobotStartConfig(5104, "BreakerBots", "Charybdis", 2022, "V3.2", "Roman Abrahamson, and Yousif Alkhalaf"), 
-      orchestraSys, 
-      new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
-      new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
-      new BreakerAutoPath("S-attaced com demo", new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
+    BreakerRobotManager.setup(
+      drivetrainSys.getBaseDrivetrain(), 
+      new BreakerRobotConfig(
+        new BreakerRobotStartConfig(5104, "BreakerBots", "Charybdis", 2022, "V3.2", "Roman Abrahamson, and Yousif Alkhalaf"), 
+        orchestraSys, 
+        new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
+        new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
+        new BreakerAutoPath("S-attaced com demo", new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
 
     drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
     configureButtonBindings();
@@ -71,6 +73,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new attachedCommandsDemoTrajectory(drivetrainSys, imuSys ,intakeSys); //new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys); //BreakerRobotManager.getSelectedAutoPath();
+    return  BreakerRobotManager.getSelectedAutoPath(); //new attachedCommandsDemoTrajectory(drivetrainSys, imuSys ,intakeSys);
   }
 }
