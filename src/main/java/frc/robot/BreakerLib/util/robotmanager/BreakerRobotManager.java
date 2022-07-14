@@ -55,6 +55,10 @@ public class BreakerRobotManager extends SubsystemBase {
         return autoManager.getSelectedBaseCommandGroup();
     }
 
+    public static void setDrivetrainBreakMode(boolean isEnabled) {
+        baseDrivetrain.setDrivetrainBrakeMode(isEnabled);
+    }
+
     @Override
     public void periodic() {
         if (BreakerRoboRIO.robotModeHasChanged()) {

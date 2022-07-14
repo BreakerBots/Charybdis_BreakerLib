@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.setDriveBreakMode(false);
   }
 
   @Override
@@ -66,8 +65,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-
-    m_robotContainer.setDriveBreakMode(true);
   }
 
   /** This function is called periodically during autonomous. */
@@ -84,7 +81,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.setDriveBreakMode(true);
   }
 
   /** This function is called periodically during operator control. */
@@ -95,7 +91,6 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    m_robotContainer.setDriveBreakMode(true);
   }
 
   /** This function is called periodically during test mode. */

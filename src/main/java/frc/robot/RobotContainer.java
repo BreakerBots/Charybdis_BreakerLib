@@ -36,7 +36,7 @@ public class RobotContainer {
   private final Intake intakeSys = new Intake();
   private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
   private final Hopper hopperSys = new Hopper(intakeSys);
- private final Shooter shooterSys = new Shooter(drivetrainSys);
+  private final Shooter shooterSys = new Shooter(drivetrainSys);
 
   public RobotContainer() {
     orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
@@ -63,16 +63,12 @@ public class RobotContainer {
     controllerSys.getButtonB().whenPressed(new ToggleShooter(shooterSys));
   }
 
-  public void setDriveBreakMode(Boolean isEnebled) {
-    drivetrainSys.getBaseDrivetrain().setDrivetrainBrakeMode(isEnebled);
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return  BreakerRobotManager.getSelectedAutoPath(); //new attachedCommandsDemoTrajectory(drivetrainSys, imuSys ,intakeSys);
+    return BreakerRobotManager.getSelectedAutoPath(); //new attachedCommandsDemoTrajectory(drivetrainSys, imuSys ,intakeSys);
   }
 }
