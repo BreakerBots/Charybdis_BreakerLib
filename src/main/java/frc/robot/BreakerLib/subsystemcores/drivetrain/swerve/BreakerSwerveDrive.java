@@ -43,14 +43,12 @@ public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
 
   private Rotation2d fieldRelativeMovementAngleOffset = Rotation2d.fromDegrees(0);
 
-  private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
-  private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
+  private BreakerMovementState2d prevMovementState = new BreakerMovementState2d(), curMovementState = new BreakerMovementState2d();
   private double prevOdometryUpdateTimestamp = 0;
 
   private boolean isInSlowMode;
 
-  private String deviceName = "Swerve_Drivetrain";
-  private String faults = null;
+  private String faults = null, deviceName = "Swerve_Drivetrain";
   /** Constructs a new swerve based drivetrain
    * @param config - the confiuration values for the drivetrain's charicteristics and behavor, passed in as a "BreakerSwerveDriveConfig" object
    * @param swerveModules - The four swerve drive modules that make up the drivetrain, must be passed in the same order shown below
