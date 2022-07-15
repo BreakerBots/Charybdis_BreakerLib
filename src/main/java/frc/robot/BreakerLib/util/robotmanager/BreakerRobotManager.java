@@ -20,7 +20,7 @@ import frc.robot.BreakerLib.util.BreakerRoboRIO;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Add your docs here. */
-public class BreakerRobotManager extends SubsystemBase {
+public class BreakerRobotManager {
     private static SelfTest test;
     private static BreakerAutoManager autoManager;
     private static BreakerAutomaticBreakModeManager breakModeManager;
@@ -44,10 +44,6 @@ public class BreakerRobotManager extends SubsystemBase {
         BreakerLog.logRobotStarted(robotConfig.getStartConfig());
     }
 
-    public static void setCustomAutomaticBreakModeConfig(BreakerAutomaticBreakModeManagerConfig config) {
-        BreakerRobotManager.breakModeManager = new BreakerAutomaticBreakModeManager(config);
-    }
-
     public static BreakerAutomaticBreakModeManager getAutomaticBreakModeManager() {
         return breakModeManager;
     }
@@ -66,10 +62,5 @@ public class BreakerRobotManager extends SubsystemBase {
 
     public static void setDrivetrainBreakMode(boolean isEnabled) {
         baseDrivetrain.setDrivetrainBrakeMode(isEnabled);
-    }
-
-    @Override
-    public void periodic() {
-        
     }
 }

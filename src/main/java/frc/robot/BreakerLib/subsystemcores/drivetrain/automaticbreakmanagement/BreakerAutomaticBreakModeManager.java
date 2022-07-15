@@ -25,6 +25,14 @@ public class BreakerAutomaticBreakModeManager extends SubsystemBase {
             baseDrivetrain = config.getBaseDrivetrain();
         }
 
+        public void changeConfig(BreakerAutomaticBreakModeManagerConfig config) {
+            breakInAuto = config.getBreakInAuto();
+            breakInTeleop = config.getBreakInTeleop();
+            breakInTest = config.getBreakInTest();
+            breakInDisabled = config.getBreakInDisabled();
+            baseDrivetrain = config.getBaseDrivetrain();
+        }
+
         public boolean isAutomaticBreakModeEnabled() {
             return autoBreakIsEnabled;
         }
@@ -32,8 +40,6 @@ public class BreakerAutomaticBreakModeManager extends SubsystemBase {
         public void setAutomaticBreakModeEnabled(Boolean isEnabled) {
             autoBreakIsEnabled = isEnabled;
         }
-
-
 
         public void setAutomaticBreakMode() {
             switch(BreakerRoboRIO.getCurrentRobotMode()) {

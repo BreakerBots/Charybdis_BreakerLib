@@ -57,7 +57,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     controllerSys.getButtonA().whenPressed(new ToggleIntake(intakeSys));
-
+  
     controllerSys.getdPadRight().whenPressed(new ToggleSlowMode(drivetrainSys.getBaseDrivetrain()));
 
     controllerSys.getButtonB().whenPressed(new ToggleShooter(shooterSys));
