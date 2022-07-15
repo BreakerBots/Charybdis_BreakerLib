@@ -12,7 +12,7 @@ import edu.wpi.first.math.trajectory.Trajectory.State;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 
 /** Add your docs here. */
-public interface BreakerGenericTrajecotryFollower {
+public interface BreakerGenericTrajectoryFollower {
     public abstract Trajectory getCurrentTrajectory();
 
     public abstract Trajectory[] getAllTrajectorys();

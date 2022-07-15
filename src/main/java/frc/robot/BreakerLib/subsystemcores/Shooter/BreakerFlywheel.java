@@ -19,15 +19,15 @@ import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
-import frc.robot.BreakerLib.util.math.averages.BreakerGenericAverageingList;
+import frc.robot.BreakerLib.util.math.averages.BreakerGenericAveragingList;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.testsuites.BreakerGenericTestSuiteImplamentation;
+import frc.robot.BreakerLib.util.testsuites.BreakerGenericTestSuiteImplementation;
 import frc.robot.BreakerLib.util.testsuites.flywheelSuite.BreakerFlywheelTestSuite;
 
 /** A class representing a robot's shooter flywheel and its assocated controle loop */
-public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTestSuiteImplamentation<BreakerFlywheelTestSuite>, BreakerGenericDevice {
+public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTestSuiteImplementation<BreakerFlywheelTestSuite>, BreakerGenericDevice {
     private PIDController flyPID;
     private double flywheelTargetRSU = 0;
     private MotorControllerGroup flywheel;

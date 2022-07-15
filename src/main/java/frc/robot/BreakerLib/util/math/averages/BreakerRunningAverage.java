@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /** Add your docs here. */
-public class BreakerRunningAverage implements BreakerGenericAverageingList<Double>{
+public class BreakerRunningAverage implements BreakerGenericAveragingList<Double>{
     private LinkedList<Double> list;
     private int movingAvrageWindow;
     public BreakerRunningAverage(int movingAvrageWindow) {

@@ -11,14 +11,14 @@ import java.util.TreeMap;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolable;
 
 /** Add your docs here. */
-public class BreakerInterpolateingTreeMap<K, V extends BreakerInterpolable<V>> extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolateingMap<K, V> {
+public class BreakerInterpolatingTreeMap<K, V extends BreakerInterpolable<V>> extends java.util.AbstractMap<K, V> implements BreakerGenericInterpolatingMap<K, V> {
     private TreeMap<K, V> indexesAndValues;
 
-    public BreakerInterpolateingTreeMap(TreeMap<K, V> indexesAndValues) {
+    public BreakerInterpolatingTreeMap(TreeMap<K, V> indexesAndValues) {
         this.indexesAndValues = indexesAndValues;
     }
 
-    public BreakerInterpolateingTreeMap() {
+    public BreakerInterpolatingTreeMap() {
         indexesAndValues = new TreeMap<K, V>();
     }
 

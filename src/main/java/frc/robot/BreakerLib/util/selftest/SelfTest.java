@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerSounds;
-import frc.robot.BreakerLib.util.BreakerJsonUtil;
+import frc.robot.BreakerLib.util.BreakerJSONUtil;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 public class SelfTest extends SubsystemBase {
@@ -68,7 +68,7 @@ public class SelfTest extends SubsystemBase {
 
   private static void retriveDeviceListCAN() {
     try {    
-      JsonNode response = BreakerJsonUtil.readJsonFromURL("http://"+ robotHostAddressDNS +":1250/?action=getdevices").get("DeviceArray");
+      JsonNode response = BreakerJSONUtil.readJsonFromURL("http://"+ robotHostAddressDNS +":1250/?action=getdevices").get("DeviceArray");
       Iterator<JsonNode> iter = response.elements();
       retrivedDevicesCAN.clear();
       while (iter.hasNext()) {

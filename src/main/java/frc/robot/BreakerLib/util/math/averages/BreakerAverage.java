@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Add your docs here. */
-public class BreakerAverage implements BreakerGenericAverageingList<Double> {
+public class BreakerAverage implements BreakerGenericAveragingList<Double> {
     private List<Double> list = new ArrayList<>();
     public BreakerAverage() {
         

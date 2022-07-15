@@ -15,7 +15,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 
 /** Add your docs here. */
-public class BreakerPurePersuitTrajectory extends Trajectory{
+public class BreakerPurePursuitTrajectory extends Trajectory{
     private double waypointIgnoreThreshold;
     private Translation2d[] waypoints;
     private TrajectoryConfig config;
@@ -23,7 +23,7 @@ public class BreakerPurePersuitTrajectory extends Trajectory{
     private double lastUpdateTimeSeconds;
     private boolean hasStarted = false;
     private Trajectory currentTrajectory;
-    public BreakerPurePersuitTrajectory(double waypointIgnoreThreshold, TrajectoryConfig config, Translation2d... waypoints) {
+    public BreakerPurePursuitTrajectory(double waypointIgnoreThreshold, TrajectoryConfig config, Translation2d... waypoints) {
         this.waypointIgnoreThreshold = waypointIgnoreThreshold;
         this.waypoints = waypoints;
         this.config = config;

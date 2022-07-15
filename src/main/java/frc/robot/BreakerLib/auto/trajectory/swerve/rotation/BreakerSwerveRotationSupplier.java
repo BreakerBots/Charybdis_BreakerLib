@@ -15,13 +15,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.interpolation.Interpolatable;
 import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.BreakerLib.util.math.interpolation.BreakerInterpolableDouble;
-import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolateingTreeMap;
+import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolatingTreeMap;
 
 /** Add your docs here. */
 public class BreakerSwerveRotationSupplier implements BreakerGenericSwerveRotationSupplier {
     private BreakerRotationPoint[] rotationPoints;
     private Supplier<Rotation2d> externalSupplier;
-    private BreakerInterpolateingTreeMap<Double, BreakerInterpolableDouble> interMap;
+    private BreakerInterpolatingTreeMap<Double, BreakerInterpolableDouble> interMap;
     private boolean usesSupplier;
     private double currentTime = 0.0;
     public BreakerSwerveRotationSupplier(BreakerRotationPoint... rotationPoints) {

@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
+import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajectoryFollower;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
@@ -29,7 +29,7 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDr
 import frc.robot.BreakerLib.util.BreakerLog;
 
 /** OUR version of a differential drive ramsete command.  */
-public class BreakerRamsete extends CommandBase implements BreakerGenericTrajecotryFollower {
+public class BreakerRamsete extends CommandBase implements BreakerGenericTrajectoryFollower {
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;

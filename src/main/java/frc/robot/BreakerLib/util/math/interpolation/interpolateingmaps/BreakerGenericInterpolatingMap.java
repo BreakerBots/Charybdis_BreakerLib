@@ -5,7 +5,7 @@
 package frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps;
 
 /** Add your docs here. */
-public interface BreakerGenericInterpolateingMap<K, V> {
+public interface BreakerGenericInterpolatingMap<K, V> {
 
     /**
      * interpolates the Map to return the aproxamate value(Y) that would corespond

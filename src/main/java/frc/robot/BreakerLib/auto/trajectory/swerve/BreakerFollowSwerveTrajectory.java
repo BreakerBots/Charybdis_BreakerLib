@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajecotryFollower;
+import frc.robot.BreakerLib.auto.trajectory.BreakerGenericTrajectoryFollower;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.auto.trajectory.swerve.rotation.BreakerGenericSwerveRotationSupplier;
@@ -25,7 +25,7 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
 /** Add your docs here. */
-public class BreakerFollowSwerveTrajectory extends CommandBase implements BreakerGenericTrajecotryFollower {
+public class BreakerFollowSwerveTrajectory extends CommandBase implements BreakerGenericTrajectoryFollower {
 
     private SwerveControllerCommand controller;
     private BreakerFollowSwerveTrajectoryConfig config;

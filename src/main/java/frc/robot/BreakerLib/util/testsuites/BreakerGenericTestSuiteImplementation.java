@@ -5,6 +5,6 @@
 package frc.robot.BreakerLib.util.testsuites;
 
 /** Add your docs here. */
-public interface BreakerGenericTestSuiteImplamentation<T> {
+public interface BreakerGenericTestSuiteImplementation<T> {
     public abstract T getTestSuite();
 }
