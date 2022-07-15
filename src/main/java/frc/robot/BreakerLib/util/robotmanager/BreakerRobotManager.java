@@ -39,7 +39,7 @@ public class BreakerRobotManager extends SubsystemBase {
         }
         BreakerRobotManager.baseDrivetrain = baseDrivetrain;
         BreakerRobotManager.autoManager = robotConfig.UsesPaths() ? new BreakerAutoManager(robotConfig.getAutoPaths()) : new BreakerAutoManager();
-        BreakerRobotManager.breakModeConfig = robotConfig.getBreakModeConfig();
+        //BreakerRobotManager.breakModeConfig = robotConfig.getBreakModeConfig();
         BreakerLog.logRobotStarted(robotConfig.getStartConfig());
     }
 
@@ -61,8 +61,11 @@ public class BreakerRobotManager extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (BreakerRoboRIO.robotModeHasChanged()) {
-            baseDrivetrain.setDrivetrainBrakeMode(breakModeConfig.getBreakModeForRobotMode(BreakerRoboRIO.getCurrentRobotMode()));
-        }
+        // //if (BreakerRoboRIO.robotModeHasChanged()) {
+        //  baseDrivetrain
+        //  .setDrivetrainBrakeMode(
+        //      breakModeConfig.
+        //      getBreakModeForRobotMode(BreakerRoboRIO.getCurrentRobotMode()));
+        // //}
     }
 }
