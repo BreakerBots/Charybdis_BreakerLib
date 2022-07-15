@@ -2,10 +2,13 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/BreakerAutomaticBreakModeManager": "Subsystem",
       "/LiveWindow/BreakerFalconOrchestra": "Subsystem",
       "/LiveWindow/BreakerFlywheel": "Subsystem",
       "/LiveWindow/BreakerFlywheelStateSpace": "Subsystem",
+      "/LiveWindow/BreakerRoboRIO": "Subsystem",
       "/LiveWindow/BreakerRoboRio": "Subsystem",
+      "/LiveWindow/BreakerRobotManager": "Subsystem",
       "/LiveWindow/Drive": "Subsystem",
       "/LiveWindow/Hopper": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
