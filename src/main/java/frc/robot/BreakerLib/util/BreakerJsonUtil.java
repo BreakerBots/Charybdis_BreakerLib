@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** Add your docs here. */
-public class BreakerJSONUtil {
+public class BreakerJsonUtil {
     public static JsonNode readJsonFromURL(String link) throws IOException {
         InputStream input = new URL(link).openStream();
         try {

@@ -10,12 +10,12 @@ import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDriveController;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotConfig;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotManager;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotStartConfig;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
-import frc.robot.commands.drive.DriveInTeleop;
 import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
 import frc.robot.commands.shooter.ToggleShooter;
@@ -51,7 +51,7 @@ public class RobotContainer {
         new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
         new BreakerAutoPath("S-attaced com demo", new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
 
-    drivetrainSys.setDefaultCommand(new DriveInTeleop(controllerSys.getBaseController(), drivetrainSys));
+    drivetrainSys.setDefaultCommand(new BreakerDiffDriveController(drivetrainSys.getBaseDrivetrain(), controllerSys));
     configureButtonBindings();
   }
 
