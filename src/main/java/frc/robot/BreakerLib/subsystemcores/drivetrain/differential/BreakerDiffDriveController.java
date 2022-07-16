@@ -13,11 +13,11 @@ import frc.robot.BreakerLib.util.math.polynomials.BreakerGenericPolynomial;
 
 public class BreakerDiffDriveController extends CommandBase {
   
-  BreakerXboxController controller;
-  BreakerDiffDrive baseDrivetrain;
-  boolean usesSuppliers, usesCurves;
-  BreakerGenericPolynomial netSpeedCurve, turnSpeedCurve;
-  DoubleSupplier netSpeedPrecentSupplier, turnSpeedPrecentSupplier;
+  private BreakerXboxController controller;
+  private BreakerDiffDrive baseDrivetrain;
+  private boolean usesSuppliers, usesCurves;
+  private BreakerGenericPolynomial netSpeedCurve, turnSpeedCurve;
+  private DoubleSupplier netSpeedPrecentSupplier, turnSpeedPrecentSupplier;
   public BreakerDiffDriveController(BreakerDiffDrive baseDrivetrain, BreakerXboxController controller) {
     this.controller = controller;
     this.baseDrivetrain = baseDrivetrain;

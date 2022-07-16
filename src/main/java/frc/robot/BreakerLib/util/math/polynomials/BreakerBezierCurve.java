@@ -20,6 +20,8 @@ public class BreakerBezierCurve implements BreakerGenericPolynomial {
         y1 = controlPointOne.getY();
         x2 = controlPointTwo.getX();
         y2 = controlPointTwo.getY();
+        x3 = 1.0;
+        y3 = 1.0;
     }
 
     public BreakerBezierCurve(Translation2d startPoint, Translation2d controlPointOne, Translation2d controlPointTwo, Translation2d endPoint) {

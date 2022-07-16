@@ -114,6 +114,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     double forward = 0.0;
     double horizontal = 0.0;
     double turn = 0.0;
+    
     if (usesSuppliers) {
       forward = forwardSpeedPrecentSupplier.getAsDouble();
       horizontal = horizontalSpeedPrecentSupplier.getAsDouble();
@@ -121,7 +122,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     } else {
       forward = controller.getBaseController().getLeftX();
       horizontal = controller.getBaseController().getLeftY();
-      turn = controller.getBaseController().getRightY()
+      turn = controller.getBaseController().getRightY();
     }
 
     if (usesCurves) {
