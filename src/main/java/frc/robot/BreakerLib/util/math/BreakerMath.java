@@ -37,7 +37,7 @@ public class BreakerMath {
      * @return Angle value within -constraint to +constraint degrees.
      */
     public static final double angleModulus(double deg, double constraint) {
-        return deg % constraint;
+        return MathUtil.inputModulus(deg, -constraint, constraint);
     }
 
     /** Calculates radians per second from rotations per minute. */
