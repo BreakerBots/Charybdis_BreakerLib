@@ -18,7 +18,7 @@ public class BreakerCompressor {
     private PneumaticsModuleType moduleType;
 
     private PneumaticsBase pneumaticModule;
-    private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(999); // Basically a null pressure
+    private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(0); // Basically a null pressure
                                                                                      // sensor.
 
     /** Creates a new BreakerCompressor. */
