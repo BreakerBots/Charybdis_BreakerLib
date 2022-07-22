@@ -35,6 +35,7 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
     private WPI_TalonFX[] motors;
     private BreakerFlywheelStateSpace flySS;
     private BreakerFlywheelTestSuite testSuite;
+    private SimpleMotorFeedforward flyFF;
 
     private String deviceName = " flywheel ", faults = null;
     private DeviceHealth health = DeviceHealth.NOMINAL;
@@ -43,8 +44,9 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
     public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
         flyPID = new PIDController(config.getFlywheelKp(), config.getFlywheelKi(), config.getFlywheelKd());
         flyPID.setTolerance(config.getFlywheelVelTol(), config.getFlywheelAccelTol());
-        flySS = new BreakerFlywheelStateSpace(config.getFlywheelKv(),
-                config.getFlywheelKs(), config.getModelKalmanTrust(),
+        flyFF = new SimpleMotorFeedforward(config.getFlywheelKs(), config.getFlywheelKv(), config.getFlywheelKa());
+        flySS = new BreakerFlywheelStateSpace(config.getFlywheelMomentOfInertaJKgMetersSq(),
+                config.getFlywheelGearRatioToOne(), config.getModelKalmanTrust(),
                 config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(),
                 flywheelMotors);
         flywheel = new MotorControllerGroup(flywheelMotors);
@@ -88,7 +90,7 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
 
     private void runFlywheel() {
         flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
-        double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed();
+        double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed() + flyFF.calculate(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
         System.out.println("Fly Set Spd: " + flySetSpd + "| target spd: " + flywheelTargetRSU + " | Cur spd RPM: " + getFlywheelRPM() + " | Kalman: " + flySS.getKalmanFilter().getK(0, 0));
         flywheel.set(flySetSpd);
     }
