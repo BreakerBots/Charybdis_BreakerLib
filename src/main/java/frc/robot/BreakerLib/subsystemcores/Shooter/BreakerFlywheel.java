@@ -23,6 +23,7 @@ import frc.robot.BreakerLib.util.math.averages.BreakerGenericAveragingList;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 import frc.robot.BreakerLib.util.testsuites.BreakerGenericTestSuiteImplementation;
 import frc.robot.BreakerLib.util.testsuites.flywheelSuite.BreakerFlywheelTestSuite;
 
@@ -53,6 +54,7 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
         lFlyMotor = flywheelMotors[0];
         motors = flywheelMotors;
         testSuite = new BreakerFlywheelTestSuite(this);
+        SelfTest.autoRegesterDevice(this);
     }
 
     public void setFlywheelSpeed(double flywheelTargetSpeedRPM) {
@@ -90,8 +92,8 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
 
     private void runFlywheel() {
         flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
-        double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + flySS.getNextPrecentSpeed() + flyFF.calculate(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
-        System.out.println("Fly Set Spd: " + flySetSpd + "| target spd: " + flywheelTargetRSU + " | Cur spd RPM: " + getFlywheelRPM() + " | Kalman: " + flySS.getKalmanFilter().getK(0, 0));
+        double flySetSpd = flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + /** flySS.getNextPrecentSpeed() */ + flyFF.calculate(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
+        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | PID-C: " + flyPID.calculate(getFlywheelVelRSU(), flywheelTargetRSU) + " | PID-E: " + flyPID.getPositionError());
         flywheel.set(flySetSpd);
     }
 

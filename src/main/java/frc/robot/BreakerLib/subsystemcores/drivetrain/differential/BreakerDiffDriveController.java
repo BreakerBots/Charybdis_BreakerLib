@@ -23,6 +23,7 @@ public class BreakerDiffDriveController extends CommandBase {
     this.baseDrivetrain = baseDrivetrain;
     usesSuppliers = false;
     usesCurves = false;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerDiffDriveController(BreakerDiffDrive baseDrivetrain, BreakerXboxController controller, BreakerGenericPolynomial netSpeedCurve, BreakerGenericPolynomial turnSpeedCurve) {
@@ -32,6 +33,7 @@ public class BreakerDiffDriveController extends CommandBase {
     this.baseDrivetrain = baseDrivetrain;
     usesSuppliers = false;
     usesCurves = true;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerDiffDriveController(BreakerDiffDrive baseDrivetrain, DoubleSupplier netSpeedPrecentSupplier, DoubleSupplier turnSpeedPrecentSupplier) {
@@ -40,6 +42,7 @@ public class BreakerDiffDriveController extends CommandBase {
     this.baseDrivetrain = baseDrivetrain;
     usesSuppliers = true;
     usesCurves = false;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerDiffDriveController(BreakerDiffDrive baseDrivetrain, DoubleSupplier netSpeedPrecentSupplier, DoubleSupplier turnSpeedPrecentSupplier, BreakerGenericPolynomial netSpeedCurve, BreakerGenericPolynomial turnSpeedCurve) {
@@ -50,6 +53,7 @@ public class BreakerDiffDriveController extends CommandBase {
     this.baseDrivetrain = baseDrivetrain;
     usesSuppliers = true;
     usesCurves = true;
+    addRequirements(baseDrivetrain);
   }
 
 

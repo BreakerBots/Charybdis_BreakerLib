@@ -51,7 +51,7 @@ public class RobotContainer {
         new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
         new BreakerAutoPath("S-attaced com demo", new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
 
-    drivetrainSys.setDefaultCommand(new BreakerDiffDriveController(drivetrainSys.getBaseDrivetrain(), controllerSys));
+    drivetrainSys.getBaseDrivetrain().setDefaultCommand(new BreakerDiffDriveController(drivetrainSys.getBaseDrivetrain(), controllerSys));
     configureButtonBindings();
   }
 
