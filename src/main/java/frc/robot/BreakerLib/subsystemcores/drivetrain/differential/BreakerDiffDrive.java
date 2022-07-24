@@ -4,11 +4,9 @@
 
 package frc.robot.BreakerLib.subsystemcores.drivetrain.differential;
 
-import java.io.ObjectInputFilter.Config;
-
 import com.ctre.phoenix.motorcontrol.Faults;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,16 +16,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.driverstation.dashboard.BreakerFieldWidget;
-import frc.robot.BreakerLib.physics.Breaker3AxisForces;
-import frc.robot.BreakerLib.physics.BreakerVector2;
-import frc.robot.BreakerLib.physics.BreakerVector3;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
@@ -35,7 +27,6 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -69,9 +60,10 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
   private boolean isAutoPowerManaged = true;
   private DevicePowerMode powerMode = DevicePowerMode.FULL_POWER_MODE;
-  
-  /** Creates a new West Coast Drive. */
-  public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR, BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
+
+  /** Creates a new BreakerDiffDrive. */
+  public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR,
+      BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
     this.leftMotors = leftMotors;
     this.invertL = invertL;
     leftLead = leftMotors[0];
@@ -165,7 +157,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
     BreakerCTREUtil.setBrakeMode(isEnabled, leftMotors);
     BreakerCTREUtil.setBrakeMode(isEnabled, rightMotors);
   }
-  
+
   /** Returns an instance of the drivetrain's left side lead motor */
   public WPI_TalonFX getLeftLeadMotor() {
     return leftLead;
@@ -177,7 +169,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   }
 
   public SimpleMotorFeedforward getFeedforward() {
-    return new SimpleMotorFeedforward(driveConfig.getFeedForwardKs(), driveConfig.getFeedForwardKv(), driveConfig.getFeedForwardKa());
+    return new SimpleMotorFeedforward(driveConfig.getFeedForwardKs(), driveConfig.getFeedForwardKv(),
+        driveConfig.getFeedForwardKa());
   }
 
   public DifferentialDriveKinematics getKinematics() {
@@ -193,8 +186,9 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds( BreakerUnits.inchesToMeters((getLeftDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10),
-     BreakerUnits.inchesToMeters((getRightDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10));
+    return new DifferentialDriveWheelSpeeds(
+        BreakerUnits.inchesToMeters((getLeftDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10),
+        BreakerUnits.inchesToMeters((getRightDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10));
   }
 
   @Override
@@ -213,8 +207,10 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
   @Override
   public void updateOdometry() {
-    driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(), getRightDriveMeters());
-    //calculateMovementState((Timer.getFPGATimestamp() - prevOdometryUpdateTimestamp) * 1000);
+    driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(),
+        getRightDriveMeters());
+    // calculateMovementState((Timer.getFPGATimestamp() -
+    // prevOdometryUpdateTimestamp) * 1000);
     prevOdometryUpdateTimestamp = Timer.getFPGATimestamp();
   }
 
@@ -228,7 +224,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
     faults = null;
     hasFault = false;
     StringBuilder work = new StringBuilder();
-    for (WPI_TalonFX motorL: leftMotors) {
+    for (WPI_TalonFX motorL : leftMotors) {
       Faults motorFaults = new Faults();
       motorL.getFaults(motorFaults);
       if (motorFaults.hasAnyFault()) {
@@ -237,7 +233,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
         work.append(BreakerCTREUtil.getMotorFaultsAsString(motorFaults));
       }
     }
-    for (WPI_TalonFX motorR: rightMotors) {
+    for (WPI_TalonFX motorR : rightMotors) {
       Faults motorFaults = new Faults();
       motorR.getFaults(motorFaults);
       if (motorFaults.hasAnyFault()) {
@@ -272,7 +268,7 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   @Override
   public void setDeviceName(String newName) {
     deviceName = newName;
-    
+
   }
 
   @Override
@@ -292,16 +288,17 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
   }
 
   private void calculateMovementState(double timeToLastUpdateMilisecods) {
-    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMilisecods, prevMovementState);
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(
+        getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMilisecods, prevMovementState);
     prevMovementState = curMovementState;
   }
 
   public WPI_TalonFX[] getLeftMotors() {
-      return leftMotors;
+    return leftMotors;
   }
 
   public WPI_TalonFX[] getRightMotors() {
-      return rightMotors;
+    return rightMotors;
   }
 
   @Override
@@ -316,7 +313,8 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
   @Override
   public ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer) {
-    return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(), odometer.getOdometryPoseMeters().getRotation());
+    return BreakerMath.fromRobotRelativeSpeeds(getRobotRelativeChassisSpeeds(),
+        odometer.getOdometryPoseMeters().getRotation());
   }
 
   @Override
@@ -331,14 +329,14 @@ public class BreakerDiffDrive implements BreakerGenericDrivetrain {
 
   @Override
   public DevicePowerMode managePower(BreakerPowerManagementConfig managementConfig) {
-      
+
     return null;
   }
 
   @Override
   public void overrideAutomaticPowerManagement(DevicePowerMode manualPowerMode) {
     isAutoPowerManaged = false;
-    
+
   }
 
   @Override

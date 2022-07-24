@@ -7,20 +7,17 @@ import com.ctre.phoenix.sensors.Pigeon2_Faults;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
-/* Good version of the CTRE Pigeon 2 class BAYBEEE! */
+/* CTRE Pigeon IMU 2 implementing the Breaker device interface. */
 public class BreakerPigeon2 implements BreakerGenericDevice {
   private WPI_Pigeon2 pigeon;
-  private double imuInvert;
   private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
   private String faults = null;
   private String deviceName = "Pigeon2_IMU";
@@ -46,20 +43,21 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
     return BreakerMath.angleModulus(pigeon.getRoll());
   }
 
-  public Rotation2d getPitch() {
+  /**  */
+  public Rotation2d getPitchRotation2d() {
     return Rotation2d.fromDegrees(getPitchDegrees());
   }
 
-  public Rotation2d getYaw() {
+  public Rotation2d getYawRotation2d() {
     return Rotation2d.fromDegrees(getYawDegrees());
   }
 
-  public Rotation2d getRoll() {
+  public Rotation2d getRollRotation2d() {
     return Rotation2d.fromDegrees(getRollDegrees());
   }
 
   public BreakerRotation3d getRotation3d() {
-    return new BreakerRotation3d(getPitch(), getYaw(), getRoll());
+    return new BreakerRotation3d(getPitchRotation2d(), getYawRotation2d(), getRollRotation2d());
   }
 
   /**

@@ -27,12 +27,16 @@ public class BreakerDiffDriveConfig {
     private double feedForwardKa;
     private double slowModeForwardMultiplier = 1;
     private double slowModeTurnMultiplier = 1;
-    private PIDController leftPID; 
+    private PIDController leftPID;
     private PIDController rightPID;
-    /** Maunaly creates a new config and bypasses the automatic json config assigner */
-    public BreakerDiffDriveConfig(double ticksPerEncoderRotation, double gearRatioTo1, double wheelDiameter, 
-        double feedForwardKs, double feedForwardKv, double feedForwardKa, double robotTrackWidthInches, PIDController leftPID, PIDController rightPID) {
-       
+
+    /**
+     * Creates a config object for BreakerDiffDrive.
+     */
+    public BreakerDiffDriveConfig(double ticksPerEncoderRotation, double gearRatioTo1, double wheelDiameter,
+            double feedForwardKs, double feedForwardKv, double feedForwardKa, double robotTrackWidthInches,
+            PIDController leftPID, PIDController rightPID) {
+
         this.wheelDiameter = wheelDiameter;
         this.ticksPerEncoderRotation = ticksPerEncoderRotation;
         this.gearRatioTo1 = gearRatioTo1;
@@ -42,9 +46,9 @@ public class BreakerDiffDriveConfig {
         this.robotTrackWidthInches = robotTrackWidthInches;
         this.leftPID = leftPID;
         this.rightPID = rightPID;
-            
+
         kinematics = new DifferentialDriveKinematics(BreakerUnits.inchesToMeters(robotTrackWidthInches));
-     
+
         wheelCircumference = BreakerMath.getCircumferenceFromDiameter(wheelDiameter);
         ticksPerInch = BreakerMath.getTicksPerInch(ticksPerEncoderRotation, gearRatioTo1, wheelDiameter);
         getTicksPerWheelRotation = BreakerMath.getTicksPerRotation(ticksPerEncoderRotation, gearRatioTo1);

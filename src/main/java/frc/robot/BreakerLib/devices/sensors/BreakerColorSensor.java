@@ -15,6 +15,7 @@ import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
+/** REV Color Sensor V3 implementing the Breaker device interface. */
 public class BreakerColorSensor implements BreakerGenericDevice {
 
   private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
@@ -22,20 +23,27 @@ public class BreakerColorSensor implements BreakerGenericDevice {
   private String faults = null;
   private String deviceName = "Color_Sensor_V3";
 
+  /**
+   * Create a new BreakerColorSensor.
+   * 
+   * @param i2cPort I2C port for the color sensor.
+   */
   public BreakerColorSensor(Port i2cPort) {
     colorSensor = new ColorSensorV3(i2cPort);
     SelfTest.autoRegesterDevice(this);
   }
 
+  /** Current color detected by the sensor. */
   public Color getColor() {
     return colorSensor.getColor();
   }
 
+  /** Compare target color to detected color. */
   public boolean compareColors(Color comparisionColor) {
     return (comparisionColor == colorSensor.getColor());
   }
 
-
+  /** Delivers RGB values plus IR value. */
   public int[] getRawColorsADC() {
     int[] colorVals = new int[4];
     colorVals[0] = colorSensor.getRawColor().red;
@@ -45,7 +53,10 @@ public class BreakerColorSensor implements BreakerGenericDevice {
     return colorVals;
   }
 
-  /** returns the sensors proximity to its sensing target with 2047 being closest and 0 being furthest */
+  /**
+   * Returns the sensor's proximity to its sensing target with 2047 being closest
+   * and 0 being furthest.
+   */
   public int getProximity() {
     return colorSensor.getProximity();
   }
@@ -85,7 +96,7 @@ public class BreakerColorSensor implements BreakerGenericDevice {
   @Override
   public void setDeviceName(String newName) {
     deviceName = newName;
-    
+
   }
 
   @Override
@@ -109,14 +120,13 @@ public class BreakerColorSensor implements BreakerGenericDevice {
   @Override
   public void overrideAutomaticPowerManagement(DevicePowerMode manualPowerMode) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void returnToAutomaticPowerManagement() {
     // TODO Auto-generated method stub
-    
+
   }
 
-  
 }
