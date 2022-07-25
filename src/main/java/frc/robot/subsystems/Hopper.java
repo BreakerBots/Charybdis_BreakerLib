@@ -70,7 +70,7 @@ public class Hopper extends SubsystemBase {
   }
 
   private void hoperLogicLoop() {
-    if (intake.getIntakeIsRunning() && !isFeedingShooter) {
+    if (intake.allMotorsActive() && !isFeedingShooter) {
       if (!topSlotIsFull() && bottomSlotIsFull()) {
         startHopperMotor();
         ballInTrasit = true;
@@ -83,7 +83,7 @@ public class Hopper extends SubsystemBase {
       } else if (bolthSlotsAreEmpty() && !ballInTrasit) {
         stopHopper();
       }
-    } else if (!intake.getIntakeIsRunning() && !isFeedingShooter) {
+    } else if (!intake.allMotorsActive() && !isFeedingShooter) {
       stopHopper();
     }
   }

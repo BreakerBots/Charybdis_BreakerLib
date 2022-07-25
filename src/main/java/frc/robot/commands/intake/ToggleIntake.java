@@ -20,7 +20,7 @@ public class ToggleIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (intake.getIntakeIsRunning()) {
+    if (intake.allMotorsActive()) {
       intake.stopIntake();
     } else {
       intake.startIntake();

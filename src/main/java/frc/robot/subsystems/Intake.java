@@ -4,12 +4,13 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kOff;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
-import edu.wpi.first.math.Drake;
-import edu.wpi.first.math.spline.PoseWithCurvature;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -17,70 +18,82 @@ import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
 
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
-
+/** Intake arm and internal indexer wheels. */
 public class Intake extends SubsystemBase {
-  /** Creates a new Intake. */
+
   private BreakerDoubleSolenoid intakeSol;
   private WPI_TalonSRX leftIndexerMotor;
   private WPI_TalonSRX rightIndexerMotor;
-  private WPI_TalonSRX primaryIntakeMotor;
+  private WPI_TalonSRX intakeMotor;
   private Boolean hopperFeedEnabled = false;
   private SystemDiagnostics diagnostics;
 
+  /** Creates a new Intake. */
   public Intake() {
-    intakeSol = new BreakerDoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKESOL_FWD,
-        Constants.INTAKESOL_REV, Constants.PCM_ID, kReverse);
+    // Indexer motors
     leftIndexerMotor = new WPI_TalonSRX(Constants.LEFT_INDEXER_ID);
     rightIndexerMotor = new WPI_TalonSRX(Constants.RIGHT_INDEXER_ID);
     leftIndexerMotor.setInverted(true);
-    primaryIntakeMotor = new WPI_TalonSRX(Constants.PRIM_INTAKE_ID);
+
+    // Intake motor and solenoid piston.
+    intakeMotor = new WPI_TalonSRX(Constants.PRIM_INTAKE_ID);
+    intakeSol = new BreakerDoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKESOL_FWD,
+        Constants.INTAKESOL_REV, Constants.PCM_ID, kReverse);
+
+    // Diagnostics info
     diagnostics = new SystemDiagnostics(" Intake ");
-    diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor, primaryIntakeMotor);
+    diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor, intakeMotor);
   }
 
-  // Intake arm solenoid
+  // Intake solenoid
 
+  /** Arm solenoid is set to forward. */
   public void extendIntakeArm() {
     intakeSol.set(kForward);
     BreakerLog.logSuperstructureEvent("Intake arm extended");
   }
 
+  /** Arm solenoid is set to reverse. */
   public void retractIntakeArm() {
     intakeSol.set(kReverse);
     BreakerLog.logSuperstructureEvent("Intake arm retracted");
-    if (getIntakeIsRunning()) {
+    if (allMotorsActive()) {
       stopIntake();
     }
   }
 
+  /** Arm solenoid is set to off. */
   public void unlockIntakeArm() {
     intakeSol.set(kOff);
     BreakerLog.logSuperstructureEvent("Intake arm unlocked");
-    if (getIntakeIsRunning()) {
+    if (allMotorsActive()) {
       stopIntake();
     }
   }
 
+  /** Check if arm solenoid is set to forward. */
   public boolean getIsExtended() {
     return (intakeSol.getState() == kForward);
   }
 
-  // Primary intake motor (for arm)
+  // Arm motor
 
-  public void startPrimaryIntakeMotor() {
-    primaryIntakeMotor.set(Constants.PRIM_INTAKE_SPEED);
+  /** Starts arm motor. */
+  public void startIntakeMotor() {
+    intakeMotor.set(Constants.PRIM_INTAKE_SPEED);
   }
 
-  public void stopPrimaryIntakeMotor() {
-    primaryIntakeMotor.set(0);
+  /** Stops arm motor. */
+  public void stopIntakeMotor() {
+    intakeMotor.set(0);
   }
 
-  public boolean getPrimaryIntakeMotorIsRunning() {
-    return (primaryIntakeMotor.getMotorOutputPercent() != 0);
+  /** Checks if arm motor is active. */
+  public boolean intakeMotorIsRunning() {
+    return (intakeMotor.getMotorOutputPercent() != 0);
   }
 
-  // Left indexer motor
+  // Left indexer motor, similar methods to intake motor.
 
   public void startLeftIndexer() {
     leftIndexerMotor.set(Constants.LEFT_INDEXER_SPEED);
@@ -94,7 +107,7 @@ public class Intake extends SubsystemBase {
     return (leftIndexerMotor.getMotorOutputPercent() != 0);
   }
 
-  // Right indexer motor
+  // Right indexer motor, similar to intake motor.
 
   public void startRightIndexer() {
     rightIndexerMotor.set(Constants.RIGHT_INDEXER_SPEED);
@@ -109,22 +122,22 @@ public class Intake extends SubsystemBase {
   }
 
   /** All motors are running. */
-  public boolean getIntakeIsRunning() {
-    return (getPrimaryIntakeMotorIsRunning() && getLeftIndexerIsRunning() && getRightIndexerIsRunning());
+  public boolean allMotorsActive() {
+    return (intakeMotorIsRunning() && getLeftIndexerIsRunning() && getRightIndexerIsRunning());
   }
 
   /** Starts all motors. */
   public void startIntakeMotors() {
-    if (!getIntakeIsRunning()) {
+    if (!allMotorsActive()) {
       startLeftIndexer();
       startRightIndexer();
-      startPrimaryIntakeMotor();
+      startIntakeMotor();
     }
   }
 
   /** Stops all motors. */
   public void stopIntakeMotors() {
-    stopPrimaryIntakeMotor();
+    stopIntakeMotor();
     stopRightIndexer();
     stopLeftIndexer();
     BreakerLog.logSuperstructureEvent(" Intake arm motor stopped | Left Indexer stopped | Right Indexer stopped ");
@@ -132,7 +145,7 @@ public class Intake extends SubsystemBase {
 
   /** Starts all motors and extends arm. */
   public void startIntake() {
-    BreakerLog.logEvent(" StartIntake() called ");
+    BreakerLog.logEvent(" startIntake() called ");
     startIntakeMotors();
     if (!getIsExtended()) {
       extendIntakeArm();
@@ -144,11 +157,11 @@ public class Intake extends SubsystemBase {
    * not feeding into hopper.
    */
   public void stopIntake() {
-    BreakerLog.logEvent(" StopIntake() called ");
+    BreakerLog.logEvent(" stopIntake() called ");
     if (!hopperFeedEnabled) {
       stopIntakeMotors();
     } else {
-      stopPrimaryIntakeMotor();
+      stopIntakeMotor();
       stopRightIndexer();
       BreakerLog.logSuperstructureEvent(" Intake arm motor stopped | Right Indexer stopped ");
     }
@@ -156,7 +169,7 @@ public class Intake extends SubsystemBase {
 
   /** Starts left indexer to feed into hopper. Hopper feed is enabled. */
   public void startHopperFeed() {
-    if (!getIntakeIsRunning()) {
+    if (!allMotorsActive()) {
       startLeftIndexer();
     }
     hopperFeedEnabled = true;
@@ -164,14 +177,14 @@ public class Intake extends SubsystemBase {
 
   /** Stops left indexer. Hopper feed is disabled. */
   public void stopHopperFeed() {
-    if (!getIntakeIsRunning()) {
+    if (!allMotorsActive()) {
       stopLeftIndexer();
     }
     hopperFeedEnabled = false;
   }
 
   /** Returns if intake is feeding into hopper. */
-  public boolean getHopperFeedIsEnabled() {
+  public boolean hopperFeedEnabled() {
     return hopperFeedEnabled;
   }
 }
