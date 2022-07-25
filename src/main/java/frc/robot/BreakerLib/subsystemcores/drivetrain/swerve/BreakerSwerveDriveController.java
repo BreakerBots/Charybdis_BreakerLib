@@ -26,6 +26,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = false;
     usesCurves = false;
     usesExternalOdmeter = false;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, BreakerXboxController controller, BreakerGenericPolynomial linearSpeedCurve, BreakerGenericPolynomial turnSpeedCurve) {
@@ -36,6 +37,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = false;
     usesCurves = true;
     usesExternalOdmeter = false;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, DoubleSupplier forwardSpeedPrecentSupplier, DoubleSupplier horizontalSpeedPrecentSupplier, DoubleSupplier turnSpeedPrecentSupplier) {
@@ -46,6 +48,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = true;
     usesCurves = false;
     usesExternalOdmeter = false;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, DoubleSupplier forwardSpeedPrecentSupplier, DoubleSupplier horizontalSpeedPrecentSupplier, DoubleSupplier turnSpeedPrecentSupplier, BreakerGenericPolynomial linearSpeedCurve, BreakerGenericPolynomial turnSpeedCurve) {
@@ -58,6 +61,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = true;
     usesCurves = true;
     usesExternalOdmeter = false;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, BreakerGenericOdometer odometer, BreakerXboxController controller) {
@@ -67,6 +71,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = false;
     usesCurves = false;
     usesExternalOdmeter = true;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, BreakerGenericOdometer odometer, BreakerXboxController controller, BreakerGenericPolynomial linearSpeedCurve, BreakerGenericPolynomial turnSpeedCurve) {
@@ -78,6 +83,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = false;
     usesCurves = true;
     usesExternalOdmeter = true;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, BreakerGenericOdometer odometer,  DoubleSupplier forwardSpeedPrecentSupplier, DoubleSupplier horizontalSpeedPrecentSupplier, DoubleSupplier turnSpeedPrecentSupplier) {
@@ -89,6 +95,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = true;
     usesCurves = false;
     usesExternalOdmeter = true;
+    addRequirements(baseDrivetrain);
   }
 
   public BreakerSwerveDriveController(BreakerSwerveDrive baseDrivetrain, BreakerGenericOdometer odometer,  DoubleSupplier forwardSpeedPrecentSupplier, DoubleSupplier horizontalSpeedPrecentSupplier, DoubleSupplier turnSpeedPrecentSupplier, BreakerGenericPolynomial linearSpeedCurve, BreakerGenericPolynomial turnSpeedCurve) {
@@ -102,6 +109,7 @@ public class BreakerSwerveDriveController extends CommandBase {
     usesSuppliers = true;
     usesCurves = true;
     usesExternalOdmeter = true;
+    addRequirements(baseDrivetrain);
   }
 
   // Called when the command is initially scheduled.

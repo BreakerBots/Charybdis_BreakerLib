@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
@@ -30,7 +31,7 @@ import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
-public class BreakerSwerveDrive implements BreakerGenericDrivetrain {
+public class BreakerSwerveDrive extends SubsystemBase implements BreakerGenericDrivetrain {
   private BreakerSwerveDriveConfig config;
   /** [0] = frontLeft, [1] = frontRight, [2] = backLeft, [3] = backRight */
   private SwerveModuleState[] targetModuleStates;
