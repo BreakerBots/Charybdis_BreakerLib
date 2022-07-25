@@ -4,8 +4,6 @@
 
 package frc.robot.BreakerLib.util;
 
-import edu.wpi.first.math.Pair;
-
 /** Add your docs here. */
 public class BreakerTriplet<L, M, R> {
     private L leftValue;
