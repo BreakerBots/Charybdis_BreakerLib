@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
@@ -32,7 +33,7 @@ import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
-public class BreakerDiffDrive implements BreakerGenericDrivetrain {
+public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDrivetrain {
   private WPI_TalonFX leftLead;
   private WPI_TalonFX[] leftMotors;
   private MotorControllerGroup leftDrive;
