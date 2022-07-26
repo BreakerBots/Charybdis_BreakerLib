@@ -21,7 +21,7 @@ import static frc.robot.Constants.RIGHT_INDEXER_SPEED;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.devices.motors.BinaryCTREMotor;
+import frc.robot.BreakerLib.devices.motors.BreakerBinaryCTREMotor;
 import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
@@ -30,27 +30,26 @@ import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
 public class Intake extends SubsystemBase {
 
   private BreakerDoubleSolenoid intakeSol;
-  private BinaryCTREMotor<WPI_TalonSRX> leftIndexerMotor;
-  private BinaryCTREMotor<WPI_TalonSRX> rightIndexerMotor;
-  private BinaryCTREMotor<WPI_TalonSRX> intakeMotor;
+  private BreakerBinaryCTREMotor<WPI_TalonSRX> leftIndexerMotor;
+  private BreakerBinaryCTREMotor<WPI_TalonSRX> rightIndexerMotor;
+  private BreakerBinaryCTREMotor<WPI_TalonSRX> intakeMotor;
   private Boolean hopperFeedEnabled = false;
   private SystemDiagnostics diagnostics;
 
   /** Creates a new Intake. */
   public Intake() {
     // Indexer motors
-    leftIndexerMotor = new BinaryCTREMotor<>(new WPI_TalonSRX(LEFT_INDEXER_ID), LEFT_INDEXER_SPEED);
-    rightIndexerMotor = new BinaryCTREMotor<>(new WPI_TalonSRX(RIGHT_INDEXER_ID), RIGHT_INDEXER_SPEED);
+    leftIndexerMotor = new BreakerBinaryCTREMotor<>(new WPI_TalonSRX(LEFT_INDEXER_ID), LEFT_INDEXER_SPEED);
+    rightIndexerMotor = new BreakerBinaryCTREMotor<>(new WPI_TalonSRX(RIGHT_INDEXER_ID), RIGHT_INDEXER_SPEED);
     leftIndexerMotor.getMotor().setInverted(true);
 
     // Intake motor and solenoid piston.
-    intakeMotor = new BinaryCTREMotor<>(new WPI_TalonSRX(PRIM_INTAKE_ID), PRIM_INTAKE_SPEED);
+    intakeMotor = new BreakerBinaryCTREMotor<>(new WPI_TalonSRX(PRIM_INTAKE_ID), PRIM_INTAKE_SPEED);
     intakeSol = new BreakerDoubleSolenoid(CTREPCM, INTAKESOL_FWD, INTAKESOL_REV, PCM_ID, kReverse);
 
     // Diagnostics info
     diagnostics = new SystemDiagnostics(" Intake ");
-    // diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor,
-    // intakeMotor);
+    diagnostics.addBreakerDevices(leftIndexerMotor, rightIndexerMotor, intakeMotor);
   }
 
   // Intake solenoid

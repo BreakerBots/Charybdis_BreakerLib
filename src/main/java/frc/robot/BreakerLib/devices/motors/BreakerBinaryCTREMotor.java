@@ -5,19 +5,24 @@
 package frc.robot.BreakerLib.devices.motors;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.util.BreakerCTREUtil;
+import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Falcon motor with simple on/off controls */
 public class BinaryCTREMotor <T extends BaseMotorController> implements BreakerGenericDevice {
 
     private T motor;
     private double output;
+    private String faultStr = null, deviceName = " Binary_Motor ";
+    private DeviceHealth health = DeviceHealth.NOMINAL;
 
     /**
      * Create a new BinaryCTREMotor that switches between 100% and 0% output.
@@ -27,6 +32,7 @@ public class BinaryCTREMotor <T extends BaseMotorController> implements BreakerG
     public BinaryCTREMotor(T motor) {
         this.motor = motor;
         output = 1;
+        deviceName = " Binary_Motor (" + motor.getDeviceID() + ") ";
     }
 
     /**
@@ -38,6 +44,7 @@ public class BinaryCTREMotor <T extends BaseMotorController> implements BreakerG
     public BinaryCTREMotor(T motor, double output) {
         this.motor = motor;
         this.output = output;
+        deviceName = " Binary_Motor (" + motor.getDeviceID() + ") " ;
     }
 
     /** Sets motor to designated percent output. */
@@ -61,37 +68,40 @@ public class BinaryCTREMotor <T extends BaseMotorController> implements BreakerG
 
     @Override
     public void runSelfTest() {
-        // TODO Auto-generated method stub
-        
+        faultStr = null;
+        health = DeviceHealth.NOMINAL;
+        Faults faultObj = new Faults();
+        motor.getFaults(faultObj);
+        if (faultObj.hasAnyFault() || SelfTest.checkIsMissingCanID(motor.getDeviceID())) {
+            BreakerTriplet<DeviceHealth, String, Boolean> trip = BreakerCTREUtil.getMotorHealthFaultsAndConnectionStatus(faultObj, motor.getDeviceID());
+            faultStr = trip.getMiddle();
+            health = trip.getLeft();
+        }
     }
 
     @Override
     public DeviceHealth getHealth() {
-        // TODO Auto-generated method stub
-        return null;
+        return health;
     }
 
     @Override
     public String getFaults() {
-        // TODO Auto-generated method stub
-        return null;
+        return faultStr;
     }
 
     @Override
     public String getDeviceName() {
-        // TODO Auto-generated method stub
-        return null;
+        return deviceName;
     }
 
     @Override
     public boolean hasFault() {
-        // TODO Auto-generated method stub
-        return false;
+        return health != DeviceHealth.NOMINAL;
     }
 
     @Override
     public void setDeviceName(String newName) {
-        // TODO Auto-generated method stub
+        deviceName = newName;
         
     }
 

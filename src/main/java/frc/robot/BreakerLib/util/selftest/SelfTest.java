@@ -37,6 +37,8 @@ public class SelfTest extends SubsystemBase {
   private static List<Integer> independentlyRegesteredDevicesCAN = new ArrayList<>();
   private static List<Integer> independentlyRegesteredMissingIDs = new ArrayList<>();
   private static boolean autoRegesterDevices = true;
+  private static boolean selfTestEnabled = true;
+
   public SelfTest(double secondsBetweenPeriodicSelfChecks, String robotHostAddressDNS) {
     SelfTest.cyclesbetweenPerSelfCecks = (int) (secondsBetweenPeriodicSelfChecks * 50);
     SelfTest.usesOrchestra = false;
@@ -64,6 +66,14 @@ public class SelfTest extends SubsystemBase {
     SelfTest.usesOrchestra = true;
     SelfTest.robotHostAddressDNS = robotHostAddressDNS;
     SelfTest.autoRegesterDevices = autoRegesterDevices;
+  }
+
+  public static void setSelfTestEnabled(boolean isEnabled) {
+    selfTestEnabled = isEnabled;
+  }
+
+  public static boolean isSelfTestEnabled() {
+      return selfTestEnabled;
   }
 
   private static void retriveDeviceListCAN() {
@@ -174,7 +184,7 @@ public class SelfTest extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (cycleCount ++ % cyclesbetweenPerSelfCecks == 0) {
+    if ((cycleCount ++ % cyclesbetweenPerSelfCecks == 0) && selfTestEnabled) {
       retriveDeviceListCAN();
       runSelfCheck();
     }
