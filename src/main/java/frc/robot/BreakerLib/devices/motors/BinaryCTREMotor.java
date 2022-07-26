@@ -55,6 +55,10 @@ public class BinaryCTREMotor <T extends BaseMotorController> implements BreakerG
         return (motor.getMotorOutputPercent() != 0);
     }
 
+    public T getMotor() {
+        return motor;
+    }
+
     @Override
     public void runSelfTest() {
         // TODO Auto-generated method stub

@@ -7,13 +7,21 @@ package frc.robot.subsystems;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kOff;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
+import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
+import static frc.robot.Constants.INTAKESOL_FWD;
+import static frc.robot.Constants.INTAKESOL_REV;
+import static frc.robot.Constants.LEFT_INDEXER_ID;
+import static frc.robot.Constants.LEFT_INDEXER_SPEED;
+import static frc.robot.Constants.PCM_ID;
+import static frc.robot.Constants.PRIM_INTAKE_ID;
+import static frc.robot.Constants.PRIM_INTAKE_SPEED;
+import static frc.robot.Constants.RIGHT_INDEXER_ID;
+import static frc.robot.Constants.RIGHT_INDEXER_SPEED;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.BreakerLib.devices.motors.BinaryCTREMotor;
 import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
 import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
@@ -22,27 +30,27 @@ import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
 public class Intake extends SubsystemBase {
 
   private BreakerDoubleSolenoid intakeSol;
-  private WPI_TalonSRX leftIndexerMotor;
-  private WPI_TalonSRX rightIndexerMotor;
-  private WPI_TalonSRX intakeMotor;
+  private BinaryCTREMotor<WPI_TalonSRX> leftIndexerMotor;
+  private BinaryCTREMotor<WPI_TalonSRX> rightIndexerMotor;
+  private BinaryCTREMotor<WPI_TalonSRX> intakeMotor;
   private Boolean hopperFeedEnabled = false;
   private SystemDiagnostics diagnostics;
 
   /** Creates a new Intake. */
   public Intake() {
     // Indexer motors
-    leftIndexerMotor = new WPI_TalonSRX(Constants.LEFT_INDEXER_ID);
-    rightIndexerMotor = new WPI_TalonSRX(Constants.RIGHT_INDEXER_ID);
-    leftIndexerMotor.setInverted(true);
+    leftIndexerMotor = new BinaryCTREMotor<>(new WPI_TalonSRX(LEFT_INDEXER_ID), LEFT_INDEXER_SPEED);
+    rightIndexerMotor = new BinaryCTREMotor<>(new WPI_TalonSRX(RIGHT_INDEXER_ID), RIGHT_INDEXER_SPEED);
+    leftIndexerMotor.getMotor().setInverted(true);
 
     // Intake motor and solenoid piston.
-    intakeMotor = new WPI_TalonSRX(Constants.PRIM_INTAKE_ID);
-    intakeSol = new BreakerDoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKESOL_FWD,
-        Constants.INTAKESOL_REV, Constants.PCM_ID, kReverse);
+    intakeMotor = new BinaryCTREMotor<>(new WPI_TalonSRX(PRIM_INTAKE_ID), PRIM_INTAKE_SPEED);
+    intakeSol = new BreakerDoubleSolenoid(CTREPCM, INTAKESOL_FWD, INTAKESOL_REV, PCM_ID, kReverse);
 
     // Diagnostics info
     diagnostics = new SystemDiagnostics(" Intake ");
-    diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor, intakeMotor);
+    // diagnostics.addMotorControllers(leftIndexerMotor, rightIndexerMotor,
+    // intakeMotor);
   }
 
   // Intake solenoid
@@ -76,70 +84,25 @@ public class Intake extends SubsystemBase {
     return (intakeSol.getState() == kForward);
   }
 
-  // Arm motor
-
-  /** Starts arm motor. */
-  public void startIntakeMotor() {
-    intakeMotor.set(Constants.PRIM_INTAKE_SPEED);
-  }
-
-  /** Stops arm motor. */
-  public void stopIntakeMotor() {
-    intakeMotor.set(0);
-  }
-
-  /** Checks if arm motor is active. */
-  public boolean intakeMotorIsRunning() {
-    return (intakeMotor.getMotorOutputPercent() != 0);
-  }
-
-  // Left indexer motor, similar methods to intake motor.
-
-  public void startLeftIndexer() {
-    leftIndexerMotor.set(Constants.LEFT_INDEXER_SPEED);
-  }
-
-  public void stopLeftIndexer() {
-    leftIndexerMotor.set(0);
-  }
-
-  public boolean getLeftIndexerIsRunning() {
-    return (leftIndexerMotor.getMotorOutputPercent() != 0);
-  }
-
-  // Right indexer motor, similar to intake motor.
-
-  public void startRightIndexer() {
-    rightIndexerMotor.set(Constants.RIGHT_INDEXER_SPEED);
-  }
-
-  public void stopRightIndexer() {
-    rightIndexerMotor.set(0);
-  }
-
-  public boolean getRightIndexerIsRunning() {
-    return (rightIndexerMotor.getMotorOutputPercent() != 0);
-  }
-
   /** All motors are running. */
   public boolean allMotorsActive() {
-    return (intakeMotorIsRunning() && getLeftIndexerIsRunning() && getRightIndexerIsRunning());
+    return (intakeMotor.isActive() && leftIndexerMotor.isActive() && rightIndexerMotor.isActive());
   }
 
   /** Starts all motors. */
   public void startIntakeMotors() {
     if (!allMotorsActive()) {
-      startLeftIndexer();
-      startRightIndexer();
-      startIntakeMotor();
+      intakeMotor.start();
+      leftIndexerMotor.start();
+      rightIndexerMotor.start();
     }
   }
 
   /** Stops all motors. */
   public void stopIntakeMotors() {
-    stopIntakeMotor();
-    stopRightIndexer();
-    stopLeftIndexer();
+    intakeMotor.stop();
+    leftIndexerMotor.stop();
+    rightIndexerMotor.stop();
     BreakerLog.logSuperstructureEvent(" Intake arm motor stopped | Left Indexer stopped | Right Indexer stopped ");
   }
 
@@ -161,8 +124,8 @@ public class Intake extends SubsystemBase {
     if (!hopperFeedEnabled) {
       stopIntakeMotors();
     } else {
-      stopIntakeMotor();
-      stopRightIndexer();
+      intakeMotor.stop();
+      rightIndexerMotor.stop();
       BreakerLog.logSuperstructureEvent(" Intake arm motor stopped | Right Indexer stopped ");
     }
   }
@@ -170,7 +133,7 @@ public class Intake extends SubsystemBase {
   /** Starts left indexer to feed into hopper. Hopper feed is enabled. */
   public void startHopperFeed() {
     if (!allMotorsActive()) {
-      startLeftIndexer();
+      leftIndexerMotor.start();
     }
     hopperFeedEnabled = true;
   }
@@ -178,7 +141,7 @@ public class Intake extends SubsystemBase {
   /** Stops left indexer. Hopper feed is disabled. */
   public void stopHopperFeed() {
     if (!allMotorsActive()) {
-      stopLeftIndexer();
+      leftIndexerMotor.stop();
     }
     hopperFeedEnabled = false;
   }
