@@ -50,7 +50,7 @@ public class Shooter extends SubsystemBase {
 
 
     PIDController pid = new PIDController(0.00170666667, 0.0, 0.0);
-    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.00005, 0.00000001, 0.000000001)
+    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.00005, 0.00000001, 0.000000001);
 
     flywheel = new BreakerFlywheel(new BreakerPIDF(pid, ff), leftFlywheelMotor, rightFlywheelMotor);
 
