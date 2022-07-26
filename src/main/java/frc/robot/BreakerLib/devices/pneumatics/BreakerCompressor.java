@@ -9,17 +9,25 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
+import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /**
  * Compressor with built-in AnalogPotentiometer and pneumatic module support.
  */
-public class BreakerCompressor {
+public class BreakerCompressor implements BreakerGenericDevice{
 
     private PneumaticsModuleType moduleType;
 
     private PneumaticsBase pneumaticModule;
+    private PneumaticsControlModule ctrePCM;
+    private PneumaticHub revPneumaticHub;
     private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(0); // Basically a null pressure
                                                                                      // sensor.
+    private String faults = null, deviceName = "Pnumatics_Module";
+    private DeviceHealth health = DeviceHealth.NOMINAL;
 
     /** Creates a new BreakerCompressor. */
     public BreakerCompressor(int moduleID, PneumaticsModuleType moduleType) {
@@ -39,10 +47,12 @@ public class BreakerCompressor {
     private void moduleSetup(int id) {
         switch (moduleType) {
             case CTREPCM:
-                pneumaticModule = new PneumaticsControlModule(id);
+                ctrePCM = new PneumaticsControlModule(id); //Regestered as spesific model for self test
+                pneumaticModule = ctrePCM;
                 break;
             case REVPH:
-                pneumaticModule = new PneumaticHub(id);
+                revPneumaticHub = new PneumaticHub(id); //Regestered as spesific model for self test
+                pneumaticModule = revPneumaticHub;
                 break;
         }
     }
@@ -51,10 +61,12 @@ public class BreakerCompressor {
     private void moduleSetup() {
         switch (moduleType) {
             case CTREPCM:
-                pneumaticModule = new PneumaticsControlModule();
+                ctrePCM = new PneumaticsControlModule(); //Regestered as spesific model for self test
+                pneumaticModule = ctrePCM;
                 break;
             case REVPH:
-                pneumaticModule = new PneumaticHub();
+                revPneumaticHub = new PneumaticHub(); //Regestered as spesific model for self test
+                pneumaticModule = revPneumaticHub;
                 break;
         }
     }
@@ -143,6 +155,78 @@ public class BreakerCompressor {
     /** Disables the compressor, shutting it down. */
     public void disable() {
         pneumaticModule.disableCompressor();
+    }
+
+    @Override
+    public void runSelfTest() {
+        switch (moduleType) {
+            case CTREPCM:
+                break;
+            case REVPH:
+                break;
+            
+        }
+        
+    }
+
+    @Override
+    public DeviceHealth getHealth() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getFaults() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getDeviceName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean hasFault() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setDeviceName(String newName) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public DevicePowerMode managePower(BreakerPowerManagementConfig managementConfig) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void overrideAutomaticPowerManagement(DevicePowerMode manualPowerMode) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void returnToAutomaticPowerManagement() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public boolean isUnderAutomaticControl() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public DevicePowerMode getPowerMode() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
