@@ -14,28 +14,28 @@ import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /** Falcon motor with simple on/off controls */
-public class BimodalCTREMotor <T extends BaseMotorController> implements BreakerGenericDevice {
+public class BinaryCTREMotor <T extends BaseMotorController> implements BreakerGenericDevice {
 
     private T motor;
     private double output;
 
     /**
-     * Create a new BimodalCTREMotor that switches between 100% and 0% output.
+     * Create a new BinaryCTREMotor that switches between 100% and 0% output.
      * 
      * @param motor TalonFX or TalonSRX motor controller.
      */
-    public BimodalCTREMotor(T motor) {
+    public BinaryCTREMotor(T motor) {
         this.motor = motor;
         output = 1;
     }
 
     /**
-     * Create a new BimodalCTREMotor that switches between given output % and 0% output.
+     * Create a new BinaryCTREMotor that switches between given output % and 0% output.
      * 
      * @param motor TalonFX or TalonSRX motor controller.
      * @param output Percent output between -1 and 1.
      */
-    public BimodalCTREMotor(T motor, double output) {
+    public BinaryCTREMotor(T motor, double output) {
         this.motor = motor;
         this.output = output;
     }
