@@ -4,11 +4,8 @@
 
 package frc.robot.BreakerLib.subsystemcores.drivetrain.differential;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
@@ -29,6 +26,10 @@ public class BreakerDiffDriveConfig {
     private double slowModeTurnMultiplier = 1;
     private PIDController leftPID;
     private PIDController rightPID;
+
+    public BreakerDiffDriveConfig() {
+        
+    }
 
     /**
      * Creates a config object for BreakerDiffDrive.

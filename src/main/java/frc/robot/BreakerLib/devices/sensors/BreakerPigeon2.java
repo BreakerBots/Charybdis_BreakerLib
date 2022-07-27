@@ -43,19 +43,22 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
     return BreakerMath.angleModulus(pigeon.getRoll());
   }
 
-  /**  */
+  /** Pitch within +- 180 degrees as Rotation2d. */
   public Rotation2d getPitchRotation2d() {
     return Rotation2d.fromDegrees(getPitchDegrees());
   }
 
+  /** Yaw within +- 180 degrees as Rotation2d. */
   public Rotation2d getYawRotation2d() {
     return Rotation2d.fromDegrees(getYawDegrees());
   }
 
+  /** Roll within +- 180 degrees as Rotation2d. */
   public Rotation2d getRollRotation2d() {
     return Rotation2d.fromDegrees(getRollDegrees());
   }
 
+  /** Pitch, yaw, and roll as Rotation3d, all within +- 180 degrees. */
   public BreakerRotation3d getRotation3d() {
     return new BreakerRotation3d(getPitchRotation2d(), getYawRotation2d(), getRollRotation2d());
   }
