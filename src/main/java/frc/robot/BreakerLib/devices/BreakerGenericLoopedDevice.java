@@ -21,7 +21,7 @@ public abstract class BreakerGenericLoopedDevice extends BreakerGenericDeviceBas
             name = name.substring(name.lastIndexOf('.') + 1);
             SendableRegistry.addLW(this, name, name);
             CommandScheduler.getInstance().registerSubsystem(this);
-            SelfTest.autoRegesterDevice(this);
+            SelfTest.autoRegisterDevice(this);
         }
         
         /**

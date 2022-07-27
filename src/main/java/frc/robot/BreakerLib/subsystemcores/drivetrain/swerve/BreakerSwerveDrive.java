@@ -59,7 +59,7 @@ public class BreakerSwerveDrive extends SubsystemBase implements BreakerGenericD
     this.config = config;
     this.swerveModules = swerveModules;
     this.pigeon2 = pigeon2;
-    SelfTest.autoRegesterDevice(this);
+    SelfTest.autoRegisterDevice(this);
   }
 
   /** sets each module to match a target module state in the order they were passed in

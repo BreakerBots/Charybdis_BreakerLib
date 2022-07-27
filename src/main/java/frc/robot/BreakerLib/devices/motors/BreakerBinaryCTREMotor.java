@@ -33,7 +33,7 @@ public class BreakerBinaryCTREMotor <T extends BaseMotorController> implements B
         this.motor = motor;
         output = 1;
         deviceName = " Binary_Motor (" + motor.getDeviceID() + ") ";
-        SelfTest.autoRegesterDevice(this);
+        SelfTest.autoRegisterDevice(this);
     }
 
     /**
@@ -46,7 +46,7 @@ public class BreakerBinaryCTREMotor <T extends BaseMotorController> implements B
         this.motor = motor;
         this.output = output;
         deviceName = " Binary_Motor (" + motor.getDeviceID() + ") " ;
-        SelfTest.autoRegesterDevice(this);
+        SelfTest.autoRegisterDevice(this);
     }
 
     /** Sets motor to designated percent output. */

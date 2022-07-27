@@ -91,7 +91,7 @@ public class SelfTest extends SubsystemBase {
     
   }
 
-  public static void autoRegesterDevice(BreakerSelfTestable device) {
+  public static void autoRegisterDevice(BreakerSelfTestable device) {
     if (autoRegesterDevices) {
       devices.add(device);
     }

@@ -66,7 +66,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
         ramsete = new RamseteCommand(trajectoryToFollow, odometer::getOdometryPoseMeters, ramseteController,
                 drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), drivetrain::getWheelSpeeds, drivetrain.getLeftPIDController(),
-                drivetrain.getRightPIDController(), drivetrain::tankMoveVoltage, subsystemRequirements);
+                drivetrain.getRightPIDController(), drivetrain::tankDriveVoltage, subsystemRequirements);
         ramsete.schedule();
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
@@ -94,7 +94,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
         ramsete = new RamseteCommand(trajectoryToFollow, odometer::getOdometryPoseMeters, ramseteController,
                 drivetrain.getFeedforward(),
                 drivetrain.getKinematics(), drivetrain::getWheelSpeeds, drivetrain.getLeftPIDController(),
-                drivetrain.getRightPIDController(), drivetrain::tankMoveVoltage, subsystemRequirements);
+                drivetrain.getRightPIDController(), drivetrain::tankDriveVoltage, subsystemRequirements);
         ramsete.schedule();
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();

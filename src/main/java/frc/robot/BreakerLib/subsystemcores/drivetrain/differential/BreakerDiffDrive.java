@@ -33,6 +33,7 @@ import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
+/** Differential drivetrain that uses Falcon 500 motors. */
 public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDrivetrain {
   private WPI_TalonFX leftLead;
   private WPI_TalonFX[] leftMotors;
@@ -55,7 +56,7 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
   private String faults = null;
   private boolean hasFault = false;
 
-  private boolean isInSlowMode;
+  private boolean slowModeActive;
   private boolean invertL;
   private boolean invertR;
 
@@ -65,12 +66,15 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
   /** Creates a new BreakerDiffDrive. */
   public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR,
       BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
+
+    // Left motors.
     this.leftMotors = leftMotors;
     this.invertL = invertL;
     leftLead = leftMotors[0];
     leftDrive = new MotorControllerGroup(leftMotors);
     leftDrive.setInverted(invertL);
 
+    // Right motors.
     this.rightMotors = rightMotors;
     this.invertR = invertR;
     rightLead = rightMotors[0];
@@ -78,85 +82,118 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
     rightDrive.setInverted(invertR);
 
     diffDrive = new DifferentialDrive(leftDrive, rightDrive);
-
     driveOdometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
 
     this.driveConfig = driveConfig;
     this.pigeon2 = pigeon2;
-    SelfTest.autoRegesterDevice(this);
+    SelfTest.autoRegisterDevice(this);
   }
 
-  /** Standard drive command, is affected by slow mode */
+  /**
+   * Arcade driving controls (movement separated by axis). Slow mode is enabled.
+   * 
+   * @param netSpeed  Logitudinal (forward and backward) speed.
+   * @param turnSpeed Lateral (left and right) speed.
+   */
   public void arcadeDrive(double netSpeed, double turnSpeed) {
-    if (isInSlowMode) {
-      netSpeed *= driveConfig.getSlowModeForwardMultiplier();
-      turnSpeed *= driveConfig.getSlowModeTurnMultiplier();
-    }
-
-    diffDrive.arcadeDrive(netSpeed, turnSpeed);
+    arcadeDrive(netSpeed, turnSpeed, true);
   }
 
-  /** Standard drive command, optionaly applys slow mode */
+  /**
+   * Arcade driving controls (movement separated by axis). Slow mode can be
+   * enabled or disabled.
+   * 
+   * @param netSpeed    Logitudinal (forward and backward) speed. -1 to 1.
+   * @param turnSpeed   Lateral (left and right) speed. -1 to 1.
+   * @param useSlowMode Enable or disable slow mode.
+   */
   public void arcadeDrive(double netSpeed, double turnSpeed, boolean useSlowMode) {
-    if (useSlowMode) {
+    if (useSlowMode && slowModeActive) {
       netSpeed *= driveConfig.getSlowModeForwardMultiplier();
       turnSpeed *= driveConfig.getSlowModeTurnMultiplier();
     }
-
     diffDrive.arcadeDrive(netSpeed, turnSpeed);
   }
 
+  /**
+   * Tank driving controls (movement separated by side of drivetrain). Slow mode
+   * is enabled.
+   * 
+   * @param leftSpeed  Speed of left motors. -1 to 1.
+   * @param rightSpeed Speed of right motors. -1 to 1.
+   */
   public void tankDrive(double leftSpeed, double rightSpeed) {
+    tankDrive(leftSpeed, rightSpeed, true);
+  }
+
+  /**
+   * Tank driving controls (movement separated by side of drivetrain). Slow mode
+   * can be enabled or disabled.
+   * 
+   * @param leftSpeed   Speed of left motors. -1 to 1.
+   * @param rightSpeed  Speed of right motors. -1 to 1.
+   * @param useSlowMode Enable or disable slow mode.
+   */
+  public void tankDrive(double leftSpeed, double rightSpeed, boolean useSlowMode) {
+    if (useSlowMode && slowModeActive) {
+      leftSpeed *= driveConfig.getSlowModeForwardMultiplier();
+      rightSpeed *= driveConfig.getSlowModeForwardMultiplier();
+    }
     diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void tankMoveVoltage(double leftVoltage, double rightVoltage) {
+  /**
+   * Tank driving controls (movement separated by side of drivetrain) utilizing
+   * voltage.
+   * 
+   * @param leftVoltage  Voltage for left motors. Negative to invert output.
+   * @param rightVoltage Voltage for right motors. Negative to invert output.
+   */
+  public void tankDriveVoltage(double leftVoltage, double rightVoltage) {
     leftDrive.setVoltage(leftVoltage);
     rightDrive.setVoltage(rightVoltage);
     diffDrive.feed();
     System.out.println("LV: " + leftVoltage + " RV: " + rightVoltage);
   }
 
+  // Both sides of drivetrain.
+
+  /** Resets drivetrain encoders. */
   public void resetDriveEncoders() {
     leftLead.setSelectedSensorPosition(0);
     rightLead.setSelectedSensorPosition(0);
   }
 
+  /**
+   * Turns the Falcon 500's builtin brake mode on or off for the drivetrain.
+   * 
+   * @param isEnabled Enable or disable brake mode.
+   */
+  public void setDrivetrainBrakeMode(boolean isEnabled) {
+    BreakerCTREUtil.setBrakeMode(isEnabled, leftMotors);
+    BreakerCTREUtil.setBrakeMode(isEnabled, rightMotors);
+  }
+
+  // Left motors.
+
+  /** Returns left motor ticks. */
   public double getLeftDriveTicks() {
     return invertL ? -leftLead.getSelectedSensorPosition() : leftLead.getSelectedSensorPosition();
   }
 
+  /** Returns left motor ticks converted into inches. */
   public double getLeftDriveInches() {
     return (getLeftDriveTicks() / driveConfig.getTicksPerInch());
   }
 
+  /** Returns left motor ticks converted into meters. */
   public double getLeftDriveMeters() {
     return Units.inchesToMeters(getLeftDriveInches());
   }
 
+  /** Returns left motor velocity in raw sensor units (ticks per 100ms). */
   public double getLeftDriveVelocityRSU() {
     return invertL ? -leftLead.getSelectedSensorVelocity() : leftLead.getSelectedSensorVelocity();
-  }
-
-  public double getRightDriveTicks() {
-    return invertR ? -rightLead.getSelectedSensorPosition() : rightLead.getSelectedSensorPosition();
-  }
-
-  public double getRightDriveInches() {
-    return getRightDriveTicks() / driveConfig.getTicksPerInch();
-  }
-
-  public double getRightDriveMeters() {
-    return Units.inchesToMeters(getRightDriveInches());
-  }
-
-  public double getRightDriveVelocityRSU() {
-    return invertR ? -rightLead.getSelectedSensorVelocity() : rightLead.getSelectedSensorVelocity();
-  }
-
-  public void setDrivetrainBrakeMode(boolean isEnabled) {
-    BreakerCTREUtil.setBrakeMode(isEnabled, leftMotors);
-    BreakerCTREUtil.setBrakeMode(isEnabled, rightMotors);
   }
 
   /** Returns an instance of the drivetrain's left side lead motor */
@@ -164,28 +201,72 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
     return leftLead;
   }
 
+  // Right motors.
+
+  /** Returns right motor ticks. */
+  public double getRightDriveTicks() {
+    return invertR ? -rightLead.getSelectedSensorPosition() : rightLead.getSelectedSensorPosition();
+  }
+
+  /** Returns right motor ticks converted into inches. */
+  public double getRightDriveInches() {
+    return getRightDriveTicks() / driveConfig.getTicksPerInch();
+  }
+
+  /** Returns right motor ticks converted into meters. */
+  public double getRightDriveMeters() {
+    return Units.inchesToMeters(getRightDriveInches());
+  }
+
+  /** Returns right motor velocity in raw sensor units (ticks per 100ms). */
+  public double getRightDriveVelocityRSU() {
+    return invertR ? -rightLead.getSelectedSensorVelocity() : rightLead.getSelectedSensorVelocity();
+  }
+
   /** Returns an instance of the drivetrain's right side lead motor */
   public WPI_TalonFX getRightLeadMotor() {
     return rightLead;
   }
 
+  // Controllers and kinematics.
+
+  /**
+   * Returns a SimpleMotorFeedforward controller with values specified by the
+   * drivetrain config.
+   */
   public SimpleMotorFeedforward getFeedforward() {
     return new SimpleMotorFeedforward(driveConfig.getFeedForwardKs(), driveConfig.getFeedForwardKv(),
         driveConfig.getFeedForwardKa());
   }
 
+  /**
+   * Returns a DifferentialDriveKinematics with values specified by the drivetrain
+   * config.
+   */
   public DifferentialDriveKinematics getKinematics() {
     return driveConfig.getKinematics();
   }
 
+  /**
+   * Returns the PIDController for the left drivetrain motors with values
+   * specified by the drivetrain config.
+   */
   public PIDController getLeftPIDController() {
     return driveConfig.getLeftPID();
   }
 
+  /**
+   * Returns the PIDController for the right drivetrain motors with values
+   * specified by the drivetrain config.
+   */
   public PIDController getRightPIDController() {
     return driveConfig.getRightPID();
   }
 
+  /**
+   * Returns DifferentialDriveWheelSpeeds with values specified by the drivetrain
+   * config.
+   */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
         BreakerUnits.inchesToMeters((getLeftDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10),
@@ -194,12 +275,12 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
 
   @Override
   public void setSlowMode(boolean isEnabled) {
-    isInSlowMode = isEnabled;
+    slowModeActive = isEnabled;
   }
 
   @Override
   public boolean isInSlowMode() {
-    return isInSlowMode;
+    return slowModeActive;
   }
 
   public BreakerDiffDriveState getDiffDriveState() {

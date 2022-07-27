@@ -51,7 +51,7 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
         lFlyMotor = flywheelMotors[0];
         motors = flywheelMotors;
         testSuite = new BreakerFlywheelTestSuite(this);
-        SelfTest.autoRegesterDevice(this);
+        SelfTest.autoRegisterDevice(this);
     }
 
     public void setFlywheelSpeed(double flywheelTargetSpeedRPM) {
