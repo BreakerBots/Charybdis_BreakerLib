@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
@@ -17,12 +18,10 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Falcon motor with simple on/off controls */
-public class BreakerBinaryCTREMotor <T extends BaseMotorController> implements BreakerGenericDevice {
+public class BreakerBinaryCTREMotor <T extends BaseMotorController> extends BreakerGenericDeviceBase {
 
     private T motor;
     private double output;
-    private String faultStr = null, deviceName = " Binary_Motor ";
-    private DeviceHealth health = DeviceHealth.NOMINAL;
 
     /**
      * Create a new BinaryCTREMotor that switches between 100% and 0% output.
@@ -33,7 +32,6 @@ public class BreakerBinaryCTREMotor <T extends BaseMotorController> implements B
         this.motor = motor;
         output = 1;
         deviceName = " Binary_Motor (" + motor.getDeviceID() + ") ";
-        SelfTest.autoRegisterDevice(this);
     }
 
     /**
@@ -46,7 +44,6 @@ public class BreakerBinaryCTREMotor <T extends BaseMotorController> implements B
         this.motor = motor;
         this.output = output;
         deviceName = " Binary_Motor (" + motor.getDeviceID() + ") " ;
-        SelfTest.autoRegisterDevice(this);
     }
 
     /** Sets motor to designated percent output. */
@@ -79,32 +76,6 @@ public class BreakerBinaryCTREMotor <T extends BaseMotorController> implements B
             faultStr = trip.getMiddle();
             health = trip.getLeft();
         }
-    }
-
-    @Override
-    public DeviceHealth getHealth() {
-        return health;
-    }
-
-    @Override
-    public String getFaults() {
-        return faultStr;
-    }
-
-    @Override
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    @Override
-    public boolean hasFault() {
-        return health != DeviceHealth.NOMINAL;
-    }
-
-    @Override
-    public void setDeviceName(String newName) {
-        deviceName = newName;
-        
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.ctre.phoenix.led.StrobeAnimation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
@@ -24,7 +25,7 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** LED controller */
-public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice {
+public class BreakerCANdle extends BreakerGenericLoopedDevice {
 
     public enum BreakerCANdleLedMode {
         COLOR_SWITCH,
@@ -44,9 +45,6 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
     private double switchTimeSec;
     private Color[] switchColors;
     private BreakerCANdleLedMode mode = BreakerCANdleLedMode.OFF;
-    private DeviceHealth health = DeviceHealth.NOMINAL;
-    private String faults;
-    private String diviceName = " CANdle_LED_Controller ";
     private int canID;
 
     public BreakerCANdle(int canID, int numberOfLEDs, BreakerCANdleConfig config) {
@@ -56,7 +54,7 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
         enabledStatus = new RainbowAnimation(1, 0.5, numberOfLEDs);
         errorStatus = new StrobeAnimation(255, 0, 0, 0, 0.5, numberOfLEDs);
         this.canID = canID;
-        SelfTest.autoRegisterDevice(this);
+        deviceName = " CANdle_LED_Controller ("+ canID +") ";
     }
 
     public void setLedAnimation(Animation animation) {
@@ -144,42 +142,18 @@ public class BreakerCANdle extends SubsystemBase implements BreakerGenericDevice
 
     @Override
     public void runSelfTest() {
-        faults = null;
+        faultStr = null;
+        health = DeviceHealth.NOMINAL;
         CANdleFaults faultsC = new CANdleFaults();
         candle.getFaults(faultsC);
         if (faultsC.hasAnyFault() || SelfTest.checkIsMissingCanID(canID)) {
             BreakerTriplet<DeviceHealth, String, Boolean> faultData = BreakerCTREUtil.getCANdelHealthFaultsAndConnectionStatus(faultsC, canID);
-            faults = faultData.getMiddle();
+            faultStr = faultData.getMiddle();
             health = faultData.getLeft();
         } else {
             health = DeviceHealth.NOMINAL;
         }
         
-    }
-
-    @Override
-    public DeviceHealth getHealth() {
-        return health;
-    }
-
-    @Override
-    public String getFaults() {
-        return faults;
-    }
-
-    @Override
-    public String getDeviceName() {
-        return diviceName;
-    }
-
-    @Override
-    public boolean hasFault() {
-        return health != DeviceHealth.NOMINAL;
-    }
-
-    @Override
-    public void setDeviceName(String newName) {
-        diviceName = newName;
     }
 
     @Override

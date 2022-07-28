@@ -12,6 +12,11 @@ public abstract class BreakerSelfTestableBase implements BreakerSelfTestable  {
     protected DeviceHealth health = DeviceHealth.NOMINAL;
 
     @Override
+    public boolean hasFault() {
+        return health != DeviceHealth.NOMINAL;
+    }
+
+    @Override
     public DeviceHealth getHealth() {
         return health;
     }

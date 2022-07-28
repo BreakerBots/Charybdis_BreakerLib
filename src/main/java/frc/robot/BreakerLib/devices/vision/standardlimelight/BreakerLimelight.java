@@ -6,19 +6,18 @@ package frc.robot.BreakerLib.devices.vision.standardlimelight;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
-public class BreakerLimelight implements BreakerGenericDevice {
+public class BreakerLimelight extends BreakerGenericDeviceBase {
   private double mountingAngle;
   private double mountingHeight;
-  private String limelightName;
+  private final String limelightName;
   private BreakerLimelightTarget currentTarget;
-  private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
-  private String faults = null;
 
   /**
    * Creates an new vision prossesing limelight
@@ -26,8 +25,8 @@ public class BreakerLimelight implements BreakerGenericDevice {
    * @param limelightName the network name of the limelight you are initializing
    */
   public BreakerLimelight(String limelightName) {
-    limelightName = this.limelightName;
-    SelfTest.autoRegesterDevice(this);
+    this.limelightName = limelightName;
+    deviceName = limelightName;
   }
 
   /**
@@ -121,34 +120,18 @@ public class BreakerLimelight implements BreakerGenericDevice {
 
   @Override
   public void runSelfTest() {
-    faults = null;
+    health = DeviceHealth.NOMINAL;
+      faultStr = null;
     if (getAllVisionData()[5] == 0) {
-      currentHealth = DeviceHealth.INOPERABLE;
-      faults = " LIMELIGHT_DISCONNECTED ";
-    } else {
-      currentHealth = DeviceHealth.NOMINAL;
-      faults = null;
+      health = DeviceHealth.INOPERABLE;
+      faultStr = " LIMELIGHT_DISCONNECTED ";
     }
   }
 
-  @Override
-  public DeviceHealth getHealth() {
-    return currentHealth;
-  }
-
-  @Override
-  public String getFaults() {
-    return faults;
-  }
 
   @Override
   public String getDeviceName() {
     return limelightName;
-  }
-
-  @Override
-  public boolean hasFault() {
-    return currentHealth != DeviceHealth.NOMINAL;
   }
 
   @Override

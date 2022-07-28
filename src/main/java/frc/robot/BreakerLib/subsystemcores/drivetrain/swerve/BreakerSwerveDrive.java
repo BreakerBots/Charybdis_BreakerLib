@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.physics.Breaker3AxisForces;
 import frc.robot.BreakerLib.physics.BreakerVector2;
@@ -31,7 +32,7 @@ import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
-public class BreakerSwerveDrive extends SubsystemBase implements BreakerGenericDrivetrain {
+public class BreakerSwerveDrive extends BreakerGenericDrivetrain {
   private BreakerSwerveDriveConfig config;
   /** [0] = frontLeft, [1] = frontRight, [2] = backLeft, [3] = backRight */
   private SwerveModuleState[] targetModuleStates;
@@ -48,8 +49,6 @@ public class BreakerSwerveDrive extends SubsystemBase implements BreakerGenericD
   private double prevOdometryUpdateTimestamp = 0;
 
   private boolean isInSlowMode;
-
-  private String faults = null, deviceName = "Swerve_Drivetrain";
   /** Constructs a new swerve based drivetrain
    * @param config - the confiuration values for the drivetrain's charicteristics and behavor, passed in as a "BreakerSwerveDriveConfig" object
    * @param swerveModules - The four swerve drive modules that make up the drivetrain, must be passed in the same order shown below
@@ -59,7 +58,7 @@ public class BreakerSwerveDrive extends SubsystemBase implements BreakerGenericD
     this.config = config;
     this.swerveModules = swerveModules;
     this.pigeon2 = pigeon2;
-    SelfTest.autoRegisterDevice(this);
+    deviceName = "Swerve_Drivetrain";
   }
 
   /** sets each module to match a target module state in the order they were passed in
@@ -171,39 +170,15 @@ public class BreakerSwerveDrive extends SubsystemBase implements BreakerGenericD
 
   @Override
   public void runSelfTest() {
-    faults = null;
+    faultStr = null;
+    health = DeviceHealth.NOMINAL;
     for (BreakerGenericSwerveModule module: swerveModules) {
       module.runModuleSelfCheck();
       if (module.hasFault()) {
-        faults += " " + module.getDeviceName() + ": " + module.getFaults() + " ";
+        faultStr += " " + module.getDeviceName() + ": " + module.getFaults() + " ";
+        health = health != DeviceHealth.INOPERABLE ? module.getHealth() : health;
       }
     }
-  }
-
-  @Override
-  public DeviceHealth getHealth() {
-    return hasFault() ? DeviceHealth.FAULT : DeviceHealth.NOMINAL;
-  }
-
-  @Override
-  public String getFaults() {
-    return faults;
-  }
-
-  @Override
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  @Override
-  public boolean hasFault() {
-    return (faults != null);
-  }
-
-  @Override
-  public void setDeviceName(String newName) {
-    deviceName = newName;
-    
   }
 
   @Override

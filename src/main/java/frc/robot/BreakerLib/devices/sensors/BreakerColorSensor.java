@@ -9,6 +9,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
@@ -16,12 +17,10 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** REV Color Sensor V3 implementing the Breaker device interface. */
-public class BreakerColorSensor implements BreakerGenericDevice {
+public class BreakerColorSensor extends BreakerGenericDeviceBase {
 
-  private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
   private ColorSensorV3 colorSensor;
-  private String faults = null;
-  private String deviceName = "Color_Sensor_V3";
+ 
 
   /**
    * Create a new BreakerColorSensor.
@@ -30,7 +29,7 @@ public class BreakerColorSensor implements BreakerGenericDevice {
    */
   public BreakerColorSensor(Port i2cPort) {
     colorSensor = new ColorSensorV3(i2cPort);
-    SelfTest.autoRegesterDevice(this);
+    deviceName = "Color_Sensor_V3";
   }
 
   /** Current color detected by the sensor. */
@@ -63,40 +62,14 @@ public class BreakerColorSensor implements BreakerGenericDevice {
 
   @Override
   public void runSelfTest() {
-    faults = null;
+    faultStr = null;
     if (!colorSensor.isConnected()) {
-      currentHealth = DeviceHealth.INOPERABLE;
-      faults = " COLOR_SENSOR_NOT_CONNECTED ";
+      health = DeviceHealth.INOPERABLE;
+      faultStr = " COLOR_SENSOR_NOT_CONNECTED ";
     } else {
-      currentHealth = DeviceHealth.NOMINAL;
-      faults = null;
+      health = DeviceHealth.NOMINAL;
+      faultStr = null;
     }
-  }
-
-  @Override
-  public DeviceHealth getHealth() {
-    return currentHealth;
-  }
-
-  @Override
-  public String getFaults() {
-    return faults;
-  }
-
-  @Override
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  @Override
-  public boolean hasFault() {
-    return currentHealth != DeviceHealth.NOMINAL;
-  }
-
-  @Override
-  public void setDeviceName(String newName) {
-    deviceName = newName;
-
   }
 
   @Override

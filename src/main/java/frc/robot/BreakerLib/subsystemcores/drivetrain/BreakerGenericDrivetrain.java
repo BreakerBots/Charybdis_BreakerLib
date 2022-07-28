@@ -8,15 +8,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 import frc.robot.BreakerLib.util.selftest.BreakerSelfTestable;
 
 /** Contianer class for methods common to all drivetrain types */
-public interface BreakerGenericDrivetrain extends BreakerGenericOdometer, BreakerGenericDevice {
+public abstract class BreakerGenericDrivetrain extends BreakerGenericLoopedDevice implements BreakerGenericOdometer {
 
-    
-    
     /** Updates the odometer position. */
     public abstract void updateOdometry();
 

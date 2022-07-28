@@ -3,6 +3,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/BreakerAutomaticBreakModeManager": "Subsystem",
+      "/LiveWindow/BreakerDiffDrive": "Subsystem",
       "/LiveWindow/BreakerFalconOrchestra": "Subsystem",
       "/LiveWindow/BreakerFlywheel": "Subsystem",
       "/LiveWindow/BreakerFlywheelStateSpace": "Subsystem",

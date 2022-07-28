@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
@@ -17,7 +18,7 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 /**
  * Compressor with built-in AnalogPotentiometer and pneumatic module support.
  */
-public class BreakerCompressor implements BreakerGenericDevice{
+public class BreakerCompressor extends BreakerGenericDeviceBase {
 
     private PneumaticsModuleType moduleType;
 
@@ -26,12 +27,11 @@ public class BreakerCompressor implements BreakerGenericDevice{
     private PneumaticHub revPneumaticHub;
     private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(0); // Basically a null pressure
                                                                                      // sensor.
-    private String faults = null, deviceName = "Pnumatics_Module";
-    private DeviceHealth health = DeviceHealth.NOMINAL;
 
     /** Creates a new BreakerCompressor. */
     public BreakerCompressor(int moduleID, PneumaticsModuleType moduleType) {
         this.moduleType = moduleType;
+        deviceName = "Pnumatics_Module";
         moduleSetup(moduleID);
     }
 
@@ -40,6 +40,7 @@ public class BreakerCompressor implements BreakerGenericDevice{
      */
     public BreakerCompressor(PneumaticsModuleType moduleType) {
         this.moduleType = moduleType;
+        deviceName = "Pnumatics_Module";
         moduleSetup();
     }
 
@@ -166,36 +167,6 @@ public class BreakerCompressor implements BreakerGenericDevice{
                 break;
             
         }
-        
-    }
-
-    @Override
-    public DeviceHealth getHealth() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getFaults() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getDeviceName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean hasFault() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setDeviceName(String newName) {
-        // TODO Auto-generated method stub
         
     }
 

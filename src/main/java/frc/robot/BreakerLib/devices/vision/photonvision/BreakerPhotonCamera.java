@@ -11,6 +11,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.position.geometry.BreakerTransform3d;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
@@ -19,18 +20,15 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Photon camera */
-public class BreakerPhotonCamera implements BreakerGenericDevice {
+public class BreakerPhotonCamera extends BreakerGenericDeviceBase {
 
     private PhotonCamera camera;
-    private String cameraName;
+    private final String cameraName;
     private double cameraAngle; // Mounting angle
     private double cameraHeightIns; // Height relative to ground. MAKE THIS METERS?
     private double verticalFOV;
     private double horizontalFOV;
     private BreakerTransform3d cameraPositionRelativeToRobot; // Height relative to ground, all else relative to robot position.
-    
-    private String faults;
-    private DeviceHealth deviceHealth = DeviceHealth.NOMINAL;
 
     /**
      * Creates a new camera that uses a PhotonVision-based computer vision
@@ -47,13 +45,13 @@ public class BreakerPhotonCamera implements BreakerGenericDevice {
             BreakerTransform3d cameraPositionRelativeToRobot) {
         camera = new PhotonCamera(cameraName);
         this.cameraName = cameraName;
+        deviceName = cameraName;
         this.cameraPositionRelativeToRobot = cameraPositionRelativeToRobot;
         this.cameraAngle = cameraPositionRelativeToRobot.getRotationComponent().getPitch().getDegrees();
         this.cameraHeightIns = Units
                 .metersToInches(cameraPositionRelativeToRobot.getTranslationComponent().getMetersZ());
         this.verticalFOV = verticalFOV;
         this.horizontalFOV = horizontalFOV;
-        SelfTest.autoRegesterDevice(this);
     }
 
     /** Overall raw result from photon camera. */
@@ -133,33 +131,17 @@ public class BreakerPhotonCamera implements BreakerGenericDevice {
 
     @Override
     public void runSelfTest() {
-        faults = null;
+        faultStr = null;
+        health = DeviceHealth.NOMINAL;
         if (getPipelineLatancyMilliseconds() == 0) {
-            deviceHealth = DeviceHealth.INOPERABLE;
-            faults = " camera_not_connected ";
-        } else {
-            deviceHealth = DeviceHealth.NOMINAL;
+            health = DeviceHealth.INOPERABLE;
+            faultStr = " camera_not_connected ";
         }
-    }
-
-    @Override
-    public DeviceHealth getHealth() {
-        return deviceHealth;
-    }
-
-    @Override
-    public String getFaults() {
-        return faults;
     }
 
     @Override
     public String getDeviceName() {
         return cameraName;
-    }
-
-    @Override
-    public boolean hasFault() {
-        return deviceHealth != DeviceHealth.NOMINAL;
     }
 
     @Override

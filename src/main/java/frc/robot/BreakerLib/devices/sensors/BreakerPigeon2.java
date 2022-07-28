@@ -8,6 +8,7 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
@@ -16,16 +17,13 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /* CTRE Pigeon IMU 2 implementing the Breaker device interface. */
-public class BreakerPigeon2 implements BreakerGenericDevice {
+public class BreakerPigeon2 extends BreakerGenericDeviceBase {
   private WPI_Pigeon2 pigeon;
-  private DeviceHealth currentHealth = DeviceHealth.NOMINAL;
-  private String faults = null;
-  private String deviceName = "Pigeon2_IMU";
 
   /** Creates a new PigeonIMU object. */
   public BreakerPigeon2(int deviceID) {
     pigeon = new WPI_Pigeon2(deviceID);
-    SelfTest.autoRegisterDevice(this);
+    deviceName = "Pigeon2_IMU (" + deviceID + ") ";
   }
 
   /** Returns pitch angle within +- 180 degrees */
@@ -144,60 +142,31 @@ public class BreakerPigeon2 implements BreakerGenericDevice {
 
   @Override
   public void runSelfTest() {
-    faults = null;
+    faultStr = null;
+    health = DeviceHealth.NOMINAL;
     Pigeon2_Faults curFaults = new Pigeon2_Faults();
     pigeon.getFaults(curFaults);
     
     if (curFaults.HardwareFault) {
-      currentHealth = DeviceHealth.INOPERABLE;
-      faults += " HARDWARE_FAULT ";
+      health = DeviceHealth.INOPERABLE;
+      faultStr += " HARDWARE_FAULT ";
     }
     if (curFaults.MagnetometerFault) {
-      currentHealth = DeviceHealth.INOPERABLE;
-      faults += " MAG_FAULT ";
+      health = DeviceHealth.INOPERABLE;
+      faultStr += " MAG_FAULT ";
     }
     if (curFaults.GyroFault) {
-      currentHealth = DeviceHealth.INOPERABLE;
-      faults += "  GYRO_FAULT ";
+      health = DeviceHealth.INOPERABLE;
+      faultStr += "  GYRO_FAULT ";
     }
     if (curFaults.AccelFault) {
-      currentHealth = DeviceHealth.INOPERABLE;
-      faults += "  ACCEL_FAULT ";
+      health = DeviceHealth.INOPERABLE;
+      faultStr += "  ACCEL_FAULT ";
     }
     if (curFaults.UnderVoltage) {
-      currentHealth = (currentHealth != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : currentHealth;
-      faults += " UNDER_6.5V ";
+      health = (health != DeviceHealth.INOPERABLE) ? DeviceHealth.FAULT : health;
+      faultStr += " UNDER_6.5V ";
     }
-    if (!curFaults.HardwareFault && !curFaults.MagnetometerFault && !curFaults.GyroFault
-        && !curFaults.AccelFault && !curFaults.UnderVoltage) {
-      currentHealth = DeviceHealth.NOMINAL;
-      faults = null;
-    }
-  }
-
-  @Override
-  public DeviceHealth getHealth() {
-    return currentHealth;
-  }
-
-  @Override
-  public String getFaults() {
-    return faults;
-  }
-
-  @Override
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  @Override
-  public boolean hasFault() {
-    return currentHealth != DeviceHealth.NOMINAL;
-  }
-
-  @Override
-  public void setDeviceName(String newName) {
-    deviceName = newName;
   }
 
   @Override

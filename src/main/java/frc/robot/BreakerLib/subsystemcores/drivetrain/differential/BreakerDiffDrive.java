@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
+import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
@@ -34,7 +36,7 @@ import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Differential drivetrain that uses Falcon 500 motors. */
-public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDrivetrain {
+public class BreakerDiffDrive extends BreakerGenericDrivetrain {
   private WPI_TalonFX leftLead;
   private WPI_TalonFX[] leftMotors;
   private MotorControllerGroup leftDrive;
@@ -51,10 +53,6 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
   private BreakerMovementState2d prevMovementState = new BreakerMovementState2d();
   private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
   private double prevOdometryUpdateTimestamp = 0;
-
-  private String deviceName = "Differential_Drivetrain";
-  private String faults = null;
-  private boolean hasFault = false;
 
   private boolean slowModeActive;
   private boolean invertL;
@@ -84,9 +82,9 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
     diffDrive = new DifferentialDrive(leftDrive, rightDrive);
     driveOdometer = new DifferentialDriveOdometry(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]));
 
+    deviceName = "Differential_Drivetrain";
     this.driveConfig = driveConfig;
     this.pigeon2 = pigeon2;
-    SelfTest.autoRegisterDevice(this);
   }
 
   /**
@@ -303,14 +301,15 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
 
   @Override
   public void runSelfTest() {
-    faults = null;
-    hasFault = false;
+    faultStr = null;
+    health = DeviceHealth.NOMINAL;
+    
     StringBuilder work = new StringBuilder();
     for (WPI_TalonFX motorL : leftMotors) {
       Faults motorFaults = new Faults();
       motorL.getFaults(motorFaults);
       if (motorFaults.hasAnyFault()) {
-        hasFault = true;
+        health = DeviceHealth.FAULT;
         work.append(" MOTOR ID (" + motorL.getDeviceID() + ") FAULTS: ");
         work.append(BreakerCTREUtil.getMotorFaultsAsString(motorFaults));
       }
@@ -319,38 +318,12 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
       Faults motorFaults = new Faults();
       motorR.getFaults(motorFaults);
       if (motorFaults.hasAnyFault()) {
-        hasFault = true;
+        health = DeviceHealth.FAULT;
         work.append(" MOTOR ID (" + motorR.getDeviceID() + ") FAULTS: ");
         work.append(BreakerCTREUtil.getMotorFaultsAsString(motorFaults));
       }
     }
-    faults = work.toString();
-  }
-
-  @Override
-  public DeviceHealth getHealth() {
-    return hasFault ? DeviceHealth.FAULT : DeviceHealth.NOMINAL;
-  }
-
-  @Override
-  public String getFaults() {
-    return faults;
-  }
-
-  @Override
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  @Override
-  public boolean hasFault() {
-    return hasFault;
-  }
-
-  @Override
-  public void setDeviceName(String newName) {
-    deviceName = newName;
-
+    faultStr = work.toString();
   }
 
   @Override
