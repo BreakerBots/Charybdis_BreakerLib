@@ -6,8 +6,6 @@ package frc.robot.BreakerLib.util.robotmanager;
 
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement.BreakerAutomaticBreakModeManager;
-import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 
 /** Add your docs here. */
 public class BreakerRobotConfig {

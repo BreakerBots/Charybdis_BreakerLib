@@ -5,17 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoManager;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDriveController;
-import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotConfig;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotManager;
 import frc.robot.BreakerLib.util.robotmanager.BreakerRobotStartConfig;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
 import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
 import frc.robot.commands.shooter.ToggleShooter;
@@ -27,9 +24,10 @@ import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 public class RobotContainer {
+
+  // Remove subsystem interdependencies. Move them to commands >:(
+
   private final BreakerXboxController controllerSys = new BreakerXboxController(0);
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID);
   private final Drive drivetrainSys = new Drive(imuSys);

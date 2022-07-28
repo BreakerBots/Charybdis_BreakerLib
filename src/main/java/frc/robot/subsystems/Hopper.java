@@ -17,6 +17,7 @@ public class Hopper extends SubsystemBase {
   private boolean isFeedingShooter = false;
   private boolean ballInTrasit = false;
   private Intake intake;
+
   public Hopper(Intake intake) {
     hopperMotor = new WPI_TalonSRX(Constants.HOPPER_ID);
     hopperMotor.setInverted(true);
@@ -34,7 +35,7 @@ public class Hopper extends SubsystemBase {
   public void startHopperShooterFeed() {
     hopperMotor.set(Constants.HOPPER_SHOOTER_FEED_SPEED);
     isFeedingShooter = true;
-    }
+  }
 
   public void stopHopper() {
     hopperMotor.set(0);
@@ -57,11 +58,11 @@ public class Hopper extends SubsystemBase {
     return !bottomSlotSensor.get();
   }
 
-  public boolean bolthSlotsAreFull() {
+  public boolean bothSlotsAreFull() {
     return (topSlotIsFull() && bottomSlotIsFull());
   }
 
-  public boolean bolthSlotsAreEmpty() {
+  public boolean bothSlotsAreEmpty() {
     return (!topSlotIsFull() && !bottomSlotIsFull());
   }
 
@@ -69,27 +70,51 @@ public class Hopper extends SubsystemBase {
     return ballInTrasit;
   }
 
-  private void hoperLogicLoop() {
-    if (intake.allMotorsActive() && !isFeedingShooter) {
-      if (!topSlotIsFull() && bottomSlotIsFull()) {
-        startHopperMotor();
-        ballInTrasit = true;
-      } else if (topSlotIsFull() && !bottomSlotIsFull()) {
+  private void hopperLogicLoop() {
+
+    // Refined logic >:)
+
+    if (!isFeedingShooter) {
+      if (!intake.allMotorsActive()) {
         stopHopper();
-        ballInTrasit = false;
-      } else if (bolthSlotsAreFull() && !ballInTrasit) {
-        stopHopper();
-        intake.stopIntake();
-      } else if (bolthSlotsAreEmpty() && !ballInTrasit) {
-        stopHopper();
+      } else {
+        if (!topSlotIsFull() && bottomSlotIsFull()) {
+          startHopperMotor();
+          ballInTrasit = true;
+        }
+        else if (topSlotIsFull() && !bottomSlotIsFull()) {
+          stopHopper();
+          ballInTrasit = false;
+        }
+        else if (!ballInTrasit) {
+          stopHopper();
+          if (bothSlotsAreFull()) {
+            intake.stopIntake();
+          }
+        }
       }
-    } else if (!intake.allMotorsActive() && !isFeedingShooter) {
-      stopHopper();
     }
+
+    // if (intake.allMotorsActive() && !isFeedingShooter) {
+    //   if (!topSlotIsFull() && bottomSlotIsFull()) {
+    //     startHopperMotor();
+    //     ballInTrasit = true;
+    //   } else if (topSlotIsFull() && !bottomSlotIsFull()) {
+    //     stopHopper();
+    //     ballInTrasit = false;
+    //   } else if (bothSlotsAreFull() && !ballInTrasit) {
+    //     stopHopper();
+    //     intake.stopIntake();
+    //   } else if (bothSlotsAreEmpty() && !ballInTrasit) {
+    //     stopHopper();
+    //   }
+    // } else if (!intake.allMotorsActive() && !isFeedingShooter) {
+    //   stopHopper();
+    // }
   }
 
   @Override
   public void periodic() {
-    hoperLogicLoop();
+    hopperLogicLoop();
   }
 }
