@@ -26,8 +26,6 @@ import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
 
-  // Remove subsystem interdependencies. Move them to commands >:(
-
   private final BreakerXboxController controllerSys = new BreakerXboxController(0);
   private final BreakerPigeon2 imuSys = new BreakerPigeon2(Constants.IMU_ID);
   private final Drive drivetrainSys = new Drive(imuSys);
