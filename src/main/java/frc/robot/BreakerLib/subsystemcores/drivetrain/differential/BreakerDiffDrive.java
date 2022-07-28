@@ -96,7 +96,7 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
    * @param turnSpeed Lateral (left and right) speed.
    */
   public void arcadeDrive(double netSpeed, double turnSpeed) {
-    arcadeDrive(netSpeed, turnSpeed, true);
+    arcadeDrive(netSpeed, turnSpeed, slowModeActive);
   }
 
   /**
@@ -108,7 +108,7 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
    * @param useSlowMode Enable or disable slow mode.
    */
   public void arcadeDrive(double netSpeed, double turnSpeed, boolean useSlowMode) {
-    if (useSlowMode && slowModeActive) {
+    if (useSlowMode) {
       netSpeed *= driveConfig.getSlowModeForwardMultiplier();
       turnSpeed *= driveConfig.getSlowModeTurnMultiplier();
     }
@@ -123,7 +123,7 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
    * @param rightSpeed Speed of right motors. -1 to 1.
    */
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    tankDrive(leftSpeed, rightSpeed, true);
+    tankDrive(leftSpeed, rightSpeed, slowModeActive);
   }
 
   /**
@@ -135,7 +135,7 @@ public class BreakerDiffDrive extends SubsystemBase implements BreakerGenericDri
    * @param useSlowMode Enable or disable slow mode.
    */
   public void tankDrive(double leftSpeed, double rightSpeed, boolean useSlowMode) {
-    if (useSlowMode && slowModeActive) {
+    if (useSlowMode) {
       leftSpeed *= driveConfig.getSlowModeForwardMultiplier();
       rightSpeed *= driveConfig.getSlowModeForwardMultiplier();
     }
