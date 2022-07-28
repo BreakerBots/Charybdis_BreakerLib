@@ -47,8 +47,6 @@ public class BreakerSwerveDrive extends BreakerGenericDrivetrain {
 
   private BreakerMovementState2d prevMovementState = new BreakerMovementState2d(), curMovementState = new BreakerMovementState2d();
   private double prevOdometryUpdateTimestamp = 0;
-
-  private boolean isInSlowMode;
   /** Constructs a new swerve based drivetrain
    * @param config - the confiuration values for the drivetrain's charicteristics and behavor, passed in as a "BreakerSwerveDriveConfig" object
    * @param swerveModules - The four swerve drive modules that make up the drivetrain, must be passed in the same order shown below
@@ -90,7 +88,7 @@ public class BreakerSwerveDrive extends BreakerGenericDrivetrain {
    @param robotRelativeVelocities ChassisSpeeds object representing the robots velocities in each axis relative to its local refrence frame 
    */
   public void move(ChassisSpeeds robotRelativeVelocities) {
-    move(robotRelativeVelocities, isInSlowMode);
+    move(robotRelativeVelocities, slowModeActive);
   }
 
   
@@ -207,16 +205,6 @@ public class BreakerSwerveDrive extends BreakerGenericDrivetrain {
     ChassisSpeeds speeds = config.getKinematics().toChassisSpeeds(getSwerveModuleStates());
     curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMiliseconds, prevMovementState);
     prevMovementState = curMovementState;
-  }
-
-  @Override
-  public void setSlowMode(boolean isEnabled) {
-    isInSlowMode = isEnabled;
-  }
-
-  @Override
-  public boolean isInSlowMode() {
-    return isInSlowMode;
   }
 
   public SwerveModuleState[] getTargetModuleStates() {

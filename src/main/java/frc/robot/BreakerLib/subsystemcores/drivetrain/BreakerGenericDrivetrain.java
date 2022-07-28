@@ -15,15 +15,20 @@ import frc.robot.BreakerLib.util.selftest.BreakerSelfTestable;
 
 /** Contianer class for methods common to all drivetrain types */
 public abstract class BreakerGenericDrivetrain extends BreakerGenericLoopedDevice implements BreakerGenericOdometer {
+    protected boolean slowModeActive = false;
+
+    public  void setSlowMode(boolean isEnabled) {
+        slowModeActive = isEnabled;
+    }
+
+    public boolean isInSlowMode() {
+        return slowModeActive;
+    }
 
     /** Updates the odometer position. */
     public abstract void updateOdometry();
 
     public abstract void setDrivetrainBrakeMode(boolean isEnabled);
-
-    public abstract void setSlowMode(boolean isEnabled);
-
-    public abstract boolean isInSlowMode();
 
     public abstract ChassisSpeeds getFieldRelativeChassisSpeeds(BreakerGenericOdometer odometer);
 

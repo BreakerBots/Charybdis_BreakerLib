@@ -54,7 +54,6 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
   private BreakerMovementState2d curMovementState = new BreakerMovementState2d();
   private double prevOdometryUpdateTimestamp = 0;
 
-  private boolean slowModeActive;
   private boolean invertL;
   private boolean invertR;
 
@@ -269,16 +268,6 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
     return new DifferentialDriveWheelSpeeds(
         BreakerUnits.inchesToMeters((getLeftDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10),
         BreakerUnits.inchesToMeters((getRightDriveVelocityRSU() / driveConfig.getTicksPerInch()) * 10));
-  }
-
-  @Override
-  public void setSlowMode(boolean isEnabled) {
-    slowModeActive = isEnabled;
-  }
-
-  @Override
-  public boolean isInSlowMode() {
-    return slowModeActive;
   }
 
   public BreakerDiffDriveState getDiffDriveState() {
