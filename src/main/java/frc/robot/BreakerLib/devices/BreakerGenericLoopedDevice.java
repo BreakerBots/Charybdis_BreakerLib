@@ -17,7 +17,7 @@ import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Replacement for WPILib's SubsystemBase class for breakerlib internal classes */
 public abstract class BreakerGenericLoopedDevice extends BreakerGenericDeviceBase implements Subsystem, Sendable, BreakerGenericTelemetryProvider {
-    `private boolean telemetryEnabled = false;
+    private boolean telemetryEnabled = false;
         public BreakerGenericLoopedDevice() {
             String name = this.getClass().getSimpleName();
             name = name.substring(name.lastIndexOf('.') + 1);

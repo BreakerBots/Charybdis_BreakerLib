@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.driverstation.dashboard.BreakerDashboard;
 import frc.robot.BreakerLib.util.loging.BreakerLog;
 
-// Have we ever tested this?
-
 /** Class that manages all avalable autopaths for dashboard chooser */
 public class BreakerAutoManager {
 
