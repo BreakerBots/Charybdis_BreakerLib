@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 
 /** Add your docs here. */
 public class BreakerPurePursuitTrajectory extends Trajectory{
+    
     private double waypointIgnoreThreshold;
     private Translation2d[] waypoints;
     private TrajectoryConfig config;

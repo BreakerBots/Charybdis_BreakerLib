@@ -9,11 +9,9 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 
 /**
  * Compressor with built-in AnalogPotentiometer and pneumatic module support.
@@ -26,7 +24,7 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private PneumaticsControlModule ctrePCM;
     private PneumaticHub revPneumaticHub;
     private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(0); // Basically a null pressure
-                                                                                     // sensor.
+                                                                                   // sensor.
 
     /** Creates a new BreakerCompressor. */
     public BreakerCompressor(int moduleID, PneumaticsModuleType moduleType) {
@@ -48,11 +46,11 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private void moduleSetup(int id) {
         switch (moduleType) {
             case CTREPCM:
-                ctrePCM = new PneumaticsControlModule(id); //Regestered as spesific model for self test
+                ctrePCM = new PneumaticsControlModule(id); // Regestered as spesific model for self test
                 pneumaticModule = ctrePCM;
                 break;
             case REVPH:
-                revPneumaticHub = new PneumaticHub(id); //Regestered as spesific model for self test
+                revPneumaticHub = new PneumaticHub(id); // Regestered as spesific model for self test
                 pneumaticModule = revPneumaticHub;
                 break;
         }
@@ -62,11 +60,11 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private void moduleSetup() {
         switch (moduleType) {
             case CTREPCM:
-                ctrePCM = new PneumaticsControlModule(); //Regestered as spesific model for self test
+                ctrePCM = new PneumaticsControlModule(); // Regestered as spesific model for self test
                 pneumaticModule = ctrePCM;
                 break;
             case REVPH:
-                revPneumaticHub = new PneumaticHub(); //Regestered as spesific model for self test
+                revPneumaticHub = new PneumaticHub(); // Regestered as spesific model for self test
                 pneumaticModule = revPneumaticHub;
                 break;
         }
@@ -160,14 +158,15 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
 
     @Override
     public void runSelfTest() {
+        // WHY?!
         switch (moduleType) {
             case CTREPCM:
                 break;
             case REVPH:
                 break;
-            
+
         }
-        
+
     }
 
     @Override
@@ -179,13 +178,13 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     @Override
     public void overrideAutomaticPowerManagement(DevicePowerMode manualPowerMode) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void returnToAutomaticPowerManagement() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override

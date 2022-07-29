@@ -8,13 +8,10 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** REV Color Sensor V3 implementing the Breaker device interface. */
 public class BreakerColorSensor extends BreakerGenericDeviceBase {

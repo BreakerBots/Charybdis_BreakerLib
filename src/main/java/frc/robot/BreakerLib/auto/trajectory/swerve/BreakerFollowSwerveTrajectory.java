@@ -160,7 +160,7 @@ public class BreakerFollowSwerveTrajectory extends CommandBase implements Breake
     }
 
     @Override
-    public Trajectory[] getAllTrajectorys() {
+    public Trajectory[] getAllTrajectories() {
         return trajectoriesToFollow;
     }
 

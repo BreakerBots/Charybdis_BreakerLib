@@ -15,7 +15,7 @@ import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.Breake
 public interface BreakerGenericTrajectoryFollower {
     public abstract Trajectory getCurrentTrajectory();
 
-    public abstract Trajectory[] getAllTrajectorys();
+    public abstract Trajectory[] getAllTrajectories();
 
     public abstract double getTotalPathTimeSeconds();
 

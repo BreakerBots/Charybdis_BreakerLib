@@ -4,20 +4,14 @@
 
 package frc.robot.BreakerLib.auto.trajectory.diff;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -30,6 +24,7 @@ import frc.robot.BreakerLib.util.BreakerLog;
 
 /** OUR version of a differential drive ramsete command.  */
 public class BreakerRamsete extends CommandBase implements BreakerGenericTrajectoryFollower {
+    
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
@@ -47,7 +42,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
      * 
      * @param trajectoryToFollow Self-explanatory.
      * @param drivetrain Differential drivetrain to use.
-     * @param subsystemRequirements Self-explanatory.
+     * @param subsystemRequirements Self-explanatory. ACTUALLY NO! Why is this just a random singular parameter?
      * @param ramseteB Proportional constant for ramsete.
      * @param ramseteZeta Damping constant for ramsete.
      * @param stopAtEnd Whether the robot stops on completion.
@@ -56,7 +51,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
             Subsystem subsystemRequirements, double ramseteB,
             double ramseteZeta, boolean stopAtEnd) {
         this.drivetrain = drivetrain;
-        this.odometer = drivetrain;
+        this.odometer = drivetrain; // WHAT?! Why?
         trajectoryToFollow = trajectoryPath.getBaseTrajectory();
 
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
@@ -80,6 +75,16 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
         }
     }
 
+    /** Constructor for BreakerRamsete controller.
+     * 
+     * @param trajectoryPath
+     * @param drivetrain
+     * @param odometer
+     * @param subsystemRequirements
+     * @param ramseteB
+     * @param ramseteZeta
+     * @param stopAtEnd
+     */
     public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain, BreakerGenericOdometer odometer,
             Subsystem subsystemRequirements, double ramseteB,
             double ramseteZeta, boolean stopAtEnd) {
@@ -133,7 +138,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
     }
 
     @Override
-    public Trajectory[] getAllTrajectorys() {
+    public Trajectory[] getAllTrajectories() {
         Trajectory[] traject = new Trajectory[1];
         traject[0] = trajectoryToFollow;
         return traject;

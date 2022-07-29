@@ -9,10 +9,6 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint;
-import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 
 /** Add your docs here. */
 public class BreakerTrajectoryUtil {
