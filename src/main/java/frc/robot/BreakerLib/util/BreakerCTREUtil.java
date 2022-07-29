@@ -21,6 +21,7 @@ import edu.wpi.first.hal.can.CANJNI;
 import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.CAN;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 

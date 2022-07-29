@@ -20,7 +20,7 @@ import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
-import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 
 /** OUR version of a differential drive ramsete command. */
 public class BreakerRamsete extends CommandBase implements BreakerGenericTrajectoryFollower {

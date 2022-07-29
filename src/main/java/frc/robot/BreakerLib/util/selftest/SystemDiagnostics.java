@@ -17,7 +17,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
 import edu.wpi.first.cscore.CameraServerCvJNI.Helper;
-import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.cosmetic.led.BreakerCANdle.BreakerCANdleLedMode;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;

@@ -9,7 +9,7 @@ import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoManager;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement.BreakerAutomaticBreakModeManager;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement.BreakerAutomaticBreakModeManagerConfig;
-import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Add your docs here. */

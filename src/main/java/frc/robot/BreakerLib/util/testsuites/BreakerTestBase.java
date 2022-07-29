@@ -8,7 +8,7 @@ import javax.xml.stream.events.StartDocument;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 
 /** Add your docs here. */
 public class BreakerTestBase extends CommandBase {

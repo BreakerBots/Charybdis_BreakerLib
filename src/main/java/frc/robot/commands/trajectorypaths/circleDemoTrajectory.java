@@ -47,7 +47,7 @@ public class circleDemoTrajectory extends SequentialCommandGroup {
 
     addCommands(
       new BreakerStartTrajectoryPath(drivetrain.getBaseDrivetrain(), startingPose),
-      new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), drivetrain, 2.0, 0.7, true)
+      new BreakerRamsete(partOne, drivetrain.getBaseDrivetrain(), 2.0, 0.7, true, drivetrain)
     );
   }
 }

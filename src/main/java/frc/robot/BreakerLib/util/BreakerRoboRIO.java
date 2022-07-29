@@ -7,6 +7,7 @@ package frc.robot.BreakerLib.util;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import static edu.wpi.first.wpilibj.RobotState.*;
 

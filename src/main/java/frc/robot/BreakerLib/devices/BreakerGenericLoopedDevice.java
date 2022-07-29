@@ -10,12 +10,14 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BreakerLib.util.loging.BreakerGenericTelemetryProvider;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Replacement for WPILib's SubsystemBase class for breakerlib internal classes */
-public abstract class BreakerGenericLoopedDevice extends BreakerGenericDeviceBase implements Subsystem, Sendable {
+public abstract class BreakerGenericLoopedDevice extends BreakerGenericDeviceBase implements Subsystem, Sendable, BreakerGenericTelemetryProvider {
+    `private boolean telemetryEnabled = false;
         public BreakerGenericLoopedDevice() {
             String name = this.getClass().getSimpleName();
             name = name.substring(name.lastIndexOf('.') + 1);
@@ -84,5 +86,27 @@ public abstract class BreakerGenericLoopedDevice extends BreakerGenericDeviceBas
                 () -> getCurrentCommand() != null ? getCurrentCommand().getName() : "none",
                 null);
         }
+
+        
+    @Override
+    public void setProviderName(String newName) {
+        setDeviceName(newName);
+    }
+
+    @Override
+    public String getProviderName() {
+        return getDeviceName();
+    }
+
+    @Override
+    public void setTelemetryEnabled(boolean isEnabled) {
+        telemetryEnabled = isEnabled;
+        
+    }
+
+    @Override
+    public boolean isTelemetryEnabled() {
+        return telemetryEnabled;
+    }
      
 }

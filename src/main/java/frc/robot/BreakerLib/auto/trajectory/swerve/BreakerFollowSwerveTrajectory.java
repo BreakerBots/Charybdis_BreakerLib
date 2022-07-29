@@ -22,7 +22,7 @@ import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.Breake
 import frc.robot.BreakerLib.auto.trajectory.swerve.rotation.BreakerGenericSwerveRotationSupplier;
 import frc.robot.BreakerLib.auto.trajectory.swerve.rotation.BreakerSwerveRotationSupplier;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
-import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 
 /** Add your docs here. */
 public class BreakerFollowSwerveTrajectory extends CommandBase implements BreakerGenericTrajectoryFollower {

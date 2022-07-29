@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.control.BreakerPIDF;
 import frc.robot.BreakerLib.control.statespace.BreakerFlywheelStateSpace;
-import frc.robot.BreakerLib.devices.BreakerGenericDevice;
+import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
-import frc.robot.BreakerLib.util.BreakerLog;
 import frc.robot.BreakerLib.util.BreakerTriplet;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.math.averages.BreakerGenericAveragingList;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
@@ -29,7 +29,7 @@ import frc.robot.BreakerLib.util.testsuites.BreakerGenericTestSuiteImplementatio
 import frc.robot.BreakerLib.util.testsuites.flywheelSuite.BreakerFlywheelTestSuite;
 
 /** A class representing a robot's shooter flywheel and its assocated controle loop */
-public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTestSuiteImplementation<BreakerFlywheelTestSuite>, BreakerGenericDevice {
+public class BreakerFlywheel extends BreakerGenericLoopedDevice implements BreakerGenericTestSuiteImplementation<BreakerFlywheelTestSuite> {
     private BreakerPIDF flyPIDF;
     private double flywheelTargetRPM = 0;
     private MotorControllerGroup flywheel;
@@ -37,9 +37,6 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
     private WPI_TalonFX[] motors;
     //private BreakerFlywheelStateSpace flySS;
     private BreakerFlywheelTestSuite testSuite;
-
-    private String deviceName = " flywheel ", faults = null;
-    private DeviceHealth health = DeviceHealth.NOMINAL;
     
 
     public BreakerFlywheel(BreakerPIDF flyPIDF, WPI_TalonFX... flywheelMotors) {
@@ -52,7 +49,6 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
         lFlyMotor = flywheelMotors[0];
         motors = flywheelMotors;
         testSuite = new BreakerFlywheelTestSuite(this);
-        SelfTest.autoRegisterDevice(this);
     }
 
     public void setFlywheelSpeed(double flywheelTargetSpeedRPM) {
@@ -111,44 +107,17 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
 
     @Override
     public void runSelfTest() {
-       faults = null;
+       faultStr = null;
        health = DeviceHealth.NOMINAL;
        for (WPI_TalonFX mot: motors) {
            Faults motFaults = new Faults();
            mot.getFaults(motFaults);
            BreakerTriplet<DeviceHealth, String, Boolean> trip = BreakerCTREUtil.getMotorHealthFaultsAndConnectionStatus(motFaults, mot.getDeviceID());
            if (trip.getLeft() != DeviceHealth.NOMINAL) {
-               faults += trip.getMiddle();
+               faultStr += trip.getMiddle();
                health = health != DeviceHealth.NOMINAL ? trip.getLeft() : health;
            }
        }
-    }
-
-    @Override
-    public DeviceHealth getHealth() {
-        return health;
-    }
-
-    @Override
-    public String getFaults() {
-        // TODO Auto-generated method stub
-        return faults;
-    }
-
-    @Override
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    @Override
-    public boolean hasFault() {
-        return health != DeviceHealth.NOMINAL;
-    }
-
-    @Override
-    public void setDeviceName(String newName) {
-        deviceName = newName;
-        
     }
 
     @Override

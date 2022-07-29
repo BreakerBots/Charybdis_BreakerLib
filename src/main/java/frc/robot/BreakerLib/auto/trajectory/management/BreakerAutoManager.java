@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.driverstation.dashboard.BreakerDashboard;
-import frc.robot.BreakerLib.util.BreakerLog;
+import frc.robot.BreakerLib.util.loging.BreakerLog;
 
 // Have we ever tested this?
 
