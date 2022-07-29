@@ -11,7 +11,7 @@ import java.util.List;
 import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 
-/** Add your docs here. */
+/** Represents a trajectory and its optionaly attached commands */
 public class BreakerTrajectoryPath {
     private List<BreakerConditionalCommand> attachedConditionalCommands = new ArrayList<>();
     private Trajectory baseTrajectory;
