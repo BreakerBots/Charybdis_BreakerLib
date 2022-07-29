@@ -49,10 +49,10 @@ public class Shooter extends SubsystemBase {
     rightFlywheelMotor.setInverted(false);
 
 
-    PIDController pid = new PIDController(0.00170666667, 0.0, 0.0);
-    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.00005, 0.00000001, 0.000000001);
+    PIDController pid = new PIDController(0.0001, 0.0, 0.0); //
+    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.06, 0.000157);
 
-    flywheel = new BreakerFlywheel(new BreakerPIDF(pid, ff), leftFlywheelMotor, rightFlywheelMotor);
+    flywheel = new BreakerFlywheel(new BreakerPIDF(pid, -0.1, 0.1, ff), leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
 

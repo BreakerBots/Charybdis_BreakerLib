@@ -47,6 +47,7 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
         //         config.getFlywheelGearRatioToOne(), config.getModelKalmanTrust(),
         //         config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(), flywheelMotors);
         this.flyPIDF = flyPIDF;
+
         flywheel = new MotorControllerGroup(flywheelMotors);
         lFlyMotor = flywheelMotors[0];
         motors = flywheelMotors;
@@ -88,9 +89,9 @@ public class BreakerFlywheel extends SubsystemBase implements BreakerGenericTest
     }
 
     private void runFlywheel() {
-        //flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetRSU));
-        double flySetSpd = flyPIDF.calculatePrecentSpeed(getFlywheelRPM(), flywheelTargetRPM, lFlyMotor.getBusVoltage()) /** + flySS.getNextPrecentSpeed() */ ;
-        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | PID-C: " + flyPIDF.getBasePidController().calculate(getFlywheelRPM(), flywheelTargetRPM) + " | PID-E: " + flyPIDF.getVelocityError());
+        //flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetSpU));
+        double flySetSpd = flyPIDF.calculate(getFlywheelRPM(), flywheelTargetRPM) /** + flySS.getNextPrecentSpeed() */ ;
+        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | PID-C: " + flyPIDF.getBasePidController().calculate(getFlywheelRPM(), flywheelTargetRPM) + " | FF-C: " + flyPIDF.getBaseFeedforwardController().calculate(flywheelTargetRPM) );
         flywheel.set(flySetSpd);
     }
 

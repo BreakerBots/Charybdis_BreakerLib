@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.control;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
@@ -13,9 +14,19 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 public class BreakerPIDF {
     private PIDController pidController;
     private SimpleMotorFeedforward ffController;
+    private double pidMinOutput, pidMaxOutput;
     public BreakerPIDF(PIDController pidController, SimpleMotorFeedforward ffController) {
         this.pidController = pidController;
         this.ffController = ffController;
+        pidMinOutput = -Double.MAX_VALUE;
+        pidMaxOutput = -Double.MIN_VALUE;
+    }
+
+    public BreakerPIDF(PIDController pidController, double pidMinOutput, double pidMaxOutput, SimpleMotorFeedforward ffController) {
+        this.pidController = pidController;
+        this.ffController = ffController;
+        this.pidMaxOutput = pidMaxOutput;
+        this.pidMinOutput = pidMinOutput;
     }
 
     public void setTolerence(double velocityTolerence, double accelerationTolerence) {
@@ -23,12 +34,12 @@ public class BreakerPIDF {
     }
 
     public double calculate(double measurement, double setpoint) {
-        return pidController.calculate(measurement, setpoint) + ffController.calculate(setpoint);
+        return MathUtil.clamp(pidController.calculate(measurement, setpoint), pidMinOutput, pidMaxOutput)  + ffController.calculate(setpoint);
     }
 
-    public double calculatePrecentSpeed(double measurement, double setPoint, double voltage) {
-        return pidController.calculate(measurement, setPoint) + (ffController.calculate(setPoint) / voltage);
-    }
+    // public double calculatePrecentSpeed(double measurement, double setPoint, double voltage) {
+    //     return pidController.calculate(measurement, setPoint) + (ffController.calculate(setPoint) / voltage);
+    // }
     
     public boolean atSetpoint() {
         return pidController.atSetpoint();
