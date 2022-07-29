@@ -22,9 +22,9 @@ import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.util.BreakerLog;
 
-/** OUR version of a differential drive ramsete command.  */
+/** OUR version of a differential drive ramsete command. */
 public class BreakerRamsete extends CommandBase implements BreakerGenericTrajectoryFollower {
-    
+
     private RamseteCommand ramsete;
     private RamseteController ramseteController;
     private BreakerDiffDrive drivetrain;
@@ -35,23 +35,23 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
     private double totalTimeSeconds = 0;
     private boolean stopAtEnd;
     private Trajectory trajectoryToFollow;
-    private List<BreakerConditionalCommand> attachedCondtionalCommands;
+    private List<BreakerConditionalCommand> attachedConditionalCommands;
 
     /**
-     * Constructor for BreakerRamsete controller.
+     * Constructor for BreakerRamsete controller using the drivetrain's builtin
+     * odometer.
      * 
-     * @param trajectoryToFollow Self-explanatory.
-     * @param drivetrain Differential drivetrain to use.
-     * @param subsystemRequirements Self-explanatory. ACTUALLY NO! Why is this just a random singular parameter?
-     * @param ramseteB Proportional constant for ramsete.
-     * @param ramseteZeta Damping constant for ramsete.
-     * @param stopAtEnd Whether the robot stops on completion.
+     * @param trajectoryToFollow    Self-explanatory.
+     * @param drivetrain            Differential drivetrain to use.
+     * @param ramseteB              Proportional constant for ramsete.
+     * @param ramseteZeta           Damping constant for ramsete.
+     * @param stopAtEnd             Whether the robot stops on completion.
+     * @param subsystemRequirements Subsystems required for this path.
      */
-    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
-            Subsystem subsystemRequirements, double ramseteB,
-            double ramseteZeta, boolean stopAtEnd) {
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain, double ramseteB,
+            double ramseteZeta, boolean stopAtEnd, Subsystem... subsystemRequirements) {
         this.drivetrain = drivetrain;
-        this.odometer = drivetrain; // WHAT?! Why?
+        this.odometer = drivetrain;
         trajectoryToFollow = trajectoryPath.getBaseTrajectory();
 
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
@@ -66,28 +66,31 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
-        attachedCondtionalCommands = new ArrayList<>();
+        attachedConditionalCommands = new ArrayList<>();
 
         try {
-            attachedCondtionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
+            attachedConditionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
         } catch (Exception e) {
             BreakerLog.logError(e.toString());
         }
     }
 
-    /** Constructor for BreakerRamsete controller.
+    /**
+     * Constructor for BreakerRamsete controller using an external odometer.
      * 
-     * @param trajectoryPath
-     * @param drivetrain
-     * @param odometer
-     * @param subsystemRequirements
-     * @param ramseteB
-     * @param ramseteZeta
-     * @param stopAtEnd
+     * @param trajectoryToFollow    Self-explanatory.
+     * @param drivetrain            Differential drivetrain to use.
+     * @param odometer              Odometer to use, especially if you want to use a
+     *                              vision-based odometer.
+     * @param ramseteB              Proportional constant for ramsete.
+     * @param ramseteZeta           Damping constant for ramsete.
+     * @param stopAtEnd             Whether the robot stops on completion.
+     * @param subsystemRequirements Subsystems required for this path.
      */
-    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain, BreakerGenericOdometer odometer,
-            Subsystem subsystemRequirements, double ramseteB,
-            double ramseteZeta, boolean stopAtEnd) {
+    public BreakerRamsete(BreakerTrajectoryPath trajectoryPath, BreakerDiffDrive drivetrain,
+            BreakerGenericOdometer odometer, double ramseteB,
+            double ramseteZeta, boolean stopAtEnd, Subsystem... subsystemRequirements) {
+
         this.drivetrain = drivetrain;
         this.odometer = odometer;
         trajectoryToFollow = trajectoryPath.getBaseTrajectory();
@@ -95,6 +98,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
         BreakerLog.logBreakerLibEvent("BreakerRamsete command instance has started, total cumulative path time: "
                 + trajectoryToFollow.getTotalTimeSeconds());
 
+        // Ramsete command is constructed.
         ramseteController = new RamseteController(ramseteB, ramseteZeta);
         ramsete = new RamseteCommand(trajectoryToFollow, odometer::getOdometryPoseMeters, ramseteController,
                 drivetrain.getFeedforward(),
@@ -104,13 +108,20 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
 
         totalTimeSeconds = trajectoryToFollow.getTotalTimeSeconds();
         this.stopAtEnd = stopAtEnd;
-        attachedCondtionalCommands = new ArrayList<>();
+        attachedConditionalCommands = new ArrayList<>();
 
+        // Attempts to add attached conditional commands.
         try {
-            attachedCondtionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
+            attachedConditionalCommands.addAll(trajectoryPath.getAttachedConditionalCommands());
         } catch (Exception e) {
             BreakerLog.logError(e.toString());
         }
+    }
+
+    // Calculates elapsed time.
+    private void calculateTime() {
+        currentTimestamp = Timer.getFPGATimestamp();
+        currentTimeSeconds = currentTimestamp - startTimestamp; // formerly startTimestamp - currentTimestamp
     }
 
     @Override
@@ -171,14 +182,14 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
 
     @Override
     public void attachConditionalCommands(BreakerConditionalCommand... conditionalCommands) {
-        for (BreakerConditionalCommand com: conditionalCommands) {
-            attachedCondtionalCommands.add(com);
+        for (BreakerConditionalCommand com : conditionalCommands) {
+            attachedConditionalCommands.add(com);
         }
     }
 
     private void checkAttachedCommands() {
         try {
-            Iterator<BreakerConditionalCommand> iterator = attachedCondtionalCommands.iterator();
+            Iterator<BreakerConditionalCommand> iterator = attachedConditionalCommands.iterator();
             while (iterator.hasNext()) {
                 BreakerConditionalCommand com = iterator.next();
                 if (com.checkCondition(currentTimeSeconds, odometer.getOdometryPoseMeters())) {
@@ -186,12 +197,8 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
                     iterator.remove();
                 }
             }
-        } catch (Exception e) {}
-    }
-
-    private void calculateTime() {
-        currentTimestamp = Timer.getFPGATimestamp();
-        currentTimeSeconds = startTimestamp - currentTimestamp;
+        } catch (Exception e) {
+        }
     }
 
 }
