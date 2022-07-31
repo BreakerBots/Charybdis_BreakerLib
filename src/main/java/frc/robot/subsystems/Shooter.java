@@ -49,10 +49,10 @@ public class Shooter extends SubsystemBase {
     rightFlywheelMotor.setInverted(false);
 
 
-    PIDController pid = new PIDController(0.0001, 0.0, 0.0); //
-    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.06, 0.000157);
+    // PIDController pid = new PIDController(0.0001, 0.0, 0.0); //
+    // SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.06, 0.000157);
 
-    flywheel = new BreakerFlywheel(new BreakerPIDF(pid, -0.1, 0.1, ff), leftFlywheelMotor, rightFlywheelMotor);
+    flywheel = new BreakerFlywheel(new BreakerFlywheelConfig(0.0015, 0.0, 0.0, 0.06, 10, 2), leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
 
@@ -82,7 +82,7 @@ public class Shooter extends SubsystemBase {
 
   private void flywheelLogic() {
     //if (aimMode == ShooterAimMode.AUTO_AIM) {
-      double speed = 1000;//getIntepolatedVector(getDistanceToTarget()).getForce();
+      double speed = 2000;//getIntepolatedVector(getDistanceToTarget()).getForce();
       flywheel.setFlywheelSpeed(speed);
       System.out.println("Commanded SPEED: " + speed );
 

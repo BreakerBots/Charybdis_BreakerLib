@@ -6,8 +6,13 @@ package frc.robot.BreakerLib.subsystemcores.shooter;
 
 import java.util.EnumMap;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANPIDController.AccelStrategy;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -19,6 +24,7 @@ import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.loging.BreakerLog;
+import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.math.averages.BreakerGenericAveragingList;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
@@ -30,25 +36,46 @@ import frc.robot.BreakerLib.util.testsuites.flywheelSuite.BreakerFlywheelTestSui
 
 /** A class representing a robot's shooter flywheel and its assocated controle loop */
 public class BreakerFlywheel extends BreakerGenericLoopedDevice implements BreakerGenericTestSuiteImplementation<BreakerFlywheelTestSuite> {
-    private BreakerPIDF flyPIDF;
+    //private BreakerPIDF flyPIDF;
     private double flywheelTargetRPM = 0;
-    private MotorControllerGroup flywheel;
     private WPI_TalonFX lFlyMotor;
     private WPI_TalonFX[] motors;
     //private BreakerFlywheelStateSpace flySS;
     private BreakerFlywheelTestSuite testSuite;
+    private double lastVel = 0;
+    private double accel;
+
+    private double accelTol;
+    private double velTol;
     
 
-    public BreakerFlywheel(BreakerPIDF flyPIDF, WPI_TalonFX... flywheelMotors) {
+    public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
         // flySS = new BreakerFlywheelStateSpace(config.getFlywheelMomentOfInertaJKgMetersSq(),
         //         config.getFlywheelGearRatioToOne(), config.getModelKalmanTrust(),
         //         config.getEncoderKalmanTrust(), config.getLqrVelocityErrorTolerance(), config.getLqrControlEffort(), flywheelMotors);
-        this.flyPIDF = flyPIDF;
-
-        flywheel = new MotorControllerGroup(flywheelMotors);
+        //this.flyPIDF = flyPIDF;\
+        
         lFlyMotor = flywheelMotors[0];
         motors = flywheelMotors;
+
+        TalonFXConfiguration talonConfig = new TalonFXConfiguration();
+        talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        talonConfig.slot0.kP = config.getkP();
+        talonConfig.slot0.kI = config.getkI();
+        talonConfig.slot0.kD = config.getkD();
+        talonConfig.slot0.kF = config.getkF();
+
+        BreakerCTREUtil.checkError(lFlyMotor.configAllSettings(talonConfig), " Failed to config swerve module drive motor "); ;
+        lFlyMotor.selectProfileSlot(0, 0);
+        
+        for (int i = 1; i < motors.length; i++) {
+            motors[i].follow(lFlyMotor, FollowerType.AuxOutput1);
+        }
+
         testSuite = new BreakerFlywheelTestSuite(this);
+
+        velTol = config.getVelocityTolerence();
+        accelTol = config.getAcclerationTolerence();
     }
 
     public void setFlywheelSpeed(double flywheelTargetSpeedRPM) {
@@ -75,7 +102,7 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
     /** Stops flywheel and kills all assocated controll loops */
     public void killFlywheel() {
         //flySS.killLoop();
-        flywheel.set(0);
+        lFlyMotor.set(ControlMode.Velocity, 0);
         BreakerLog.logSuperstructureEvent("flywheel controll loops disabled");
     }
 
@@ -86,13 +113,16 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
 
     private void runFlywheel() {
         //flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetSpU));
-        double flySetSpd = flyPIDF.calculate(getFlywheelRPM(), flywheelTargetRPM) /** + flySS.getNextPrecentSpeed() */ ;
-        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | PID-C: " + flyPIDF.getBasePidController().calculate(getFlywheelRPM(), flywheelTargetRPM) + " | FF-C: " + flyPIDF.getBaseFeedforwardController().calculate(flywheelTargetRPM) );
-        flywheel.set(flySetSpd);
+        //double flySetSpd = flyPIDF.calculate(getFlywheelRPM(), flywheelTargetRPM) /** + flySS.getNextPrecentSpeed() */ ;
+        double flySetSpd = BreakerUnits.RPMtoFalconRSU(flywheelTargetRPM);
+        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM());
+        lFlyMotor.set(ControlMode.Velocity, flySetSpd);
+        accel = getFlywheelRPM() - lastVel;
+        lastVel = getFlywheelRPM();
     }
 
     public boolean flywheelIsAtTargetVel() {
-        return flyPIDF.atSetpoint();
+        return BreakerMath.isRoughlyEqualTo(flywheelTargetRPM, getFlywheelRPM(), velTol) && BreakerMath.isRoughlyEqualTo(accel, 0, accelTol);
     }
 
     @Override
