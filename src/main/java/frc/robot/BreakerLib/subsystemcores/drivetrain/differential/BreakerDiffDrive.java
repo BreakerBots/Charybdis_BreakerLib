@@ -387,4 +387,9 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
   public void returnToAutomaticPowerManagement() {
     isAutoPowerManaged = true;
   }
+
+  @Override
+  public void periodic() {
+    updateOdometry();
+  }
 }
