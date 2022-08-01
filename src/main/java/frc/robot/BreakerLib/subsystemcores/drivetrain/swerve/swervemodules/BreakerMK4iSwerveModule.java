@@ -4,6 +4,7 @@
 
 package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -21,8 +22,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
+import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
@@ -33,6 +36,8 @@ import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Add your docs here. */
 public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
+
+    private BreakerAbitraryFeedforwardProvider ffProvider;
     private BreakerSwerveDriveConfig config;
     private String faults = null, deviceName = "Swerve_Module_(SDS_MK4I)";
     private PIDController drivePID, anglePID;
@@ -74,12 +79,14 @@ public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
         driveConfig.slot0.kF = config.getModuleVelKf();
         BreakerCTREUtil.checkError(driveMotor.configAllSettings(driveConfig), " Failed to config swerve module drive motor "); ;
         driveMotor.selectProfileSlot(0, 0);
+
+        ffProvider = config.getAbitraryFeedforwardProvider();
     }
  
     @Override
     public void setModuleTarget(Rotation2d tgtAngle, double speedMetersPreSec) {
         turnMotor.set(TalonFXControlMode.Position, tgtAngle.getDegrees());
-        driveMotor.set(TalonFXControlMode.Velocity, getMetersPerSecToFalconRSU(speedMetersPreSec));
+        driveMotor.set(TalonFXControlMode.Velocity, getMetersPerSecToFalconRSU(speedMetersPreSec), DemandType.ArbitraryFeedForward, ffProvider.getArbitraryFeedforwardValue(speedMetersPreSec));
     }
 
     @Override

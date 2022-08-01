@@ -8,6 +8,8 @@ import java.util.function.DoubleSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerGenericInterpolatingMap;
 
 /** Add your docs here. */
@@ -15,11 +17,13 @@ public class BreakerAbitraryFeedforwardProvider {
     private BreakerGenericInterpolatingMap<Double, Double> ffMap;
     private double feedforwardCoeficent, staticFrictionCoeficent; 
     private DoubleSupplier ffSupplier;
+    private SimpleMotorFeedforward ffClass;
     private FFType ffType;
     private enum FFType{
         MAP_SUP,
         COEFS,
-        SUPPLIER
+        SUPPLIER,
+        FF_CLASS
     }
 
     public BreakerAbitraryFeedforwardProvider(BreakerGenericInterpolatingMap<Double, Double> speedToFeedforwardValMap) {
@@ -38,11 +42,16 @@ public class BreakerAbitraryFeedforwardProvider {
         ffType = FFType.SUPPLIER;
     }
 
+    public BreakerAbitraryFeedforwardProvider(SimpleMotorFeedforward ffClass) {
+        this.ffClass = ffClass;
+        ffType = FFType.FF_CLASS;
+    }
+
     public double getArbitraryFeedforwardValue(double curSpeed) {
         double feedForward = 0.0;
         switch (ffType) {
             case COEFS:
-                feedForward = feedforwardCoeficent * curSpeed + staticFrictionCoeficent;
+                feedForward = (feedforwardCoeficent * curSpeed + staticFrictionCoeficent) / RobotController.getBatteryVoltage();
                 break;
             case MAP_SUP:
                 feedForward = ffMap.getInterpolatedValue(curSpeed);
@@ -50,6 +59,8 @@ public class BreakerAbitraryFeedforwardProvider {
             case SUPPLIER:
                 feedForward = ffSupplier.getAsDouble();
                 break;
+            case FF_CLASS:
+                feedForward = ffClass.calculate(curSpeed) / RobotController.getBatteryVoltage();
         }
         return feedForward;
     }

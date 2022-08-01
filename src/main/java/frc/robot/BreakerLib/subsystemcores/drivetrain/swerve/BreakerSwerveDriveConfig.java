@@ -6,6 +6,7 @@ package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
 
 /** Add your docs here. */
 public class BreakerSwerveDriveConfig {
@@ -25,13 +26,14 @@ public class BreakerSwerveDriveConfig {
     private double wheelDiameter;
     private double slowModeLinearMultiplier;
     private double slowModeTurnMultiplier;
+    private BreakerAbitraryFeedforwardProvider abitraryFeedforwardProvider;
 
     private SwerveDriveKinematics kinematics;
     /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. 
      * (wheel translations must be imputed in the same order as the swerve moduels themsleves are passed into your BreakerSwerveDrive constructor) */
     public BreakerSwerveDriveConfig(double maxForwardVel, double maxSidewaysVel, double maxAngVel, 
         double moduleAnglekP, double moduleAnglekI, double moduleAngleKd, double moduleVelkP,
-        double moduleVelkI, double moduleVelKd, double moduleVelKf, double driveMotorGearRatioToOne,
+        double moduleVelkI, double moduleVelKd, double moduleVelKf, BreakerAbitraryFeedforwardProvider abitraryFeedforwardProvider, double driveMotorGearRatioToOne,
         double wheelDiameter, Translation2d... wheelPositionsRelativeToCenter) {
 
         this.maxForwardVel = maxForwardVel;
@@ -46,8 +48,10 @@ public class BreakerSwerveDriveConfig {
         this.wheelDiameter = wheelDiameter;
         this.driveMotorGearRatioToOne = driveMotorGearRatioToOne;
         this.moduleVelKf = moduleVelKf;
+        this.abitraryFeedforwardProvider = abitraryFeedforwardProvider;
         slowModeLinearMultiplier = 1;
         slowModeTurnMultiplier = 1;
+        
 
         moduleNum = wheelPositionsRelativeToCenter.length;
         kinematics = new SwerveDriveKinematics(wheelPositionsRelativeToCenter);
@@ -124,5 +128,9 @@ public class BreakerSwerveDriveConfig {
 
     public double getSlowModeTurnMultiplier() {
         return slowModeTurnMultiplier;
+    }
+
+    public BreakerAbitraryFeedforwardProvider getAbitraryFeedforwardProvider() {
+        return abitraryFeedforwardProvider;
     }
 }
