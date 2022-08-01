@@ -9,7 +9,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
 
-/** Add your docs here. */
+/** Configuration for {@link BreakerDiffDrive}. */
 public class BreakerDiffDriveConfig {
     private DifferentialDriveKinematics kinematics;
     private double robotTrackWidthInches;

@@ -19,9 +19,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
-import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
@@ -33,7 +30,6 @@ import frc.robot.BreakerLib.util.math.BreakerUnits;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 /** Differential drivetrain that uses Falcon 500 motors. */
 public class BreakerDiffDrive extends BreakerGenericDrivetrain {
@@ -60,7 +56,16 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
   private boolean isAutoPowerManaged = true;
   private DevicePowerMode powerMode = DevicePowerMode.FULL_POWER_MODE;
 
-  /** Creates a new BreakerDiffDrive. */
+  /**
+   * Creates a new BreakerDiffDrive.
+   * 
+   * @param leftMotors  Array of left Falcon 500 motors.
+   * @param rightMotors Array of right Falcon 500 motors.
+   * @param invertL     Invert left side of drivetrain.
+   * @param invertR     Invert right side of drivetrain.
+   * @param pigeon2     Pigeon 2 IMU.
+   * @param driveConfig Config for drivetrain.
+   */
   public BreakerDiffDrive(WPI_TalonFX[] leftMotors, WPI_TalonFX[] rightMotors, boolean invertL, boolean invertR,
       BreakerPigeon2 pigeon2, BreakerDiffDriveConfig driveConfig) {
 
@@ -274,6 +279,20 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
     return new BreakerDiffDriveState(getWheelSpeeds(), getLeftDriveMeters(), getRightDriveMeters());
   }
 
+  private void calculateMovementState(double timeToLastUpdateMilisecods) {
+    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(
+        getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMilisecods, prevMovementState);
+    prevMovementState = curMovementState;
+  }
+
+  public WPI_TalonFX[] getLeftMotors() {
+    return leftMotors;
+  }
+
+  public WPI_TalonFX[] getRightMotors() {
+    return rightMotors;
+  }
+
   @Override
   public void updateOdometry() {
     driveOdometer.update(Rotation2d.fromDegrees(pigeon2.getRawAngles()[0]), getLeftDriveMeters(),
@@ -292,7 +311,7 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
   public void runSelfTest() {
     faultStr = null;
     health = DeviceHealth.NOMINAL;
-    
+
     StringBuilder work = new StringBuilder();
     for (WPI_TalonFX motorL : leftMotors) {
       Faults motorFaults = new Faults();
@@ -329,20 +348,6 @@ public class BreakerDiffDrive extends BreakerGenericDrivetrain {
   @Override
   public BreakerMovementState2d getMovementState() {
     return curMovementState;
-  }
-
-  private void calculateMovementState(double timeToLastUpdateMilisecods) {
-    BreakerMovementState2d curMovementState = BreakerMath.movementStateFromChassisSpeedsAndPreviousState(
-        getOdometryPoseMeters(), getFieldRelativeChassisSpeeds(), timeToLastUpdateMilisecods, prevMovementState);
-    prevMovementState = curMovementState;
-  }
-
-  public WPI_TalonFX[] getLeftMotors() {
-    return leftMotors;
-  }
-
-  public WPI_TalonFX[] getRightMotors() {
-    return rightMotors;
   }
 
   @Override

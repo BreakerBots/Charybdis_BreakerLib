@@ -26,7 +26,7 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(0); // Basically a null pressure
                                                                                    // sensor.
 
-    /** Creates a new BreakerCompressor. */
+    /** Creates a new BreakerCompressor. with provided ID and type. */
     public BreakerCompressor(int moduleID, PneumaticsModuleType moduleType) {
         this.moduleType = moduleType;
         deviceName = "Pnumatics_Module";
@@ -46,11 +46,11 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private void moduleSetup(int id) {
         switch (moduleType) {
             case CTREPCM:
-                ctrePCM = new PneumaticsControlModule(id); // Regestered as spesific model for self test
+                ctrePCM = new PneumaticsControlModule(id); // Registered as spesific model for self test
                 pneumaticModule = ctrePCM;
                 break;
             case REVPH:
-                revPneumaticHub = new PneumaticHub(id); // Regestered as spesific model for self test
+                revPneumaticHub = new PneumaticHub(id); // Registered as spesific model for self test
                 pneumaticModule = revPneumaticHub;
                 break;
         }
@@ -60,11 +60,11 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private void moduleSetup() {
         switch (moduleType) {
             case CTREPCM:
-                ctrePCM = new PneumaticsControlModule(); // Regestered as spesific model for self test
+                ctrePCM = new PneumaticsControlModule(); // Registered as spesific model for self test
                 pneumaticModule = ctrePCM;
                 break;
             case REVPH:
-                revPneumaticHub = new PneumaticHub(); // Regestered as spesific model for self test
+                revPneumaticHub = new PneumaticHub(); // Registered as spesific model for self test
                 pneumaticModule = revPneumaticHub;
                 break;
         }
@@ -85,6 +85,11 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
      * <p>
      * Only need to do this if using PCM. Otherwise just plug the sensor into analog
      * port 0 on the PH.
+     * 
+     * @param analog_channel Analog port the sensor is plugged into.
+     * @param fullRange      Scaling multiplier to output (check with part
+     *                       manufacturer).
+     * @param offset         Offset added to scaled value.
      */
     public void addAnalogPressureSensor(int analog_channel, double fullRange, double offset) {
         analogPressureSensor = new AnalogPotentiometer(analog_channel, fullRange, offset);
