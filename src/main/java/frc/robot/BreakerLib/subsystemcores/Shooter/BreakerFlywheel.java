@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.control.BreakerPIDF;
 import frc.robot.BreakerLib.control.statespace.BreakerFlywheelStateSpace;
 import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
+import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
 import frc.robot.BreakerLib.util.loging.BreakerLog;
@@ -49,6 +50,8 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
 
     private double accelTol;
     private double velTol;
+    
+    private BreakerAbitraryFeedforwardProvider ffProvider;
     
 
     public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {
@@ -78,6 +81,8 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
 
         velTol = config.getVelocityTolerence();
         accelTol = config.getAcclerationTolerence();
+
+        ffProvider = config.getArbFFProvider();
     }
 
     public void setFlywheelSpeed(double flywheelTargetSpeedRPM) {
@@ -117,7 +122,7 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
         //flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetSpU));
         //double flySetSpd = flyPIDF.calculate(getFlywheelRPM(), flywheelTargetRPM) /** + flySS.getNextPrecentSpeed() */ ;
         double flySetSpd = BreakerUnits.RPMtoFalconRSU(flywheelTargetRPM);
-        double feedforward = (0.00157 * flywheelTargetRPM + 0.06) / RobotController.getBatteryVoltage();
+        double feedforward = ffProvider.getArbitraryFeedforwardValue(flywheelTargetRPM);
         System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | X: " + feedforward );
         lFlyMotor.set(ControlMode.Velocity, flySetSpd, DemandType.ArbitraryFeedForward, 0.7);
         accel = getFlywheelRPM() - lastVel;
