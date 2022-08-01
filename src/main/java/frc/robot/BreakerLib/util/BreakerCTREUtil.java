@@ -39,10 +39,6 @@ public class BreakerCTREUtil {
     }
   }
 
-  public static <T extends BaseMotorController> T[] createMotorArray(T... controllers) {
-    return controllers;
-  }
-
   public static void checkError(ErrorCode error, String Message) {
     if (error != ErrorCode.OK) {
       BreakerLog.logError(error + " - " + Message);

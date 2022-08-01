@@ -20,6 +20,7 @@ import frc.robot.BreakerLib.physics.projectilemotion.BreakerProjectile;
 import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
 import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
+import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolatingTreeMap;
 
 public class Shooter extends SubsystemBase {
@@ -52,7 +53,7 @@ public class Shooter extends SubsystemBase {
     // PIDController pid = new PIDController(0.0001, 0.0, 0.0); //
     // SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.06, 0.000157);
 
-    flywheel = new BreakerFlywheel(new BreakerFlywheelConfig(0.0, 0.0, 0.0, 0.0, 10, 2), leftFlywheelMotor, rightFlywheelMotor);
+    flywheel = new BreakerFlywheel(new BreakerFlywheelConfig(0.0, 0.0, 0.0, 0.0, 10, 2, new BreakerAbitraryFeedforwardProvider(0.00157, 0.06)), leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
 

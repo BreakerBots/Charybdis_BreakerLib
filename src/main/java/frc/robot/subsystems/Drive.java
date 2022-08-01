@@ -55,9 +55,8 @@ public class Drive extends SubsystemBase {
     right2 = new WPI_TalonFX(R2_ID);
     right3 = new WPI_TalonFX(R3_ID);
 
-    leftMotors = BreakerCTREUtil.createMotorArray(left1, left2, left3);
-    rightMotors = BreakerCTREUtil.createMotorArray(right1, right2, right3);
-
+    leftMotors = new WPI_TalonFX[] {left1, left2, left3};
+    rightMotors = new WPI_TalonFX[] {right1, right2, right3};
     leftSideRamsetePID = new PIDController(DRIVE_RS_PID_KP, DRIVE_RS_PID_KI, DRIVE_RS_PID_KD);
     leftSideRamsetePID.setTolerance(0.02, 0.05);
     rightSideRamsetePID = new PIDController(DRIVE_RS_PID_KP, DRIVE_RS_PID_KI, DRIVE_RS_PID_KD);
