@@ -265,4 +265,9 @@ public class BreakerSwerveDrive extends BreakerGenericDrivetrain {
     
   }
 
+  @Override
+  public void periodic() {
+    updateOdometry();
+  }
+
 }
