@@ -7,6 +7,7 @@ package frc.robot.BreakerLib.subsystemcores.shooter;
 import java.util.EnumMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
@@ -16,6 +17,7 @@ import com.revrobotics.CANPIDController.AccelStrategy;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.control.BreakerPIDF;
@@ -115,8 +117,9 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
         //flySS.setSpeedRPM(BreakerUnits.falconRSUtoRPM(flywheelTargetSpU));
         //double flySetSpd = flyPIDF.calculate(getFlywheelRPM(), flywheelTargetRPM) /** + flySS.getNextPrecentSpeed() */ ;
         double flySetSpd = BreakerUnits.RPMtoFalconRSU(flywheelTargetRPM);
-        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM());
-        lFlyMotor.set(ControlMode.Velocity, flySetSpd);
+        double feedforward = (0.00157 * flywheelTargetRPM + 0.06) / RobotController.getBatteryVoltage();
+        System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | X: " + feedforward );
+        lFlyMotor.set(ControlMode.Velocity, flySetSpd, DemandType.ArbitraryFeedForward, 0.7);
         accel = getFlywheelRPM() - lastVel;
         lastVel = getFlywheelRPM();
     }
