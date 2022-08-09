@@ -24,9 +24,13 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
     private PneumaticsControlModule ctrePCM;
     private PneumaticHub revPneumaticHub;
     private AnalogPotentiometer analogPressureSensor = new AnalogPotentiometer(0); // Basically a null pressure
-                                                                                   // sensor.
+                                                                                   // sensor until instantiated.
 
-    /** Creates a new BreakerCompressor. with provided ID and type. */
+    /** Creates a new BreakerCompressor. with provided ID and type.
+     * 
+     * @param moduleID CAN ID for the module.
+     * @param moduleType CTRE or REV.
+    */
     public BreakerCompressor(int moduleID, PneumaticsModuleType moduleType) {
         this.moduleType = moduleType;
         deviceName = "Pnumatics_Module";
@@ -35,6 +39,8 @@ public class BreakerCompressor extends BreakerGenericDeviceBase {
 
     /**
      * Creates a new BreakerCompressor with default module ID (0 for PCM, 1 for PH).
+     * 
+     * @param moduleType CTRE or REV.
      */
     public BreakerCompressor(PneumaticsModuleType moduleType) {
         this.moduleType = moduleType;

@@ -83,7 +83,7 @@ public class Shooter extends SubsystemBase {
 
   private void flywheelLogic() {
     //if (aimMode == ShooterAimMode.AUTO_AIM) {
-      double speed = 2000;//getIntepolatedVector(getDistanceToTarget()).getForce();
+      double speed = 0;//getIntepolatedVector(getDistanceToTarget()).getForce();
       flywheel.setFlywheelSpeed(speed);
       System.out.println("Commanded SPEED: " + speed );
 

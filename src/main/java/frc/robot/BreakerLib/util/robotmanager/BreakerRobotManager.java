@@ -12,32 +12,44 @@ import frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement.B
 import frc.robot.BreakerLib.util.loging.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
 
-/** Add your docs here. */
+/**
+ * Robot manager that configures SelfTest functionality, automatic brake mode,
+ * and auto paths.
+ */
 public class BreakerRobotManager {
     private static SelfTest test;
     private static BreakerAutoManager autoManager;
-    private static BreakerAutomaticBreakModeManager breakModeManager;
+    private static BreakerAutomaticBrakeModeManager breakModeManager;
     private static BreakerGenericDrivetrain baseDrivetrain;
     private static final BreakerRobotManager robotManager = new BreakerRobotManager();
 
+    private BreakerRobotManager() {
+    }
 
-    private BreakerRobotManager() {}
-
+    /** Setup for the BreakerRobotManager.
+     * 
+     * @param baseDrivetrain Base drivetrain.
+     * @param robotConfig Robot configuration.
+     */
     public static void setup(BreakerGenericDrivetrain baseDrivetrain, BreakerRobotConfig robotConfig) {
-        if (robotConfig.UsesOrchestra()) { 
+        if (robotConfig.UsesOrchestra()) {
             BreakerLog.startLog(robotConfig.getAutologNetworkTables(), robotConfig.getOrchestra());
-            test = new SelfTest(robotConfig.getSecondsBetweenSelfChecks(), robotConfig.getSelftestServerAddress(), robotConfig.getOrchestra(), robotConfig.getAutoRegesterDevices());
+            test = new SelfTest(robotConfig.getSecondsBetweenSelfChecks(), robotConfig.getSelftestServerAddress(),
+                    robotConfig.getOrchestra(), robotConfig.getAutoRegesterDevices());
         } else {
             BreakerLog.startLog(robotConfig.getAutologNetworkTables());
-            test = new SelfTest(robotConfig.getSecondsBetweenSelfChecks(), robotConfig.getSelftestServerAddress(), robotConfig.getAutoRegesterDevices());
+            test = new SelfTest(robotConfig.getSecondsBetweenSelfChecks(), robotConfig.getSelftestServerAddress(),
+                    robotConfig.getAutoRegesterDevices());
         }
         BreakerRobotManager.baseDrivetrain = baseDrivetrain;
-        BreakerRobotManager.autoManager = robotConfig.UsesPaths() ? new BreakerAutoManager(robotConfig.getAutoPaths()) : new BreakerAutoManager();
-        BreakerRobotManager.breakModeManager = new BreakerAutomaticBreakModeManager(new BreakerAutomaticBreakModeManagerConfig(baseDrivetrain));
+        BreakerRobotManager.autoManager = robotConfig.UsesPaths() ? new BreakerAutoManager(robotConfig.getAutoPaths())
+                : new BreakerAutoManager();
+        BreakerRobotManager.breakModeManager = new BreakerAutomaticBrakeModeManager(
+                new BreakerAutomaticBrakeModeManagerConfig(baseDrivetrain));
         BreakerLog.logRobotStarted(robotConfig.getStartConfig());
     }
 
-    public static BreakerAutomaticBreakModeManager getAutomaticBreakModeManager() {
+    public static BreakerAutomaticBrakeModeManager getAutomaticBreakModeManager() {
         return breakModeManager;
     }
 

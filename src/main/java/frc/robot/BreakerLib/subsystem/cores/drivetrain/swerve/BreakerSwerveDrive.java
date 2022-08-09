@@ -2,9 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.subsystemcores.drivetrain.swerve;
-
-import java.util.function.Supplier;
+package frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,24 +10,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.physics.Breaker3AxisForces;
-import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerMK4iSwerveModule;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.swervemodules.BreakerGenericSwerveModule;
-import frc.robot.BreakerLib.util.BreakerRoboRIO;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve.swervemodules.BreakerGenericSwerveModule;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.math.BreakerUnits;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
 import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
 import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
 import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
 
 public class BreakerSwerveDrive extends BreakerGenericDrivetrain {
   private BreakerSwerveDriveConfig config;

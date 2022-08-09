@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.subsystemcores.drivetrain.differential;
+package frc.robot.BreakerLib.subsystem.cores.drivetrain.differential;
 
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -23,7 +23,7 @@ import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.position.odometry.differential.BreakerDiffDriveState;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;

@@ -2,18 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement;
+package frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake;
 
-import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 
 /** Add your docs here. */
-public class BreakerAutomaticBreakModeManagerConfig {
+public class BreakerAutomaticBrakeModeManagerConfig {
     private boolean breakInAuto;
     private boolean breakInTeleop;
     private boolean breakInTest;
     private boolean breakInDisabled;
     private BreakerGenericDrivetrain baseDrivetrain;
-    public BreakerAutomaticBreakModeManagerConfig(BreakerGenericDrivetrain baseDrivetrain, boolean breakInTeleop, boolean breakInAuto, boolean breakInTest, boolean breakInDisabled) {
+    public BreakerAutomaticBrakeModeManagerConfig(BreakerGenericDrivetrain baseDrivetrain, boolean breakInTeleop, boolean breakInAuto, boolean breakInTest, boolean breakInDisabled) {
         this.breakInAuto = breakInAuto;
         this.breakInDisabled = breakInDisabled;
         this.breakInTeleop = breakInTeleop;
@@ -21,7 +21,7 @@ public class BreakerAutomaticBreakModeManagerConfig {
         this.baseDrivetrain = baseDrivetrain;
     }
 
-    public BreakerAutomaticBreakModeManagerConfig(BreakerGenericDrivetrain baseDrivetrain) {
+    public BreakerAutomaticBrakeModeManagerConfig(BreakerGenericDrivetrain baseDrivetrain) {
         this.breakInAuto = true;
         this.breakInDisabled = false;
         this.breakInTeleop = true;

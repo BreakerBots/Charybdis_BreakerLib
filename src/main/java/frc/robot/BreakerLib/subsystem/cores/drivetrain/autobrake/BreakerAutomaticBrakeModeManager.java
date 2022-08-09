@@ -2,22 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement;
+package frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerRoboRIO;
 import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 
 /** Add your docs here. */
-public class BreakerAutomaticBreakModeManager extends SubsystemBase {
+public class BreakerAutomaticBrakeModeManager extends SubsystemBase {
         private boolean breakInAuto;
         private boolean breakInTeleop;
         private boolean breakInTest;
         private boolean breakInDisabled;
         private boolean autoBreakIsEnabled;
         private BreakerGenericDrivetrain baseDrivetrain;
-        public BreakerAutomaticBreakModeManager(BreakerAutomaticBreakModeManagerConfig config) {
+        public BreakerAutomaticBrakeModeManager(BreakerAutomaticBrakeModeManagerConfig config) {
             breakInAuto = config.getBreakInAuto();
             breakInTeleop = config.getBreakInTeleop();
             breakInTest = config.getBreakInTest();
@@ -25,7 +25,7 @@ public class BreakerAutomaticBreakModeManager extends SubsystemBase {
             baseDrivetrain = config.getBaseDrivetrain();
         }
 
-        public void changeConfig(BreakerAutomaticBreakModeManagerConfig config) {
+        public void changeConfig(BreakerAutomaticBrakeModeManagerConfig config) {
             breakInAuto = config.getBreakInAuto();
             breakInTeleop = config.getBreakInTeleop();
             breakInTest = config.getBreakInTest();

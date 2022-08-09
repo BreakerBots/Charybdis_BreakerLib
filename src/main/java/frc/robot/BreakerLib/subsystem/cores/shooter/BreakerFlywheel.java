@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.subsystemcores.shooter;
+package frc.robot.BreakerLib.subsystem.cores.shooter;
 
 import java.util.EnumMap;
 
@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANPIDController.AccelStrategy;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -124,7 +123,7 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
         double flySetSpd = BreakerUnits.RPMtoFalconRSU(flywheelTargetRPM);
         double feedforward = ffProvider.getArbitraryFeedforwardValue(flywheelTargetRPM);
         System.out.println("Fly Set Spd: " + flySetSpd + " | Cur spd RPM: " + getFlywheelRPM() + " | X: " + feedforward );
-        lFlyMotor.set(ControlMode.Velocity, flySetSpd, DemandType.ArbitraryFeedForward, 0.7);
+        lFlyMotor.set(ControlMode.Velocity, flySetSpd, DemandType.ArbitraryFeedForward, 0.0);
         accel = getFlywheelRPM() - lastVel;
         lastVel = getFlywheelRPM();
     }
