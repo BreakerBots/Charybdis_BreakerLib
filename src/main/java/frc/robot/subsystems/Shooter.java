@@ -8,19 +8,15 @@ import java.util.TreeMap;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.BreakerLib.control.BreakerPIDF;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.physics.projectilemotion.BreakerProjectile;
-import frc.robot.BreakerLib.subsystem.cores.drivetrain.differential.BreakerDiffDrive;
-import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheel;
-import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheelConfig;
-import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
+import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
+import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
+import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolatingTreeMap;
 
 public class Shooter extends SubsystemBase {
@@ -49,14 +45,14 @@ public class Shooter extends SubsystemBase {
     leftFlywheelMotor.setInverted(true);
     rightFlywheelMotor.setInverted(false);
 
-
-    // PIDController pid = new PIDController(0.0001, 0.0, 0.0); //
-    // SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.06, 0.000157);
-
-    flywheel = new BreakerFlywheel(new BreakerFlywheelConfig(0.0, 0.0, 0.0, 0.0, 10, 2, new BreakerAbitraryFeedforwardProvider(0.00157, 0.06)), leftFlywheelMotor, rightFlywheelMotor);
+    //flywheelKp, flywheelKi, flywheelKd, flywheelVelTol, flywheelAccelTol, 
+    //flywheelMomentOfInertaJKgMetersSq, flywheelGearRatioToOne, modelKalmanDeviation, encoderKalmanDeveation, 
+    //lqrVelocityErrorTolerance, lqrControlEffort, flywheelKv, flywheelKa, flywheelKs
+    config = new BreakerFlywheelConfig(0.0, 0.0, 0.0, 10.0, 10.0, 
+    1.0, 0.0006, 3.0, 0.01, 10.0, 3.0, 0.023, 0.001, 0.00000001); //0.003
+    flywheel = new BreakerFlywheel(config, leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
-
 
     TreeMap<Double, BreakerVector2> shotPerameterMap = new TreeMap<Double, BreakerVector2>();
       shotPerameterMap.put(0.0, BreakerVector2.fromForceAndRotation(Rotation2d.fromDegrees(0), 700.0));
@@ -83,7 +79,7 @@ public class Shooter extends SubsystemBase {
 
   private void flywheelLogic() {
     //if (aimMode == ShooterAimMode.AUTO_AIM) {
-      double speed = 0;//getIntepolatedVector(getDistanceToTarget()).getForce();
+      double speed = 2000;//getIntepolatedVector(getDistanceToTarget()).getForce();
       flywheel.setFlywheelSpeed(speed);
       System.out.println("Commanded SPEED: " + speed );
 
