@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.auto.action.diffactionauto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.differential.BreakerDiffDrive;
 
 public class AutoPivot extends CommandBase {
   AutoController auto;

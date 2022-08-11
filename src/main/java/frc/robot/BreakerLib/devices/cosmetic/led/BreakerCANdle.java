@@ -42,18 +42,18 @@ public class BreakerCANdle extends BreakerGenericLoopedDevice {
     private StrobeAnimation errorStatus;
     private int colorSwitch = 0;
     private int timer = 0;
+    private int canID;
     private double switchTimeSec;
     private Color[] switchColors;
     private BreakerCANdleLedMode mode = BreakerCANdleLedMode.OFF;
-    private int canID;
 
     public BreakerCANdle(int canID, int numberOfLEDs, BreakerCANdleConfig config) {
         candle = new CANdle(canID);
+        this.canID = canID;
         candle.configAllSettings(config.getConfig());
         candle.setLEDs(255, 255, 255);
         enabledStatus = new RainbowAnimation(1, 0.5, numberOfLEDs);
         errorStatus = new StrobeAnimation(255, 0, 0, 0, 0.5, numberOfLEDs);
-        this.canID = canID;
         deviceName = " CANdle_LED_Controller ("+ canID +") ";
     }
 

@@ -4,8 +4,7 @@
 
 package frc.robot.BreakerLib.util.testsuites.flywheelSuite;
 
-import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
-import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
+import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheel;
 import frc.robot.BreakerLib.util.testsuites.BreakerTestBase;
 import frc.robot.BreakerLib.util.testsuites.BreakerTestSuiteDataLogType;
 

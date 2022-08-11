@@ -18,7 +18,7 @@ import frc.robot.RobotContainer;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.position.movement.BreakerMovementState2d;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDriveConfig;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve.BreakerSwerveDriveConfig;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 
 public class BreakerSwerveDrivePoseEstimator implements BreakerGenericOdometer {

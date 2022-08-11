@@ -21,7 +21,7 @@ import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.auto.trajectory.swerve.rotation.BreakerGenericSwerveRotationSupplier;
 import frc.robot.BreakerLib.auto.trajectory.swerve.rotation.BreakerSwerveRotationSupplier;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.swerve.BreakerSwerveDrive;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve.BreakerSwerveDrive;
 import frc.robot.BreakerLib.util.loging.BreakerLog;
 
 /** Add your docs here. */

@@ -6,11 +6,11 @@ package frc.robot.BreakerLib.util.robotmanager;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoManager;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.BreakerGenericDrivetrain;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement.BreakerAutomaticBreakModeManager;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.automaticbreakmanagement.BreakerAutomaticBreakModeManagerConfig;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake.BreakerAutomaticBrakeModeManager;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake.BreakerAutomaticBrakeModeManagerConfig;
 import frc.robot.BreakerLib.util.loging.BreakerLog;
 import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 
 /**
  * Robot manager that configures SelfTest functionality, automatic brake mode,

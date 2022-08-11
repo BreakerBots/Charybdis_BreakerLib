@@ -17,9 +17,9 @@ import frc.robot.Constants;
 import frc.robot.BreakerLib.control.BreakerPIDF;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.physics.projectilemotion.BreakerProjectile;
-import frc.robot.BreakerLib.subsystemcores.drivetrain.differential.BreakerDiffDrive;
-import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
-import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheelConfig;
+import frc.robot.BreakerLib.subsystem.cores.drivetrain.differential.BreakerDiffDrive;
+import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheel;
+import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheelConfig;
 import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolatingTreeMap;
 

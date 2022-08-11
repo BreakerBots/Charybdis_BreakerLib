@@ -8,7 +8,7 @@ import java.util.Currency;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.BreakerLib.subsystemcores.shooter.BreakerFlywheel;
+import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheel;
 import frc.robot.BreakerLib.util.math.averages.BreakerAverage;
 import frc.robot.BreakerLib.util.testsuites.BreakerTestBase;
 import frc.robot.BreakerLib.util.testsuites.BreakerTestSuiteDataLogType;
