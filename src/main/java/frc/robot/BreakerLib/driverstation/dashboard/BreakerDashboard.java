@@ -29,6 +29,10 @@ public class BreakerDashboard {
         return getTab("Tuning");
     }
 
+    public static ShuffleboardTab getDiagnosticsTab() {
+        return getTab("Diagnostics");
+    }
+
     public static ShuffleboardTab getTab(String tabName) {
         ShuffleboardTab tab = Shuffleboard.getTab(tabName);
         if (!allTabs.contains(tab)) {
