@@ -5,7 +5,7 @@
 package frc.robot.BreakerLib.subsystem.cores.shooter;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
+import frc.robot.BreakerLib.util.BreakerArbitraryFeedforwardProvider;
 
 /** Add your docs here. */
 public class BreakerFlywheelConfig {
@@ -21,7 +21,7 @@ public class BreakerFlywheelConfig {
     private double kF;
     private double velocityTolerence;
     private double acclerationTolerence;
-    private BreakerAbitraryFeedforwardProvider arbFFProvider;
+    private BreakerArbitraryFeedforwardProvider arbFFProvider;
 
 
     // public BreakerFlywheelConfig( double flywheelMomentOfInertaJKgMetersSq, double flywheelGearRatioToOne,
@@ -60,7 +60,7 @@ public class BreakerFlywheelConfig {
     //     return modelKalmanTrust;
     // }
 
-    public BreakerFlywheelConfig(double kP, double kI, double kD, double kF, double velocityTolerence, double accelerationTolerence, BreakerAbitraryFeedforwardProvider arbFFProvider) {
+    public BreakerFlywheelConfig(double kP, double kI, double kD, double kF, double velocityTolerence, double accelerationTolerence, BreakerArbitraryFeedforwardProvider arbFFProvider) {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
@@ -93,7 +93,7 @@ public class BreakerFlywheelConfig {
         return velocityTolerence;
     }
 
-    public BreakerAbitraryFeedforwardProvider getArbFFProvider() {
+    public BreakerArbitraryFeedforwardProvider getArbFFProvider() {
         return arbFFProvider;
     }
 }

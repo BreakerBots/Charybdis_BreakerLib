@@ -23,17 +23,17 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve.BreakerSwerveDriveConfig;
-import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
+import frc.robot.BreakerLib.util.BreakerArbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
 
 /** Add your docs here. */
 public class BreakerMK4iSwerveModule implements BreakerGenericSwerveModule {
 
-    private BreakerAbitraryFeedforwardProvider ffProvider;
+    private BreakerArbitraryFeedforwardProvider ffProvider;
     private BreakerSwerveDriveConfig config;
     private String faults = null, deviceName = "Swerve_Module_(SDS_MK4I)";
     private PIDController drivePID, anglePID;

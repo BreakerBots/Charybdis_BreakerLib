@@ -11,10 +11,10 @@ import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.position.geometry.BreakerRotation3d;
 import frc.robot.BreakerLib.util.math.BreakerMath;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 
 /* CTRE Pigeon IMU 2 implementing the Breaker device interface. */
 public class BreakerPigeon2 extends BreakerGenericDeviceBase {

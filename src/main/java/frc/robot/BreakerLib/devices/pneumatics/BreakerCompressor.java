@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
 
 /**
  * Compressor with built-in AnalogPotentiometer and pneumatic module support.

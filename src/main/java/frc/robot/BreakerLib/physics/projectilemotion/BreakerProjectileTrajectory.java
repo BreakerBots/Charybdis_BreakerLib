@@ -63,6 +63,7 @@ public class BreakerProjectileTrajectory {
                         / projectile.getTerminalVelSq());
     }
 
+    /** t = ((e^(d / Vt^2 / g) * Vt^2) - Vt^2) / g / Uo */
     private double getTimeAtGivenDistance(double distance, double initialForce) {
         double exp = Math.exp(distance / (projectile.getTerminalVelSq() / BreakerUnits.METERS_PER_SECOND_SQUARED_IN_G));
         double vtExp = (projectile.getTerminalVelSq() * exp) - projectile.getTerminalVelSq();

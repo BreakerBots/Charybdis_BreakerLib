@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.util.robotmanager;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
 import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 
-/** Add your docs here. */
+/** Configuration for the robot, used by {@link BreakerRobotManager}. */
 public class BreakerRobotConfig {
 
     private double secondsBetweenSelfChecks;
@@ -20,13 +20,13 @@ public class BreakerRobotConfig {
     private boolean usesPaths;
     private BreakerRobotStartConfig startConfig;
 
-    public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autoRegesterDevices, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra,  BreakerAutoPath... autoPaths) {
+    public BreakerRobotConfig(double secondsBetweenSelfChecks, String selftestServerAddress, boolean autoRegisterDevices, boolean autologNetworkTables, BreakerRobotStartConfig startConfig, BreakerFalconOrchestra orchestra,  BreakerAutoPath... autoPaths) {
         this.secondsBetweenSelfChecks = secondsBetweenSelfChecks;
         this.autologNetworkTables = autologNetworkTables;
         this.selftestServerAddress = selftestServerAddress;
         this.orchestra = orchestra;
         this.autoPaths = autoPaths;
-        this.autoRegesterDevices = autoRegesterDevices;
+        this.autoRegesterDevices = autoRegisterDevices;
         this.startConfig = startConfig;
         usesOrchestra = true;
         usesPaths = true;

@@ -2,11 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.util.testsuites;
+package frc.robot.BreakerLib.util.power;
 
 /** Add your docs here. */
-public enum BreakerTestSuiteDataLogType {
-    NONE,
-    PARTIAL_AUTOLOG,
-    LIVE_AUTOLOG
+public enum DevicePowerMode {
+    FULL_POWER_MODE,
+    MEDIUM_POWER_MODE,
+    LOW_POWER_MODE,
+    HIBERNATEING
 }

@@ -7,82 +7,86 @@ package frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 import frc.robot.BreakerLib.util.BreakerRoboRIO;
-import frc.robot.BreakerLib.util.BreakerRoboRIO.RobotMode;
 
-/** Add your docs here. */
+/**
+ * Handles brake mode on your Falcon 500 drivetrain automatically according to
+ * given config.
+ */
 public class BreakerAutomaticBrakeModeManager extends SubsystemBase {
-        private boolean breakInAuto;
-        private boolean breakInTeleop;
-        private boolean breakInTest;
-        private boolean breakInDisabled;
-        private boolean autoBreakIsEnabled;
-        private BreakerGenericDrivetrain baseDrivetrain;
-        public BreakerAutomaticBrakeModeManager(BreakerAutomaticBrakeModeManagerConfig config) {
-            breakInAuto = config.getBreakInAuto();
-            breakInTeleop = config.getBreakInTeleop();
-            breakInTest = config.getBreakInTest();
-            breakInDisabled = config.getBreakInDisabled();
-            baseDrivetrain = config.getBaseDrivetrain();
-        }
 
-        public void changeConfig(BreakerAutomaticBrakeModeManagerConfig config) {
-            breakInAuto = config.getBreakInAuto();
-            breakInTeleop = config.getBreakInTeleop();
-            breakInTest = config.getBreakInTest();
-            breakInDisabled = config.getBreakInDisabled();
-            baseDrivetrain = config.getBaseDrivetrain();
-        }
+    private boolean brakeInAuto;
+    private boolean brakeInTeleop;
+    private boolean brakeInTest;
+    private boolean brakeInDisabled;
+    private boolean autoBrakeIsEnabled;
+    private BreakerGenericDrivetrain baseDrivetrain;
 
-        public boolean isAutomaticBreakModeEnabled() {
-            return autoBreakIsEnabled;
-        }
+    public BreakerAutomaticBrakeModeManager(BreakerAutomaticBrakeModeManagerConfig config) {
+        brakeInAuto = config.getBreakInAuto();
+        brakeInTeleop = config.getBreakInTeleop();
+        brakeInTest = config.getBreakInTest();
+        brakeInDisabled = config.getBreakInDisabled();
+        baseDrivetrain = config.getBaseDrivetrain();
+    }
 
-        public void setAutomaticBreakModeEnabled(Boolean isEnabled) {
-            autoBreakIsEnabled = isEnabled;
-        }
+    public void changeConfig(BreakerAutomaticBrakeModeManagerConfig config) {
+        brakeInAuto = config.getBreakInAuto();
+        brakeInTeleop = config.getBreakInTeleop();
+        brakeInTest = config.getBreakInTest();
+        brakeInDisabled = config.getBreakInDisabled();
+        baseDrivetrain = config.getBaseDrivetrain();
+    }
 
-        public void setAutomaticBreakMode() {
-            switch(BreakerRoboRIO.getCurrentRobotMode()) {
-                case AUTONOMOUS:
-                    baseDrivetrain.setDrivetrainBrakeMode(breakInAuto);
-                    break;
-                case DISABLED:
-                    baseDrivetrain.setDrivetrainBrakeMode(breakInDisabled);
-                    break;
-                case TELEOP:
-                    baseDrivetrain.setDrivetrainBrakeMode(breakInTeleop);
-                    break;
-                case TEST:
-                    baseDrivetrain.setDrivetrainBrakeMode(breakInTest);
-                    break;
-                case UNKNOWN:
-                default:
-                    baseDrivetrain.setDrivetrainBrakeMode(false);
-                    break;
-               
-            }
-        }
+    public boolean isAutomaticBreakModeEnabled() {
+        return autoBrakeIsEnabled;
+    }
 
-        public boolean getBreakInAuto() {
-            return breakInAuto;
-        }
+    public void setAutomaticBreakModeEnabled(Boolean isEnabled) {
+        autoBrakeIsEnabled = isEnabled;
+    }
 
-        public boolean getBreakInDisabled() {
-            return breakInDisabled;
-        }
+    public void setAutomaticBreakMode() {
+        switch (BreakerRoboRIO.getCurrentRobotMode()) {
+            case AUTONOMOUS:
+                baseDrivetrain.setDrivetrainBrakeMode(brakeInAuto);
+                break;
+            case DISABLED:
+                baseDrivetrain.setDrivetrainBrakeMode(brakeInDisabled);
+                break;
+            case TELEOP:
+                baseDrivetrain.setDrivetrainBrakeMode(brakeInTeleop);
+                break;
+            case TEST:
+                baseDrivetrain.setDrivetrainBrakeMode(brakeInTest);
+                break;
+            case UNKNOWN:
+            default:
+                baseDrivetrain.setDrivetrainBrakeMode(false);
+                break;
 
-        public boolean getBreakInTeleop() {
-            return breakInTeleop;
         }
+    }
 
-        public boolean getBreakInTest() {
-            return breakInTest;
-        }
+    public boolean getBrakeInAuto() {
+        return brakeInAuto;
+    }
 
-        @Override
-        public void periodic() {
-            if (autoBreakIsEnabled) {
-                setAutomaticBreakMode();
-            }
+    public boolean getBrakeInDisabled() {
+        return brakeInDisabled;
+    }
+
+    public boolean getBrakeInTeleop() {
+        return brakeInTeleop;
+    }
+
+    public boolean getBrakeInTest() {
+        return brakeInTest;
+    }
+
+    @Override
+    public void periodic() {
+        if (autoBrakeIsEnabled) {
+            setAutomaticBreakMode();
         }
+    }
 }

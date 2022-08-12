@@ -7,38 +7,32 @@ package frc.robot.BreakerLib.util;
 import java.util.HashMap;
 
 import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleFaults;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.hal.CANAPIJNI;
-import edu.wpi.first.hal.CANData;
-import edu.wpi.first.hal.can.CANJNI;
-import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.wpilibj.CAN;
-import frc.robot.BreakerLib.util.loging.BreakerLog;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.logging.BreakerLog;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 
 /** Util class for CTRE motors. */
 public class BreakerCTREUtil {
 
   /**
+   * Sets brake mode for given TalonFX motors.
    * 
    * @param isEnabled True for brake mode, false for coast mode.
    * @param motors    Talon FX motors.
    */
-  public static void setBrakeMode(boolean isEnabled, WPI_TalonFX... motors) {
-    for (WPI_TalonFX motor : motors) {
+  public static void setBrakeMode(boolean isEnabled, BaseMotorController... motors) {
+    for (BaseMotorController motor : motors) {
       motor.setNeutralMode((isEnabled ? NeutralMode.Brake : NeutralMode.Coast));
     }
   }
 
+  /** Logs an error to BreakerLog if discovered. */
   public static void checkError(ErrorCode error, String Message) {
     if (error != ErrorCode.OK) {
       BreakerLog.logError(error + " - " + Message);
@@ -46,6 +40,8 @@ public class BreakerCTREUtil {
   }
 
   /**
+   * Returns motor faults as a String.
+   * 
    * @param motorFaults Faults from a CTRE Motor Controller
    * @return All motor fault messages separated by spaces in a string.
    */
@@ -68,6 +64,7 @@ public class BreakerCTREUtil {
     return getDeviceFaultsAsString(motorFaults.toBitfield(), map);
   }
 
+  /** Get motor fault and name. */
   public static Pair<DeviceHealth, String> getMotorHealthAndFaults(Faults motorFaults) {
     HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
     map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_under_6.5v "));
@@ -87,7 +84,9 @@ public class BreakerCTREUtil {
     return getDeviceHealthAndFaults(motorFaults.toBitfield(), map);
   }
 
-  public static BreakerTriplet<DeviceHealth, String, Boolean> getMotorHealthFaultsAndConnectionStatus(Faults motorFaults, int deviceID) {
+  /** Get motor faults, fault name, and connection status. */
+  public static BreakerTriplet<DeviceHealth, String, Boolean> getMotorHealthFaultsAndConnectionStatus(
+      Faults motorFaults, int deviceID) {
     HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
     map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_under_6.5v "));
     map.put(1, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " device_limit_switch_hit "));
@@ -116,7 +115,9 @@ public class BreakerCTREUtil {
     return getDeviceHealthAndFaults(faults.toBitfield(), map);
   }
 
-  public static BreakerTriplet<DeviceHealth, String, Boolean> getCANdelHealthFaultsAndConnectionStatus(CANdleFaults faults, int deviceID) {
+  /** Gets CANdle faults, name, and connection status. */
+  public static BreakerTriplet<DeviceHealth, String, Boolean> getCANdelHealthFaultsAndConnectionStatus(
+      CANdleFaults faults, int deviceID) {
     HashMap<Integer, Pair<DeviceHealth, String>> map = new HashMap<>();
     map.put(0, new Pair<DeviceHealth, String>(DeviceHealth.INOPERABLE, " short_circut "));
     map.put(1, new Pair<DeviceHealth, String>(DeviceHealth.FAULT, " thermal_fault "));
@@ -126,6 +127,7 @@ public class BreakerCTREUtil {
     return GetDeviceHealthFaultsAndConnectionStatus(faults.toBitfield(), deviceID, map);
   }
 
+  /** Gets CANdle faults as a String. */
   public static String getCANdleFaultsAsString(CANdleFaults faults) {
     HashMap<Integer, String> map = new HashMap<Integer, String>();
     map.put(0, " short_circut ");
@@ -136,13 +138,19 @@ public class BreakerCTREUtil {
     return getDeviceFaultsAsString(faults.toBitfield(), map);
   }
 
+  /** Device faults returned as a String. */
   public static String getDeviceFaultsAsString(long faultBitField,
       HashMap<Integer, String> fieldPlacesAndFaultMessages) {
     StringBuilder work = new StringBuilder();
     if (faultBitField != 0) {
       long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesAndFaultMessages.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndFaultMessages.containsKey(fieldPlace)) { // Checks for
+                                                                                                         // 1s in
+                                                                                                         // bitfield
+                                                                                                         // that
+                                                                                                         // signifies
+                                                                                                         // error
           work.append(fieldPlacesAndFaultMessages.get(fieldPlace));
         }
         fieldMask <<= 1; // Scrolls to next bit.
@@ -153,26 +161,42 @@ public class BreakerCTREUtil {
     return work.toString();
   }
 
-  public static DeviceHealth getDeviceFaultsAsHealth(long faultBitField, HashMap<Integer, DeviceHealth> fieldPlacesAndHealthEffects) {
+  /** Returns device health as {@link DeviceHealth} values. */
+  public static DeviceHealth getDeviceFaultsAsHealth(long faultBitField,
+      HashMap<Integer, DeviceHealth> fieldPlacesAndHealthEffects) {
     DeviceHealth health = DeviceHealth.NOMINAL;
     if (faultBitField != 0) {
       long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesAndHealthEffects.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndHealthEffects.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesAndHealthEffects.containsKey(fieldPlace)) { // Checks for
+                                                                                                         // 1s in
+                                                                                                         // bitfield
+                                                                                                         // that
+                                                                                                         // signifies
+                                                                                                         // error
           health = health != DeviceHealth.INOPERABLE ? fieldPlacesAndHealthEffects.get(fieldPlace) : health;
         }
         fieldMask <<= 1; // Scrolls to next bit.
       }
-    } 
+    }
     return health;
   }
 
-  public static Pair<DeviceHealth, String> getDeviceHealthAndFaults(long faultBitField, HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
+  /** Gets device health and faults. */
+  public static Pair<DeviceHealth, String> getDeviceHealthAndFaults(long faultBitField,
+      HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
     StringBuilder work = new StringBuilder();
     if (faultBitField != 0) {
       long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesHealthEffectsAndFaultMessages.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesHealthEffectsAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesHealthEffectsAndFaultMessages.containsKey(fieldPlace)) { // Checks
+                                                                                                                      // for
+                                                                                                                      // 1s
+                                                                                                                      // in
+                                                                                                                      // bitfield
+                                                                                                                      // that
+                                                                                                                      // signifies
+                                                                                                                      // error
           work.append(fieldPlacesHealthEffectsAndFaultMessages.get(fieldPlace).getSecond());
         }
         fieldMask <<= 1; // Scrolls to next bit.
@@ -182,19 +206,33 @@ public class BreakerCTREUtil {
     if (faultBitField != 0) {
       long fieldMask = 1; // masks all but selected bit
       for (int fieldPlace = 0; fieldPlace < fieldPlacesHealthEffectsAndFaultMessages.size(); fieldPlace++) {
-        if (((faultBitField & fieldMask) != 0) && fieldPlacesHealthEffectsAndFaultMessages.containsKey(fieldPlace)) { // Checks for 1s in bitfield that signifies error
-          health = health != DeviceHealth.INOPERABLE ? fieldPlacesHealthEffectsAndFaultMessages.get(fieldPlace).getFirst() : health;
+        if (((faultBitField & fieldMask) != 0) && fieldPlacesHealthEffectsAndFaultMessages.containsKey(fieldPlace)) { // Checks
+                                                                                                                      // for
+                                                                                                                      // 1s
+                                                                                                                      // in
+                                                                                                                      // bitfield
+                                                                                                                      // that
+                                                                                                                      // signifies
+                                                                                                                      // error
+          health = health != DeviceHealth.INOPERABLE
+              ? fieldPlacesHealthEffectsAndFaultMessages.get(fieldPlace).getFirst()
+              : health;
         }
         fieldMask <<= 1; // Scrolls to next bit.
       }
-    } 
+    }
     return new Pair<DeviceHealth, String>(health, work.toString());
   }
 
-  public static BreakerTriplet<DeviceHealth, String, Boolean> GetDeviceHealthFaultsAndConnectionStatus(long faultBitField, int deviceID, HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
-    Pair<DeviceHealth, String> healthAndMsgs = getDeviceHealthAndFaults(faultBitField, fieldPlacesHealthEffectsAndFaultMessages);
+  /** Get device health, faults, and connection status. */
+  public static BreakerTriplet<DeviceHealth, String, Boolean> GetDeviceHealthFaultsAndConnectionStatus(
+      long faultBitField, int deviceID,
+      HashMap<Integer, Pair<DeviceHealth, String>> fieldPlacesHealthEffectsAndFaultMessages) {
+    Pair<DeviceHealth, String> healthAndMsgs = getDeviceHealthAndFaults(faultBitField,
+        fieldPlacesHealthEffectsAndFaultMessages);
     boolean isMissing = SelfTest.checkIsMissingCanID(deviceID);
     String messages = isMissing ? healthAndMsgs.getSecond() + " device_not_found_on_bus " : healthAndMsgs.getSecond();
-    return new BreakerTriplet<DeviceHealth, String, Boolean>(isMissing ? DeviceHealth.INOPERABLE : healthAndMsgs.getFirst(), messages, isMissing);
+    return new BreakerTriplet<DeviceHealth, String, Boolean>(
+        isMissing ? DeviceHealth.INOPERABLE : healthAndMsgs.getFirst(), messages, isMissing);
   }
 }

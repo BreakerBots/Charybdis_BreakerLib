@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.factories;
+package frc.robot.BreakerLib.util.factory;
 
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -10,7 +10,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 
-/** Add your docs here. */
+/** Factory for producing CANcoders. */
 public class BreakerCANCoderFactory {
     public static WPI_CANCoder createCANCoder(int deviceID, AbsoluteSensorRange absoluteSensorRange, double absoluteOffsetDegress, boolean invertEncoder) {
         WPI_CANCoder encoder = new WPI_CANCoder(deviceID);

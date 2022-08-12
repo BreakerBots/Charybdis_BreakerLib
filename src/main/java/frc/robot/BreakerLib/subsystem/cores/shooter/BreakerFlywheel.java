@@ -4,8 +4,6 @@
 
 package frc.robot.BreakerLib.subsystem.cores.shooter;
 
-import java.util.EnumMap;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.Faults;
@@ -14,27 +12,18 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.control.BreakerPIDF;
-import frc.robot.BreakerLib.control.statespace.BreakerFlywheelStateSpace;
 import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
-import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
+import frc.robot.BreakerLib.util.BreakerArbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
-import frc.robot.BreakerLib.util.loging.BreakerLog;
+import frc.robot.BreakerLib.util.logging.BreakerLog;
 import frc.robot.BreakerLib.util.math.BreakerMath;
 import frc.robot.BreakerLib.util.math.BreakerUnits;
-import frc.robot.BreakerLib.util.math.averages.BreakerGenericAveragingList;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
-import frc.robot.BreakerLib.util.testsuites.BreakerGenericTestSuiteImplementation;
-import frc.robot.BreakerLib.util.testsuites.flywheelSuite.BreakerFlywheelTestSuite;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.suites.BreakerGenericTestSuiteImplementation;
+import frc.robot.BreakerLib.util.test.suites.flywheelSuite.BreakerFlywheelTestSuite;
 
 /** A class representing a robot's shooter flywheel and its assocated controle loop */
 public class BreakerFlywheel extends BreakerGenericLoopedDevice implements BreakerGenericTestSuiteImplementation<BreakerFlywheelTestSuite> {
@@ -50,7 +39,7 @@ public class BreakerFlywheel extends BreakerGenericLoopedDevice implements Break
     private double accelTol;
     private double velTol;
     
-    private BreakerAbitraryFeedforwardProvider ffProvider;
+    private BreakerArbitraryFeedforwardProvider ffProvider;
     
 
     public BreakerFlywheel(BreakerFlywheelConfig config, WPI_TalonFX... flywheelMotors) {

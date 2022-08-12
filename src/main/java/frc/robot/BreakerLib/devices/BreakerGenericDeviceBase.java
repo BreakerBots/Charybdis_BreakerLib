@@ -4,10 +4,10 @@
 
 package frc.robot.BreakerLib.devices;
 
-import frc.robot.BreakerLib.util.loging.BreakerGenericTelemetryProvider;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManageable;
-import frc.robot.BreakerLib.util.selftest.BreakerSelfTestableBase;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.logging.BreakerGenericTelemetryProvider;
+import frc.robot.BreakerLib.util.power.BreakerPowerManageable;
+import frc.robot.BreakerLib.util.test.selftest.BreakerSelfTestableBase;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 
 /** Future replacement class for BreakerGenericDevice */
 public abstract class BreakerGenericDeviceBase extends BreakerSelfTestableBase implements BreakerPowerManageable {

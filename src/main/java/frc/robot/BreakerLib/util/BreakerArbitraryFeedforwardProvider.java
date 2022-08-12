@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerGenericInterpolatingMap;
 
 /** Add your docs here. */
-public class BreakerAbitraryFeedforwardProvider {
+public class BreakerArbitraryFeedforwardProvider {
     private BreakerGenericInterpolatingMap<Double, Double> ffMap;
     private double feedforwardCoeficent, staticFrictionCoeficent; 
     private DoubleSupplier ffSupplier;
@@ -26,23 +26,23 @@ public class BreakerAbitraryFeedforwardProvider {
         FF_CLASS
     }
 
-    public BreakerAbitraryFeedforwardProvider(BreakerGenericInterpolatingMap<Double, Double> speedToFeedforwardValMap) {
+    public BreakerArbitraryFeedforwardProvider(BreakerGenericInterpolatingMap<Double, Double> speedToFeedforwardValMap) {
         ffMap = speedToFeedforwardValMap;
         ffType = FFType.MAP_SUP;
     }
 
-    public BreakerAbitraryFeedforwardProvider(double feedforwardCoeficent, double staticFrictionCoeficent) {
+    public BreakerArbitraryFeedforwardProvider(double feedforwardCoeficent, double staticFrictionCoeficent) {
         this.feedforwardCoeficent = feedforwardCoeficent;
         this.staticFrictionCoeficent = staticFrictionCoeficent;
         ffType = FFType.COEFS;
     }
 
-    public BreakerAbitraryFeedforwardProvider(DoubleSupplier ffSupplier) {
+    public BreakerArbitraryFeedforwardProvider(DoubleSupplier ffSupplier) {
         this.ffSupplier = ffSupplier;
         ffType = FFType.SUPPLIER;
     }
 
-    public BreakerAbitraryFeedforwardProvider(SimpleMotorFeedforward ffClass) {
+    public BreakerArbitraryFeedforwardProvider(SimpleMotorFeedforward ffClass) {
         this.ffClass = ffClass;
         ffType = FFType.FF_CLASS;
     }

@@ -23,8 +23,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BreakerLib.devices.motors.BreakerBinaryCTREMotor;
 import frc.robot.BreakerLib.devices.pneumatics.BreakerDoubleSolenoid;
-import frc.robot.BreakerLib.util.loging.BreakerLog;
-import frc.robot.BreakerLib.util.selftest.SystemDiagnostics;
+import frc.robot.BreakerLib.util.logging.BreakerLog;
+import frc.robot.BreakerLib.util.test.selftest.SystemDiagnostics;
 
 /** Intake arm and internal indexer wheels. */
 public class Intake extends SubsystemBase {

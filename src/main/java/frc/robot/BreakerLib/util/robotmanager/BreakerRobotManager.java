@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoManager;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake.BreakerAutomaticBrakeModeManager;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake.BreakerAutomaticBrakeModeManagerConfig;
-import frc.robot.BreakerLib.util.loging.BreakerLog;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.logging.BreakerLog;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 
 /**

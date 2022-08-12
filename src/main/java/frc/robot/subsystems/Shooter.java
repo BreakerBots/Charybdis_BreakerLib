@@ -8,19 +8,16 @@ import java.util.TreeMap;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.BreakerLib.control.BreakerPIDF;
 import frc.robot.BreakerLib.physics.BreakerVector2;
 import frc.robot.BreakerLib.physics.projectilemotion.BreakerProjectile;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheel;
 import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheelConfig;
-import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
+import frc.robot.BreakerLib.util.BreakerArbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolatingTreeMap;
 
 public class Shooter extends SubsystemBase {
@@ -53,7 +50,7 @@ public class Shooter extends SubsystemBase {
     // PIDController pid = new PIDController(0.0001, 0.0, 0.0); //
     // SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.06, 0.000157);
 
-    flywheel = new BreakerFlywheel(new BreakerFlywheelConfig(0.0, 0.0, 0.0, 0.0, 10, 2, new BreakerAbitraryFeedforwardProvider(0.00157, 0.06)), leftFlywheelMotor, rightFlywheelMotor);
+    flywheel = new BreakerFlywheel(new BreakerFlywheelConfig(0.0, 0.0, 0.0, 0.0, 10, 2, new BreakerArbitraryFeedforwardProvider(0.00157, 0.06)), leftFlywheelMotor, rightFlywheelMotor);
 
     // ball = new BreakerProjectile(massKg, dragCoeffiecnt, crossSectionalAreaMetersSq)
 

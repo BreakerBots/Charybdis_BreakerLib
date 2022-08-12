@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.BreakerLib.util.selftest;
+package frc.robot.BreakerLib.util.test.selftest;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
 import edu.wpi.first.cscore.CameraServerCvJNI.Helper;
-import frc.robot.BreakerLib.devices.cosmetic.led.BreakerCANdle.BreakerCANdleLedMode;
+import frc.robot.BreakerLib.devices.cosmetic.led.BreakerCANdle.BreakerCANdleLEDMode;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
 

@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import frc.robot.BreakerLib.util.BreakerAbitraryFeedforwardProvider;
+import frc.robot.BreakerLib.util.BreakerArbitraryFeedforwardProvider;
 
 /** Add your docs here. */
 public class BreakerSwerveDriveConfig {
@@ -26,14 +26,14 @@ public class BreakerSwerveDriveConfig {
     private double wheelDiameter;
     private double slowModeLinearMultiplier;
     private double slowModeTurnMultiplier;
-    private BreakerAbitraryFeedforwardProvider abitraryFeedforwardProvider;
+    private BreakerArbitraryFeedforwardProvider abitraryFeedforwardProvider;
 
     private SwerveDriveKinematics kinematics;
     /** The overall configuration for a Breaker Swerve Driven holding all constants, must be passed in. 
      * (wheel translations must be imputed in the same order as the swerve moduels themsleves are passed into your BreakerSwerveDrive constructor) */
     public BreakerSwerveDriveConfig(double maxForwardVel, double maxSidewaysVel, double maxAngVel, 
         double moduleAnglekP, double moduleAnglekI, double moduleAngleKd, double moduleVelkP,
-        double moduleVelkI, double moduleVelKd, double moduleVelKf, BreakerAbitraryFeedforwardProvider abitraryFeedforwardProvider, double driveMotorGearRatioToOne,
+        double moduleVelkI, double moduleVelKd, double moduleVelKf, BreakerArbitraryFeedforwardProvider abitraryFeedforwardProvider, double driveMotorGearRatioToOne,
         double wheelDiameter, Translation2d... wheelPositionsRelativeToCenter) {
 
         this.maxForwardVel = maxForwardVel;
@@ -130,7 +130,7 @@ public class BreakerSwerveDriveConfig {
         return slowModeTurnMultiplier;
     }
 
-    public BreakerAbitraryFeedforwardProvider getAbitraryFeedforwardProvider() {
+    public BreakerArbitraryFeedforwardProvider getAbitraryFeedforwardProvider() {
         return abitraryFeedforwardProvider;
     }
 }

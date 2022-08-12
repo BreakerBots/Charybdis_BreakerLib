@@ -7,7 +7,7 @@ package frc.robot.BreakerLib.subsystem.cores.drivetrain.swerve.modules;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
 
 /** Interface for all Swerve Modules to allwo for easy interchangeablity, this class is meant to surve as an intermedairy between your swerve hardware and the BreakerSwerveDrive class */
 public interface BreakerGenericSwerveModule extends BreakerGenericDevice {

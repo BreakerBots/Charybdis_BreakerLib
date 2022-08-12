@@ -11,10 +11,10 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 
 /** Falcon motor with simple on/off controls */
 public class BreakerBinaryCTREMotor<T extends BaseMotorController> extends BreakerGenericDeviceBase {

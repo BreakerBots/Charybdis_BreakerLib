@@ -4,8 +4,6 @@
 
 package frc.robot.BreakerLib.devices.cosmetic.led;
 
-import java.util.HashMap;
-
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleFaults;
@@ -13,21 +11,18 @@ import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.BreakerGenericLoopedDevice;
 import frc.robot.BreakerLib.util.BreakerCTREUtil;
 import frc.robot.BreakerLib.util.BreakerTriplet;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 
-/** LED controller */
+/** CTRE LED controller */
 public class BreakerCANdle extends BreakerGenericLoopedDevice {
 
-    public enum BreakerCANdleLedMode {
+    public enum BreakerCANdleLEDMode {
         COLOR_SWITCH,
         ANIMATION,
         STATIC,
@@ -45,7 +40,7 @@ public class BreakerCANdle extends BreakerGenericLoopedDevice {
     private int canID;
     private double switchTimeSec;
     private Color[] switchColors;
-    private BreakerCANdleLedMode mode = BreakerCANdleLedMode.OFF;
+    private BreakerCANdleLEDMode mode = BreakerCANdleLEDMode.OFF;
 
     public BreakerCANdle(int canID, int numberOfLEDs, BreakerCANdleConfig config) {
         candle = new CANdle(canID);
@@ -57,31 +52,31 @@ public class BreakerCANdle extends BreakerGenericLoopedDevice {
         deviceName = " CANdle_LED_Controller ("+ canID +") ";
     }
 
-    public void setLedAnimation(Animation animation) {
+    public void setLEDAnimation(Animation animation) {
         candle.animate(animation);
-        mode = BreakerCANdleLedMode.ANIMATION;
+        mode = BreakerCANdleLEDMode.ANIMATION;
     }
 
     public void setRobotEnabledStatusLED() {
-        mode = BreakerCANdleLedMode.ENABLED;
+        mode = BreakerCANdleLEDMode.ENABLED;
     }
 
-    public void setLedOff() {
-        mode = BreakerCANdleLedMode.OFF;
+    public void setLEDOff() {
+        mode = BreakerCANdleLEDMode.OFF;
     }
 
     public void runErrorStatusLED() {
-        mode = BreakerCANdleLedMode.ERROR;
+        mode = BreakerCANdleLEDMode.ERROR;
     }
 
     public void setStaticLED(int red, int green, int blue) {
         candle.setLEDs(red, green, blue);
-        mode = BreakerCANdleLedMode.STATIC;
+        mode = BreakerCANdleLEDMode.STATIC;
     }
 
     public void setStaticLED(Color ledColor) {
         candle.setLEDs(colorToRGB(ledColor)[0], colorToRGB(ledColor)[1], colorToRGB(ledColor)[2]);
-        mode = BreakerCANdleLedMode.STATIC;
+        mode = BreakerCANdleLEDMode.STATIC;
     }
 
     private void setLED(int red, int green, int blue) {
@@ -96,11 +91,11 @@ public class BreakerCANdle extends BreakerGenericLoopedDevice {
         candle.setLEDs(colorToRGB(ledColor)[0], colorToRGB(ledColor)[1], colorToRGB(ledColor)[2]);
     }
 
-    public void setLedColorSwitch(double switchTimeSec, Color... switchColors) {
+    public void setLEDColorSwitch(double switchTimeSec, Color... switchColors) {
         this.switchTimeSec = switchTimeSec;
         this.switchColors = switchColors;
         colorSwitch = 0;
-        mode = BreakerCANdleLedMode.COLOR_SWITCH;
+        mode = BreakerCANdleLEDMode.COLOR_SWITCH;
     }
 
     private void runColorSwitch(double switchTimeSec, Color... colors) {

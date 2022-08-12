@@ -13,11 +13,11 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.BreakerLib.devices.BreakerGenericDevice;
 import frc.robot.BreakerLib.devices.BreakerGenericDeviceBase;
 import frc.robot.BreakerLib.position.geometry.BreakerTransform3d;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerChannel;
-import frc.robot.BreakerLib.util.powermanagement.BreakerPowerManagementConfig;
-import frc.robot.BreakerLib.util.powermanagement.DevicePowerMode;
-import frc.robot.BreakerLib.util.selftest.DeviceHealth;
-import frc.robot.BreakerLib.util.selftest.SelfTest;
+import frc.robot.BreakerLib.util.power.BreakerPowerChannel;
+import frc.robot.BreakerLib.util.power.BreakerPowerManagementConfig;
+import frc.robot.BreakerLib.util.power.DevicePowerMode;
+import frc.robot.BreakerLib.util.test.selftest.DeviceHealth;
+import frc.robot.BreakerLib.util.test.selftest.SelfTest;
 
 /** Photon camera */
 public class BreakerPhotonCamera extends BreakerGenericDeviceBase {

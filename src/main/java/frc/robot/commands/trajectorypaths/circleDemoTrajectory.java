@@ -16,10 +16,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.BreakerLib.auto.trajectory.diff.BreakerRamsete;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerStartTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
-import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.subsystems.Drive;
 
-public class circleDemoTrajectory extends SequentialCommandGroup {
+public class CircleDemoTrajectory extends SequentialCommandGroup {
   /** Creates a new testTrajectory. */
   BreakerTrajectoryPath partOne;
   TrajectoryConfig config;
@@ -28,7 +27,7 @@ public class circleDemoTrajectory extends SequentialCommandGroup {
   Translation2d WP1;
   Translation2d WP2;
   List<Translation2d> waypoints;
-  public circleDemoTrajectory(Drive drivetrain) {
+  public CircleDemoTrajectory(Drive drivetrain) {
 
     startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     endPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));

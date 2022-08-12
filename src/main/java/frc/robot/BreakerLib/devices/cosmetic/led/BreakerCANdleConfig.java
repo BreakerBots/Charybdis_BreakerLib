@@ -8,11 +8,16 @@ import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
-/** Add your docs here. */
+/**
+ * Configuration for {@link BreakerCANdle} and wrapper for CTRE's
+ * CANdleConfiguration.
+ */
 public class BreakerCANdleConfig {
+
     private CANdleConfiguration config;
-    public BreakerCANdleConfig(double brightnessScalar, LEDStripType stripType, VBatOutputMode vBatOutputMode, 
-        boolean disableOnSignalLoss, boolean enableOptmizations, boolean statusLEDOffWhenActive) {
+
+    public BreakerCANdleConfig(double brightnessScalar, LEDStripType stripType, VBatOutputMode vBatOutputMode,
+            boolean disableOnSignalLoss, boolean enableOptmizations, boolean statusLEDOffWhenActive) {
         config = new CANdleConfiguration();
         config.brightnessScalar = brightnessScalar;
         config.stripType = stripType;

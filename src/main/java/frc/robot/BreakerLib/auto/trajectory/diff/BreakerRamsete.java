@@ -20,7 +20,7 @@ import frc.robot.BreakerLib.auto.trajectory.management.BreakerTrajectoryPath;
 import frc.robot.BreakerLib.auto.trajectory.management.conditionalcommand.BreakerConditionalCommand;
 import frc.robot.BreakerLib.position.odometry.BreakerGenericOdometer;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.differential.BreakerDiffDrive;
-import frc.robot.BreakerLib.util.loging.BreakerLog;
+import frc.robot.BreakerLib.util.logging.BreakerLog;
 
 /** OUR version of a differential drive ramsete command. */
 public class BreakerRamsete extends CommandBase implements BreakerGenericTrajectoryFollower {
@@ -118,7 +118,7 @@ public class BreakerRamsete extends CommandBase implements BreakerGenericTraject
         }
     }
 
-    // Calculates elapsed time.
+    /** Calculates elapsed time. */
     private void calculateTime() {
         currentTimestamp = Timer.getFPGATimestamp();
         currentTimeSeconds = currentTimestamp - startTimestamp; // formerly startTimestamp - currentTimestamp

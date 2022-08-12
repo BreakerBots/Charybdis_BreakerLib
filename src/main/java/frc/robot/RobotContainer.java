@@ -4,13 +4,11 @@
 
 package frc.robot;
 
-import static edu.wpi.first.wpilibj.PneumaticsModuleType.*;
+import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.BreakerLib.auto.trajectory.management.BreakerAutoPath;
-import frc.robot.BreakerLib.devices.cosmetic.music.BreakerFalconOrchestra;
 import frc.robot.BreakerLib.devices.pneumatics.BreakerCompressor;
 import frc.robot.BreakerLib.devices.sensors.BreakerPigeon2;
 import frc.robot.BreakerLib.driverstation.BreakerXboxController;
@@ -22,8 +20,8 @@ import frc.robot.commands.drive.ToggleSlowMode;
 import frc.robot.commands.intake.ToggleIntake;
 import frc.robot.commands.shooter.ToggleShooter;
 import frc.robot.commands.trajectorypaths.DemoTrajectoryS;
-import frc.robot.commands.trajectorypaths.attachedCommandsDemoTrajectory;
-import frc.robot.commands.trajectorypaths.circleDemoTrajectory;
+import frc.robot.commands.trajectorypaths.AttachedCommandsDemoTrajectory;
+import frc.robot.commands.trajectorypaths.CircleDemoTrajectory;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -37,14 +35,10 @@ public class RobotContainer {
 
   private final Drive drivetrainSys = new Drive(imuSys);
   private final Intake intakeSys = new Intake();
-  private final BreakerFalconOrchestra orchestraSys = new BreakerFalconOrchestra();
   private final Hopper hopperSys = new Hopper(intakeSys);
   private final Shooter shooterSys = new Shooter(drivetrainSys);
 
   public RobotContainer() {
-    // Orchestra motors added (It still doesn't work.)
-    orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getLeftMotors());
-    orchestraSys.addOrchestraMotors(drivetrainSys.getBaseDrivetrain().getRightMotors());
 
     compressor.disable(); // Compressor is shut off.
 
@@ -53,11 +47,10 @@ public class RobotContainer {
         new BreakerRobotConfig(
             new BreakerRobotStartConfig(5104, "BreakerBots", "Charybdis", 2022, "V3.2",
                 "Roman Abrahamson, and Yousif Alkhalaf"),
-            orchestraSys,
-            new BreakerAutoPath("Circle Demo", new circleDemoTrajectory(drivetrainSys)),
+            new BreakerAutoPath("Circle Demo", new CircleDemoTrajectory(drivetrainSys)),
             new BreakerAutoPath("S-shape Demo", new DemoTrajectoryS(drivetrainSys)),
             new BreakerAutoPath("S-attaced com demo",
-                new attachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
+                new AttachedCommandsDemoTrajectory(drivetrainSys, imuSys, intakeSys))));
 
     drivetrainSys.getBaseDrivetrain()
         .setDefaultCommand(new BreakerDiffDriveController(drivetrainSys.getBaseDrivetrain(), controllerSys));

@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.subsystem.cores.drivetrain.autobrake;
 
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.BreakerGenericDrivetrain;
 
-/** Add your docs here. */
+/** Config for {@link BreakerAutomaticBrakeModeManager}. */
 public class BreakerAutomaticBrakeModeManagerConfig {
     private boolean breakInAuto;
     private boolean breakInTeleop;

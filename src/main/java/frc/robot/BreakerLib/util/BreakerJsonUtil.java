@@ -12,12 +12,11 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** Add your docs here. */
-public class BreakerJsonUtil {
+public class BreakerJSONUtil {
     public static JsonNode readJsonFromURL(String link) throws IOException {
         InputStream input = new URL(link).openStream();
         try {

@@ -28,14 +28,14 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class attachedCommandsDemoTrajectory extends SequentialCommandGroup {
+public class AttachedCommandsDemoTrajectory extends SequentialCommandGroup {
   /** Creates a new attachedCommandsDemoTrajectory. */
    BreakerTrajectoryPath partOne;
    TrajectoryConfig config;
    Pose2d startingPose;
    Pose2d endPose;
 
-   public attachedCommandsDemoTrajectory(Drive drivetrain, BreakerPigeon2 pigeon2, Intake intake) {
+   public AttachedCommandsDemoTrajectory(Drive drivetrain, BreakerPigeon2 pigeon2, Intake intake) {
  
      startingPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
      endPose = new Pose2d(0, 0, Rotation2d.fromDegrees(-22));
