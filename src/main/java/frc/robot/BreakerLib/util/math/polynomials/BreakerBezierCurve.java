@@ -6,7 +6,7 @@ package frc.robot.BreakerLib.util.math.polynomials;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
-/** Add your docs here. */
+/** Beeeeeezier curves! */
 public class BreakerBezierCurve implements BreakerGenericPolynomial {
     public double x0, y0;
     public double x1, y1;

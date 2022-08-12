@@ -17,7 +17,6 @@ import frc.robot.BreakerLib.physics.projectilemotion.BreakerProjectile;
 import frc.robot.BreakerLib.subsystem.cores.drivetrain.differential.BreakerDiffDrive;
 import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheel;
 import frc.robot.BreakerLib.subsystem.cores.shooter.BreakerFlywheelConfig;
-import frc.robot.BreakerLib.util.BreakerArbitraryFeedforwardProvider;
 import frc.robot.BreakerLib.util.math.interpolation.interpolateingmaps.BreakerInterpolatingTreeMap;
 
 public class Shooter extends SubsystemBase {
